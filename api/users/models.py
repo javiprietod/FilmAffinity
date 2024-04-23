@@ -2,11 +2,13 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 
 
+
+
 class Usuario(AbstractUser):
     # TODO 2
     nombre = models.CharField(max_length=256)
     tel = models.CharField(max_length=32)
-    email = models.EmailField(max_length=128)
+    email = models.EmailField(max_length=128, primary_key=True)
     password = models.CharField(max_length=128)
 
     def save(self, *args, **kwargs):
@@ -22,25 +24,17 @@ class Usuario(AbstractUser):
         password: {self.password}
         """
 
-class Actor(models.Model):
-    id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=100)
-    age = models.IntegerField()
-
-    def __str__(self):
-        return self.name
 
 class Movie(models.Model):
     # TODO 3
-    title = models.CharField(max_length=100)
+    title = models.CharField(max_length=100, primary_key=True)
     year = models.IntegerField()
     duration = models.IntegerField()
-    rating = models.FloatField()
+    rating = models.FloatField(default=0.0, null=True, blank=True)
     genre = models.CharField(max_length=256)
     summary = models.TextField()
     director = models.CharField(max_length=256)
-    actors = models.ManyToManyField(Actor)
-    thumbnail = models.ImageField(upload_to='thumbnails/')
+    thumbnail = models.ImageField(upload_to='thumbnails/', null=True, blank=True)
 
     def __str__(self):
         return f"""
@@ -51,7 +45,20 @@ class Movie(models.Model):
         genre: {self.genre}
         summary: {self.summary}
         director: {self.director}
-        actors: {self.actors}
         """
     
 
+class Review(models.Model):
+    id = models.AutoField(primary_key=True)
+    movie = models.ForeignKey(Movie, on_delete=models.CASCADE)
+    user = models.ForeignKey(Usuario, on_delete=models.CASCADE)
+    rating = models.FloatField()
+    body = models.TextField(null=True, blank=True)
+
+    def __str__(self):
+        return f"""
+        movie: {self.movie}
+        user: {self.user}
+        rating: {self.rating}
+        body: {self.body}
+        """

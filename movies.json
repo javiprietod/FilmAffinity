@@ -1,15 +1,16 @@
 {
-    "actors": [
-        {"id": 1, "name": "Leonardo DiCaprio", "age": 48},
-        {"id": 2, "name": "Kate Winslet", "age": 47},
-        {"id": 3, "name": "Samuel L. Jackson", "age": 74},
-        {"id": 4, "name": "John Travolta", "age": 69},
-        {"id": 5, "name": "Uma Thurman", "age": 53},
-        {"id": 6, "name": "Morgan Freeman", "age": 85},
-        {"id": 7, "name": "Brad Pitt", "age": 59},
-        {"id": 8, "name": "Matt Damon", "age": 52},
-        {"id": 9, "name": "George Clooney", "age": 61}
-    ],
+    "review": {
+        "movie": "Titanic",
+        "user": "javier@gmail.com",
+        "rating": 5.0,
+        "body": "asdf"
+    },
+    "user": {
+        "nombre": "Jaime",
+        "tel": 90,
+        "email": "javier@gmail.com",
+        "password": "Q1w2e3r4"
+    },
     "movies": [
         {
             "title": "Titanic",
