@@ -1,0 +1,65 @@
+{
+    "actors": [
+        {"id": 1, "name": "Leonardo DiCaprio", "age": 48},
+        {"id": 2, "name": "Kate Winslet", "age": 47},
+        {"id": 3, "name": "Samuel L. Jackson", "age": 74},
+        {"id": 4, "name": "John Travolta", "age": 69},
+        {"id": 5, "name": "Uma Thurman", "age": 53},
+        {"id": 6, "name": "Morgan Freeman", "age": 85},
+        {"id": 7, "name": "Brad Pitt", "age": 59},
+        {"id": 8, "name": "Matt Damon", "age": 52},
+        {"id": 9, "name": "George Clooney", "age": 61}
+    ],
+    "movies": [
+        {
+            "title": "Titanic",
+            "year": 1997,
+            "duration": 195,
+            "rating": 7.9,
+            "genre": "Romance, Drama",
+            "summary": "A seventeen-year-old aristocrat falls in love with a kind but poor artist aboard the luxurious, ill-fated R.M.S. Titanic.",
+            "director": "James Cameron",
+            "actors": [1, 2]
+        },
+        {
+            "title": "Pulp Fiction",
+            "year": 1994,
+            "duration": 154,
+            "rating": 8.9,
+            "genre": "Crime, Drama",
+            "summary": "The lives of two mob hitmen, a boxer, a gangster's wife, and a pair of diner bandits intertwine in four tales of violence and redemption.",
+            "director": "Quentin Tarantino",
+            "actors": [3, 4, 5]
+        },
+        {
+            "title": "The Shawshank Redemption",
+            "year": 1994,
+            "duration": 142,
+            "rating": 9.3,
+            "genre": "Drama",
+            "summary": "Two imprisoned men bond over a number of years, finding solace and eventual redemption through acts of common decency.",
+            "director": "Frank Darabont",
+            "actors": [6]
+        },
+        {
+            "title": "Fight Club",
+            "year": 1999,
+            "duration": 139,
+            "rating": 8.8,
+            "genre": "Drama, Action",
+            "summary": "An insomniac office worker and a devil-may-care soapmaker form an underground fight club that evolves into something much, much more.",
+            "director": "David Fincher",
+            "actors": [7]
+        },
+        {
+            "title": "Ocean's Eleven",
+            "year": 2001,
+            "duration": 116,
+            "rating": 7.7,
+            "genre": "Thriller, Crime",
+            "summary": "Danny Ocean and his ten accomplices plan to rob three Las Vegas casinos simultaneously.",
+            "director": "Steven Soderbergh",
+            "actors": [7, 8, 9]
+        }
+    ]
+}

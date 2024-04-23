@@ -1,0 +1,276 @@
+
+header {
+  background-color: #447CAD;
+  color: #fff;
+  padding: 10px 20px;
+  text-align: left; 
+}
+
+/* nav ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+nav ul li {
+  display: inline; 
+  margin-right: 20px;
+}
+
+nav ul li a {
+  color: #fff;
+  text-decoration: none;
+}
+
+nav ul li a:hover { 
+  color: #ddd;
+  background-color: #777777;
+} */
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f0f0f0;
+  margin: 0;
+  padding: 0;
+}
+
+
+
+header, footer {
+  justify-content: center;
+  display: flex;
+  position: sticky;
+  width: 100%;
+}
+
+header nav, footer {
+  align-items: center;
+  background-color: #447CAD;
+  color: white;
+  height: 100%;
+  width: 100%;
+}
+
+footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  height: 40px;
+  margin-bottom: 0px;
+}
+
+#user-login-container {
+  vertical-align: top;
+  float: right;
+  position: relative;
+  width: 250px;
+  z-index: 0;
+  margin-top: -60px;
+  color: #ffffff;
+}
+#user-login-container #login-register .sign-in, #user-login-container #login-register .register{
+  color: #ffffff;
+}
+.error {
+  color: darkred;
+  border: 2px solid darkred;
+  background-color: lightpink;
+  padding: 5px;
+}
+
+#logo {
+  float: left;
+  margin: 0px 0px 0 230px;
+  padding-left: -30px;
+  height: 44px;
+  z-index: 1;
+}
+
+#search-bar {
+  width: 50%;
+  margin: auto;
+  margin-top: -14px;
+  height: 30px;
+  border-radius: 5px;
+  padding-left: 220px;
+}
+
+#search-bar #search {
+  width: 70%;
+  height: 100%;
+  border-radius: 6px;
+  border: 0px;
+  padding-left: 10px;
+}
+
+img {
+  width: 200px;
+  height: auto;
+  margin-right: 20px;
+  border-radius: 5px;
+}
+
+header nav div {
+  /* border: 1px solid #ddd; */
+  padding: 10px;
+  /* display: inline-flex; */
+}
+
+#user-actions {
+  height: 100%;
+  /* width: 100%; */
+  font-size: 25px;
+  float: right;
+  text-align: right;
+}
+
+
+.container {
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+  text-align: center;
+}
+
+.movie-list {
+  text-decoration: none;
+  color: "black";
+  display: "inline-block";
+  text-align: center;
+}
+
+.thumbnail {
+  height: 300px;
+  width: 200px;
+  border-radius: 5px;
+}
+
+.movie-details {
+  display: inline-block;
+  margin-top: 20px;
+  width: 33%;
+}
+
+.voting-control {
+  padding: 70px;
+  /* padding-right: 100px; */
+}
+
+
+.info {
+  flex: 1;
+}
+
+p {
+  margin: 5px 0;
+}
+
+.form-control {
+  margin-bottom: 15px;
+}
+
+.form-control label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.form-control input[type="text"],
+.form-control input[type="tel"],
+.form-control input[type="password"],
+.form-control input[type="email"] {
+  width: calc(100% - 16px);
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
+
+.form-control textarea {
+  width: calc(100% - 16px);
+  height: 100px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
+.form-control label {
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+button[type="submit"] {
+  background-color: #333;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+button[type="submit"]:hover {
+  background-color: #777;
+}
+
+.buttons {
+  display: flex;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.buttons input[type="number"] {
+  width: 35px 
+}
+
+.voting-control {
+  /* display: flex;
+  align-items: center;
+  justify-content: center; */
+  /* margin-top: 20px; */
+  border: 1px solid #0000;
+}
+
+.modal {
+  display: block; /* Hidden by default */
+  z-index: 100; /* Sit on top*/
+  position: absolute;
+  top: 3px;
+  right: 98px;
+  width: 250px;
+  /* height: 20%; Full height */
+  overflow: auto; /* Enable scroll if needed */
+  /* background-color: rgba(0,0,0,0.4);  */
+}
+
+.modal-content {
+  background-color: #fefefe;
+  margin: 15% auto;
+  /* padding: 20px; */
+  border: 1px solid #888;
+  border-radius: 5px;
+  width: 80%; /* Could be more or less, depending on screen size */
+}
+
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+
+.modal-content p, .modal-content a {
+  color : #447CAD;
+  text-decoration: none;
+}
