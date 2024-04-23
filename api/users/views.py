@@ -144,8 +144,8 @@ class ReviewList(generics.ListCreateAPIView):
     
     def post(self, request):
         data = request.data
-        # data['movie'] = models.Movie.objects.get(title=data['movie'])
-        # data['user'] = models.Usuario.objects.get(username=data['user'])
+        data['movie'] = models.Movie.objects.get(title=data['movie'])
+        data['user'] = models.Usuario.objects.get(username=data['user'])
         serializer = self.get_serializer(data=data)
         if serializer.is_valid():
             serializer.save()

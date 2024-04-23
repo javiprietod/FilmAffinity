@@ -73,29 +73,6 @@ class MovieSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         movie = models.Movie.objects.create(**validated_data)
         return movie
-
-    def update(self, instance, validated_data):
-        instance.title = validated_data.get('title', instance.title)
-        instance.year = validated_data.get('year', instance.year)
-        instance.duration = validated_data.get('duration', instance.duration)
-        instance.genre = validated_data.get('genre', instance.genre)
-        instance.summary = validated_data.get('summary', instance.summary)
-        instance.director = validated_data.get('director', instance.director)
-        instance.thumbnail = validated_data.get('thumbnail', instance.thumbnail)
-        
-        # Calculate the new rating based on the reviews associated with the movie
-        reviews = instance.reviews.filter(movie=instance)
-        total_rating = sum(review.rating for review in reviews)
-        num_reviews = len(reviews)
-        if num_reviews > 0:
-            new_rating = total_rating / num_reviews
-        else:
-            new_rating = 0
-        
-        instance.rating = new_rating
-        instance.save()
-
-        return instance
     
 
 class ReviewSerializer(serializers.ModelSerializer):
