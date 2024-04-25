@@ -10,17 +10,18 @@ from django.urls import path
 from . import views
 from django.http import Http404
 
-def calculate_rating(movie_title):
-    reviews = models.Review.objects.filter(movie__title=movie_title)
+def calculate_rating(movie_id):
+    reviews = models.Review.objects.filter(movie__id=movie_id)
     if len(reviews) == 0:
         return 0
     rating = sum([review.rating for review in reviews]) / len(reviews)
-    movie = models.Movie.objects.get(title=movie_title)
+    movie = models.Movie.objects.get(id=movie_id)
     movie.rating = rating
     movie.save()
 
 class RegistroView(generics.CreateAPIView):
     serializer_class = serializers.UsuarioSerializer
+
     def handle_exception(self, exc):
         if isinstance(exc, IntegrityError):
             return Response(status=status.HTTP_409_CONFLICT, data={"error": "Username already exists"})
@@ -104,22 +105,22 @@ class MovieDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = serializers.MovieSerializer
     def get_object(self):
         try:
-            return models.Movie.objects.get(pk=self.kwargs.get('title'))
+            return models.Movie.objects.get(pk=self.kwargs.get('id'))
         except models.Movie.DoesNotExist:
-            raise Http404("No movie found with the provided title")
-    
-    def get(self, request, pk):
+            raise Http404("No movie found with the provided id")
+
+    def get(self, request, id):
         serializer = self.get_serializer(self.get_object())
         return Response(serializer.data)
-    
-    def put(self, request, pk):
+
+    def put(self, request, id):
         serializer = self.get_serializer(self.get_object(), data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
-    def delete(self, request, pk):
+    def delete(self, request, id):
         self.get_object().delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
     
@@ -134,23 +135,21 @@ class ReviewList(generics.ListCreateAPIView):
     
     def get_queryset(self):
         queryset = models.Review.objects.all()
-        title = self.request.query_params.get('title', None)
+        id = self.request.query_params.get('id', None)
         username = self.request.query_params.get('username', None)
-        if title is not None:
-            queryset = queryset.filter(movie__title=title)
+        if id is not None:
+            queryset = queryset.filter(movie__id=id)
         if username is not None:
             queryset = queryset.filter(user__username=username)
         return queryset
     
     def post(self, request):
         data = request.data
-        data['movie'] = models.Movie.objects.get(title=data['movie'])
-        data['user'] = models.Usuario.objects.get(username=data['user'])
         serializer = self.get_serializer(data=data)
         if serializer.is_valid():
             serializer.save()
-            movie_title = request.data.get('movie')
-            calculate_rating(movie_title)
+            movie_id = request.data.get('movie')
+            calculate_rating(movie_id)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
@@ -171,16 +170,16 @@ class ReviewDetail(generics.RetrieveUpdateDestroyAPIView):
         serializer = self.get_serializer(self.get_object(), data=request.data)
         if serializer.is_valid():
             serializer.save()
-            movie_title = request.data.get('movie')
-            calculate_rating(movie_title)
+            movie_id = request.data.get('movie')
+            calculate_rating(movie_id)
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
     def delete(self, request, id):
         review = self.get_object()
-        movie = review.movie.title
+        movie_id = review.movie.id
         self.get_object().delete()
-        calculate_rating(movie)
+        calculate_rating(movie_id)
         return Response(status=status.HTTP_204_NO_CONTENT)
     
     def handle_exception(self, exc):

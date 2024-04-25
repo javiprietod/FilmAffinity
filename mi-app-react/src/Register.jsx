@@ -72,7 +72,7 @@ export default function Register() {
             <input type="password" id="passRep" onKeyUp={compruebaPass()}
                     name="password" pattern="^(?=.*[0-9])(?=.*[A-Z])(?=.*[a-z]).*$" minLength="8" required/>
 
-            {val.current ? <p id="aviso" className="error">{val.current}</p> : <p id="aviso"></p>}
+            {val.current ? <p id="aviso" >{val.current}</p> : <p id="aviso"></p>}
             <hr />
             <input type="submit" value="Registrarse" />
         </form> 

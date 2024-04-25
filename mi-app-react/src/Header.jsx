@@ -91,7 +91,6 @@ export default function Header() {
                                         <hr />
                                         <p onClick={handleLogout}><a>Logout</a></p>
                                             
-
                                     </div>
                                     </div>
                                 ) : null

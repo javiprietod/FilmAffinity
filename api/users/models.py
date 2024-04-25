@@ -27,14 +27,15 @@ class Usuario(AbstractUser):
 
 class Movie(models.Model):
     # TODO 3
-    title = models.CharField(max_length=100, primary_key=True)
+    id = models.AutoField(primary_key=True)
+    title = models.CharField(max_length=100)
     year = models.IntegerField()
     duration = models.IntegerField()
     rating = models.FloatField(default=0.0, null=True, blank=True)
     genre = models.CharField(max_length=256)
     summary = models.TextField()
     director = models.CharField(max_length=256)
-    thumbnail = models.ImageField(upload_to='thumbnails/', null=True, blank=True)
+    thumbnail = models.URLField(null=True, blank=True)
 
     def __str__(self):
         return f"""
@@ -46,7 +47,7 @@ class Movie(models.Model):
         summary: {self.summary}
         director: {self.director}
         """
-    
+
 
 class Review(models.Model):
     id = models.AutoField(primary_key=True)

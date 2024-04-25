@@ -19,8 +19,7 @@
             "rating": 7.9,
             "genre": "Romance, Drama",
             "summary": "A seventeen-year-old aristocrat falls in love with a kind but poor artist aboard the luxurious, ill-fated R.M.S. Titanic.",
-            "director": "James Cameron",
-            "actors": [1, 2]
+            "director": "James Cameron"
         },
         {
             "title": "Pulp Fiction",
@@ -30,7 +29,7 @@
             "genre": "Crime, Drama",
             "summary": "The lives of two mob hitmen, a boxer, a gangster's wife, and a pair of diner bandits intertwine in four tales of violence and redemption.",
             "director": "Quentin Tarantino",
-            "actors": [3, 4, 5]
+            "thumbnail":"https://m.media-amazon.com/images/M/MV5BNGNhMDIzZTUtNTBlZi00MTRlLWFjM2ItYzViMjE3YzI5MjljXkEyXkFqcGdeQXVyNzkwMjQ5NzM@._V1_.jpg"
         },
         {
             "title": "The Shawshank Redemption",
@@ -39,8 +38,7 @@
             "rating": 9.3,
             "genre": "Drama",
             "summary": "Two imprisoned men bond over a number of years, finding solace and eventual redemption through acts of common decency.",
-            "director": "Frank Darabont",
-            "actors": [6]
+            "director": "Frank Darabont"
         },
         {
             "title": "Fight Club",
@@ -49,8 +47,7 @@
             "rating": 8.8,
             "genre": "Drama, Action",
             "summary": "An insomniac office worker and a devil-may-care soapmaker form an underground fight club that evolves into something much, much more.",
-            "director": "David Fincher",
-            "actors": [7]
+            "director": "David Fincher"
         },
         {
             "title": "Ocean's Eleven",
@@ -59,8 +56,7 @@
             "rating": 7.7,
             "genre": "Thriller, Crime",
             "summary": "Danny Ocean and his ten accomplices plan to rob three Las Vegas casinos simultaneously.",
-            "director": "Steven Soderbergh",
-            "actors": [7, 8, 9]
+            "director": "Steven Soderbergh"
         }
     ]
 }
