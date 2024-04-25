@@ -5,7 +5,6 @@ from django.contrib.auth.models import AbstractUser
 
 
 class Usuario(AbstractUser):
-    # TODO 2
     nombre = models.CharField(max_length=256)
     tel = models.CharField(max_length=32)
     email = models.EmailField(max_length=128, primary_key=True)
@@ -26,7 +25,6 @@ class Usuario(AbstractUser):
 
 
 class Movie(models.Model):
-    # TODO 3
     id = models.AutoField(primary_key=True)
     title = models.CharField(max_length=100)
     year = models.IntegerField()

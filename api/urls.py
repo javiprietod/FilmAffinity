@@ -3,11 +3,9 @@ from django.urls import path
 from api.users import views
 from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView
 from django.conf import settings
-from django.conf.urls.static import static
 
 
 urlpatterns = [
-
     path('admin/', admin.site.urls),
     path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
     path('api/schema/redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
@@ -17,6 +15,7 @@ urlpatterns = [
     path('api/users/logout/', views.LogoutView.as_view(), name='logout'),
     path('api/movies/', views.MovieList.as_view(), name='movies'),
     path('api/movies/<int:id>/', views.MovieDetail.as_view(), name='movie_detail'),
+    path('api/movies/bulk/', views.movie_bulk_create, name='movies_bulk'),
     path('api/reviews/', views.ReviewList.as_view(), name='reviews'),
     path('api/reviews/<int:id>/', views.ReviewDetail.as_view(), name='review_detail'),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+]

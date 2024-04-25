@@ -5,10 +5,9 @@ from django.db.utils import IntegrityError
 from django.core.exceptions import ObjectDoesNotExist
 from api.users import serializers
 from api.users import models
-from drf_spectacular.utils import extend_schema, OpenApiResponse
-from django.urls import path
-from . import views
 from django.http import Http404
+from django.core.paginator import Paginator
+from rest_framework.decorators import api_view
 
 def calculate_rating(movie_id):
     reviews = models.Review.objects.filter(movie__id=movie_id)
@@ -100,6 +99,23 @@ class MovieList(generics.ListCreateAPIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
+    def list(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        limit = request.query_params.get('limit', 9)  # Default limit to 10 if not specified
+        skip = request.query_params.get('skip', 0)    # Default skip to 0 if not specified
+        # Ensure limit and skip are integers
+        try:
+            limit = int(limit)
+            skip = int(skip)
+        except ValueError:
+            return Response({"error": "Limit and skip parameters must be integers."},
+                            status=status.HTTP_400_BAD_REQUEST)
+
+        paginator = Paginator(queryset, limit)
+        page = paginator.get_page(skip // limit + 1)
+        serializer = self.get_serializer(page, many=True)
+        return Response(serializer.data)
+
 
 class MovieDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = serializers.MovieSerializer
@@ -128,6 +144,20 @@ class MovieDetail(generics.RetrieveUpdateDestroyAPIView):
         if isinstance(exc, Http404):
             return Response(status=status.HTTP_404_NOT_FOUND, data={"error": str(exc)})
         return super().handle_exception(exc)
+
+
+@api_view(['POST'])
+def movie_bulk_create(request):
+    if request.method == "POST":
+        data = request.data
+        if not isinstance(data, list):
+            return Response({"error": "Request body must be a list"}, status=status.HTTP_400_BAD_REQUEST)
+        serializer = serializers.MovieSerializer(data=data, many=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
 
 class ReviewList(generics.ListCreateAPIView):

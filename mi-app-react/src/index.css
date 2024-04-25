@@ -1,6 +1,6 @@
 
 header {
-  background-color: #447CAD;
+  background-color: #349a65;
   color: #fff;
   padding: 10px 20px;
   text-align: left; 
@@ -44,7 +44,7 @@ header, footer {
 
 header nav, footer {
   align-items: center;
-  background-color: #447CAD;
+  background-color: #349a65;
   color: white;
   height: 100%;
   width: 100%;
@@ -131,39 +131,52 @@ header nav div {
   background-color: #fff;
   border-radius: 5px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  
 }
 
 h1 {
   text-align: center;
 }
 
+.container-movies {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
 .movie-list {
+  align-items: flex-start; 
   text-decoration: none;
   color: "black";
-  display: "inline-block";
   text-align: center;
+  flex: 0 1 calc(5px - 33.333% - 5px); 
+  margin: 5px; 
 }
 
 .thumbnail {
   height: 300px;
-  width: 200px;
+  width: 210px;
   border-radius: 5px;
 }
 
 .movie-details {
-  display: inline-block;
   margin-top: 20px;
-  width: 33%;
+  width: 90%;
+  color:#333;
 }
 
 .voting-control {
   padding: 70px;
-  /* padding-right: 100px; */
 }
 
 
-.info {
-  flex: 1;
+.full-info {
+  display: flex;
+  justify-content: space-between;
+}
+
+h2 {
+  margin-top: 0px;
 }
 
 p {
