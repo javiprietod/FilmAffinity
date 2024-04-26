@@ -1,12 +1,10 @@
 import { useState } from 'react';
-import { useNavigate } from "react-router-dom";
 
 
 export default function Login() {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const navigate = useNavigate();
 
     const handleSubmit = (event) => {
         event.preventDefault(); // Prevent the default form submission behavior
@@ -25,8 +23,8 @@ export default function Login() {
             })
             .then((res) => {
                 if (res.ok) {
-                    navigate("/profile")
-                } else if (res.status === 403) {
+                    location.href = '/';
+                } else if (res.status === 401) {
                     document.getElementById('aviso').innerHTML = '✖︎ Email or password incorrect';
                     document.getElementById('aviso').className = 'error';
                 }

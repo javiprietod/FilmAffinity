@@ -10,6 +10,7 @@ function ListPage({ movieList, currentPage, setCurrentPage }) {
     <h2>Nuestros productos</h2>
     <PageFilter currentPage={currentPage} setCurrentPage={setCurrentPage} />
     <MovieList movieList={movieList} />
+    <PageFilter currentPage={currentPage} setCurrentPage={setCurrentPage} />
   </div>
 }
 
@@ -30,7 +31,7 @@ function PageFilter({ currentPage, setCurrentPage }) {
 }
 
 function MovieList({ movieList }) {
-  return (<div>
+  return (<div className='container-movies'>
     {movieList.map(movie =>
       <Navlink to={`/movie/${movie.id}`} key={movie.id} className="movie-list">
         <Movie movie={movie} />
@@ -57,14 +58,16 @@ function App() {
     let skip = (currentPage - INITIAL_PAGE) * MOVIES_PER_PAGE;
     const fetchMovies = async () => {
       try {
-        const response = await fetch(`https://dummyjson.com/products?limit=${MOVIES_PER_PAGE}&skip=${skip}`);
+        const response = await fetch(`http://localhost:8000/api/movies?limit=${MOVIES_PER_PAGE}&skip=${skip}`); // 
+
         if (!response.ok) {
-          throw new Error('No se pudo obtener la lista de productos');
+          throw new Error('No se pudo obtener la lista de peliculas');
         }
         const data = await response.json();
-        setMovieList(data.products);
+        // console.log(data);
+        setMovieList(data);
       } catch (error) {
-        console.error('Error al obtener los productos:', error);
+        console.error('Error al obtener los peliculas:', error);
       }
     };
 

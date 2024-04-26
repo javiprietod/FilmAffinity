@@ -22,7 +22,7 @@ const router = createBrowserRouter([{
         element: <MovieDescription />,
         errorElement: <ComponenteError />,
         loader: async ({ params }) => {
-          return await fetch('https://dummyjson.com/products/' + params.id)
+          return await fetch('http://localhost:8000/api/movies/' + params.id)
         }
     }, {
         path: "login",
