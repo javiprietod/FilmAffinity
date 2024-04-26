@@ -43,4 +43,4 @@ jobs:
         npx eslint .
     - name: Lint Django code
       run: |
-        flake8
+        flake8 --max-line-length 80 --exclude='mi-app-react/node_modules','.venv',api/users/migrations
