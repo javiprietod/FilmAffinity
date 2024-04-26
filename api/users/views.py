@@ -30,7 +30,8 @@ class RegistroView(generics.ListCreateAPIView):
     def handle_exception(self, exc):
         if isinstance(exc, IntegrityError):
             return Response(
-                status=status.HTTP_409_CONFLICT, data={"error": "Email already exists"}
+                status=status.HTTP_409_CONFLICT,
+                data={"error": "Email already exists"},
             )
         else:
             return super().handle_exception(exc)
@@ -92,7 +93,8 @@ class LogoutView(generics.DestroyAPIView):
                 return response
         except ObjectDoesNotExist:
             return Response(
-                status=status.HTTP_401_UNAUTHORIZED, data={"error": "No session found"}
+                status=status.HTTP_401_UNAUTHORIZED,
+                data={"error": "No session found"},
             )
 
 
@@ -118,7 +120,9 @@ class MovieList(generics.ListCreateAPIView):
         limit = request.query_params.get(
             "limit", 9
         )  # Default limit to 10 if not specified
-        skip = request.query_params.get("skip", 0)  # Default skip to 0 if not specified
+        skip = request.query_params.get(
+            "skip", 0
+        )  # Default skip to 0 if not specified
         # Ensure limit and skip are integers
         try:
             limit = int(limit)
@@ -161,7 +165,9 @@ class MovieDetail(generics.RetrieveUpdateDestroyAPIView):
 
     def handle_exception(self, exc):
         if isinstance(exc, Http404):
-            return Response(status=status.HTTP_404_NOT_FOUND, data={"error": str(exc)})
+            return Response(
+                status=status.HTTP_404_NOT_FOUND, data={"error": str(exc)}
+            )
         return super().handle_exception(exc)
 
 
@@ -237,5 +243,7 @@ class ReviewDetail(generics.RetrieveUpdateDestroyAPIView):
 
     def handle_exception(self, exc):
         if isinstance(exc, Http404):
-            return Response(status=status.HTTP_404_NOT_FOUND, data={"error": str(exc)})
+            return Response(
+                status=status.HTTP_404_NOT_FOUND, data={"error": str(exc)}
+            )
         return super().handle_exception(exc)

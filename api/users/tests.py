@@ -1,5 +1,4 @@
 from rest_framework.exceptions import ValidationError
-from rest_framework.authtoken.models import Token
 from django.test import SimpleTestCase, TestCase
 from api.users import serializers
 from api.users import models
@@ -78,7 +77,9 @@ class TestLoginView(TestCase):
         response = self.client.post("/api/users/login/", data)
         self.assertEqual(response.status_code, 401)
         self.assertNotIn(
-            "session", response.cookies, "Session cookie should not be in response"
+            "session",
+            response.cookies,
+            "Session cookie should not be in response",
         )
 
     def test_funcionalidad_login_password_incorrecto(self):
@@ -89,7 +90,9 @@ class TestLoginView(TestCase):
         response = self.client.post("/api/users/login/", data)
         self.assertEqual(response.status_code, 401)
         self.assertNotIn(
-            "session", response.cookies, "Session cookie should not be in response"
+            "session",
+            response.cookies,
+            "Session cookie should not be in response",
         )
 
 

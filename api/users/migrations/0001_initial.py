@@ -23,7 +23,10 @@ class Migration(migrations.Migration):
                 ("title", models.CharField(max_length=100)),
                 ("year", models.IntegerField()),
                 ("duration", models.IntegerField()),
-                ("rating", models.FloatField(blank=True, default=0.0, null=True)),
+                (
+                    "rating",
+                    models.FloatField(blank=True, default=0.0, null=True),
+                ),
                 ("genre", models.CharField(max_length=256)),
                 ("summary", models.TextField()),
                 ("director", models.CharField(max_length=256)),
@@ -93,7 +96,8 @@ class Migration(migrations.Migration):
                 (
                     "date_joined",
                     models.DateTimeField(
-                        default=django.utils.timezone.now, verbose_name="date joined"
+                        default=django.utils.timezone.now,
+                        verbose_name="date joined",
                     ),
                 ),
                 ("nombre", models.CharField(max_length=256)),
@@ -146,7 +150,8 @@ class Migration(migrations.Migration):
                 (
                     "movie",
                     models.ForeignKey(
-                        on_delete=django.db.models.deletion.CASCADE, to="users.movie"
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="users.movie",
                     ),
                 ),
                 (

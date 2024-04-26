@@ -2,7 +2,6 @@ from django.contrib import admin
 from django.urls import path
 from api.users import views
 from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView
-from django.conf import settings
 
 
 urlpatterns = [
@@ -18,8 +17,14 @@ urlpatterns = [
     path("api/users/me/", views.UsuarioView.as_view(), name="usuario"),
     path("api/users/logout/", views.LogoutView.as_view(), name="logout"),
     path("api/movies/", views.MovieList.as_view(), name="movies"),
-    path("api/movies/<int:id>/", views.MovieDetail.as_view(), name="movie_detail"),
+    path(
+        "api/movies/<int:id>/", views.MovieDetail.as_view(), name="movie_detail"
+    ),
     path("api/movies/bulk/", views.movie_bulk_create, name="movies_bulk"),
     path("api/reviews/", views.ReviewList.as_view(), name="reviews"),
-    path("api/reviews/<int:id>/", views.ReviewDetail.as_view(), name="review_detail"),
+    path(
+        "api/reviews/<int:id>/",
+        views.ReviewDetail.as_view(),
+        name="review_detail",
+    ),
 ]

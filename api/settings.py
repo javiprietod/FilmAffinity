@@ -23,7 +23,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get(
     "SECRET_KEY",
-    default="""django-insecure-)_sw1(=+h9(j%h-_ebvbk&%^4ga!uj_qm%3*8ur7$--(($mv7*""",
+    default="""
+        django-insecure-)_sw1(=+h9(j%h-_ebvbk&%^4ga!uj_qm%3*8ur7$--(($mv7*
+    """,
 )
 
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -102,16 +104,20 @@ DATABASES = {
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
+        "NAME":
+    "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
     },
     {
-        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
+        "NAME":
+    "django.contrib.auth.password_validation.MinimumLengthValidator",
     },
     {
-        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
+        "NAME":
+    "django.contrib.auth.password_validation.CommonPasswordValidator",
     },
     {
-        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
+        "NAME":
+    "django.contrib.auth.password_validation.NumericPasswordValidator",
     },
 ]
 
