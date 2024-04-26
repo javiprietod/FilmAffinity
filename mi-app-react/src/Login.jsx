@@ -24,7 +24,7 @@ export default function Login() {
             .then((res) => {
                 if (res.ok) {
                     location.href = '/';
-                } else if (res.status === 403) {
+                } else if (res.status === 401) {
                     document.getElementById('aviso').innerHTML = '✖︎ Email or password incorrect';
                     document.getElementById('aviso').className = 'error';
                 }
