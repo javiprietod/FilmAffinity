@@ -6,7 +6,8 @@ export default function Register() {
     const [nombre, setNombre] = useState('');
     const [tel, setTel] = useState('');
     const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    const [pass, setPass] = useState('');
+    const [passRep, setPassRep] = useState('');
     const val = useRef('');
     const navigate = useNavigate();
 
@@ -16,7 +17,7 @@ export default function Register() {
             nombre: nombre,
             tel: tel,
             email: email,
-            password: password
+            password: pass
         };
         const fetchData = async () => {
             fetch('http://localhost:8000/api/users/', {
@@ -67,12 +68,12 @@ export default function Register() {
             <label for="email">Email:</label>
             <input type="email" id="email" name="email" size="30" value={email} onChange={e => setEmail(e.target.value)} required />  
             <label for="pass">Password:</label>
-            <input type="password" id="pass" name="password" pattern="^(?=.*[0-9])(?=.*[A-Z])(?=.*[a-z]).*$" minLength="8" value={password} onChange={e => setPassword(e.target.value)} required/>
+            <input type="password" id="pass" name="password" pattern="^(?=.*[0-9])(?=.*[A-Z])(?=.*[a-z]).*$" minLength="8" value={pass} onChange={e => setPass(e.target.value)} required/>
             <label for="pass">Repeat Password:</label>
             <input type="password" id="passRep" onKeyUp={compruebaPass()}
-                    name="password" pattern="^(?=.*[0-9])(?=.*[A-Z])(?=.*[a-z]).*$" minLength="8" required/>
+                    name="password" pattern="^(?=.*[0-9])(?=.*[A-Z])(?=.*[a-z]).*$" minLength="8" value={passRep} onChange={e => setPassRep(e.target.value)} required/>
 
-            {val.current ? <p id="aviso" >{val.current}</p> : <p id="aviso"></p>}
+            {val.current ? <p id="aviso" className='error'>{val.current}</p> : <p id="aviso"></p>}
             <hr />
             <input type="submit" value="Registrarse" />
         </form> 
