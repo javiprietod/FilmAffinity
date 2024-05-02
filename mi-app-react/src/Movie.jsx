@@ -31,7 +31,9 @@ export default function MovieDescription() {
                     </p>
                     <br />
                 </div>
-                <RatingControlDiv /> {/* Add the VotingControl component here */}
+            </div>
+            <div className="movie-rating" id="movieRating">
+                <RatingControlDiv />
             </div>
         </div>
 

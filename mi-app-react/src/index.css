@@ -291,6 +291,7 @@ button[type="submit"]:hover {
 /* Star rating styles */
 .star-rating {
   font-size: 30px;
+  position: fixed;
 }
 
 .star {
@@ -300,4 +301,12 @@ button[type="submit"]:hover {
 
 .star.yellow {
   color: green;
+}
+
+.movie-rating{
+  margin-top: 20px;
+  width: 90%;
+  height: auto;
+  color:#333;
+  margin-bottom: 20px;
 }
