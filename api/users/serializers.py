@@ -6,13 +6,11 @@ from api.users import models
 
 class UsuarioSerializer(serializers.ModelSerializer):
     class Meta:
-        # TODO 5 y 22
         model = models.Usuario
-        fields = ["nombre", "tel", "email", "password"]
+        fields = "__all__"
         extra_kwargs = {"password": {"write_only": True}}
 
     def validate_password(self, value):
-        # TODO 7: completar
         if len(value) >= 8:
             if re.search("[a-z]", value):
                 if re.search("[A-Z]", value):

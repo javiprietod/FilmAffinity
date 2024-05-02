@@ -1,5 +1,6 @@
 import React from 'react';
 import { useLoaderData } from 'react-router-dom';
+import RatingControlDiv from './RatingControlDiv';
 
 export default function MovieDescription() {
     let movie = useLoaderData();
@@ -30,10 +31,7 @@ export default function MovieDescription() {
                     </p>
                     <br />
                 </div>
-                {/* <div className='voting-control'>
-
-
-                </div> */}
+                <RatingControlDiv /> {/* Add the VotingControl component here */}
             </div>
         </div>
 

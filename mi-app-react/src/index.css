@@ -287,3 +287,17 @@ button[type="submit"]:hover {
   color : #447CAD;
   text-decoration: none;
 }
+
+/* Star rating styles */
+.star-rating {
+  font-size: 30px;
+}
+
+.star {
+  color: gray;
+  cursor: pointer;
+}
+
+.star.yellow {
+  color: green;
+}
