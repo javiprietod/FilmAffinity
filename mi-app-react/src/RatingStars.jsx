@@ -3,19 +3,20 @@ import './index.css';
 
 const RatingStars = () => {
   const [rating, setRating] = useState(0);
+  const [confirmedRating, setConfirmedRating] = useState(0);
 
   const handleMouseOver = (index) => {
     setRating(index + 1);
   };
 
   const handleMouseLeave = () => {
-    setRating(0);
-    /* Si quita el ratón queremos el valor que tenga ya asignado si ya tenía review*/
+    setRating(confirmedRating);
   };
 
   const handleClick = (index) => {
     alert(`You selected star number ${index + 1}`);
     setRating(index + 1);
+    setConfirmedRating(index+1);
     /* Añadir la llamada a la eliminacion de posible review anterior y llamada a la creación de una nueva (solo si es desigual?) */
   };
 
