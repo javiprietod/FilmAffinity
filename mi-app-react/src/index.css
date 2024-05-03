@@ -154,8 +154,8 @@ h1 {
 }
 
 .thumbnail {
-  height: 330px;
-  width: 240px;
+  height: 300px;
+  width: 210px;
   border-radius: 5px;
 }
 
@@ -298,8 +298,11 @@ button[type="submit"]:hover {
   cursor: pointer;
 }
 
-.star.yellow {
+.star.green {
   color: green;
+}
+.star.yellow {
+  color: yellow;
 }
 
 .movie-rating-container{
@@ -313,3 +316,24 @@ button[type="submit"]:hover {
 .movie-rating-stars{
   margin-left:45px;
 }
+
+.movie-rating-loginlink{
+  color: blue;
+}
+
+.rating-container {
+  display: flex;
+}
+.global-rating, .personal-rating {  
+  display: flex;
+  align-items: center; /* Align content vertically */
+}
+.global-rating {
+  flex: 1;
+  margin-left: 60px;
+}
+.personal-rating {
+  flex: 1;
+  margin-left: 70px;
+}
+

@@ -30,10 +30,6 @@ export default function MovieDescription() {
                         <strong>Genre:</strong> <span>{movie.genre}</span>
                     </p>
                     <br />
-                    <p>
-                        <strong>Rating: </strong> <span>{movie.rating} / 5 on X reviews</span>
-                    </p>
-                    <br />
                 </div>
             </div>
             <div>
