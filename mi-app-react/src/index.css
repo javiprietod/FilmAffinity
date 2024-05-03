@@ -154,8 +154,8 @@ h1 {
 }
 
 .thumbnail {
-  height: 300px;
-  width: 210px;
+  height: 320px;
+  width: 240px;
   border-radius: 5px;
 }
 
@@ -303,10 +303,8 @@ button[type="submit"]:hover {
   color: green;
 }
 
-.movie-rating{
-  margin-top: 20px;
-  width: 90%;
-  height: auto;
-  color:#333;
-  margin-bottom: 20px;
+.movie-rating-container{
+  padding:1px;
 }
+.movie-rating-stars{
+  padding:1px;}
