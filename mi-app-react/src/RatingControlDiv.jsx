@@ -2,8 +2,8 @@ import React from 'react';
 import RatingStars from './RatingStars';
 import { useState, useEffect } from 'react';
 
-function RatingControlDiv() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+function RatingControlDiv({movie}) {
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
 
   return (
     <div id="rating-register">
@@ -14,7 +14,7 @@ function RatingControlDiv() {
           {/* Otra opción es que si que permita verlo pero dentro del HandleClick le mande un pop up de "Log in to set rating" */}
           
           <div className='movie-rating-stars'>
-            <RatingStars /> 
+            <RatingStars movie={movie}/> 
           </div>
         </div>
       ) : (

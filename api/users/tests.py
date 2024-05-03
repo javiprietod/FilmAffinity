@@ -311,3 +311,10 @@ class TestMovieDetail(TestCase):
         self.assertEqual(movie.title, data["title"])
         self.assertEqual(movie.summary, data["summary"])
         self.assertEqual(movie.year, data["year"])
+
+# class TestReview(TestCase):
+#     def setUp(self):
+#         data = {
+#             "nombre": "Juan",
+#             "tel": "1234567890",
+#             "email": "

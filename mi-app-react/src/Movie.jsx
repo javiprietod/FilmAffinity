@@ -37,7 +37,7 @@ export default function MovieDescription() {
                 </div>
             </div>
             <div>
-                <RatingControlDiv></RatingControlDiv>
+                <RatingControlDiv movie={movie}></RatingControlDiv>
             </div>
         </div>
     )
