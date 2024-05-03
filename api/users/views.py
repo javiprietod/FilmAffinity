@@ -45,12 +45,11 @@ class LoginView(generics.CreateAPIView):
         if serializer.is_valid():
             user = serializer.validated_data
             token, created = Token.objects.get_or_create(user=user)
-            response = Response({"status": "success"})
+            response = Response(status=status.HTTP_201_CREATED)
             response.set_cookie(key="session", value=token.key, samesite="lax")
             return response
         else:
-            print("Serializer errors: %s", serializer.errors)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return Response(serializer.errors, status=status.HTTP_401_UNAUTHORIZED)
 
 
 class UsuarioView(generics.RetrieveUpdateDestroyAPIView):
@@ -87,15 +86,17 @@ class LogoutView(generics.DestroyAPIView):
         response = Response(
             status=status.HTTP_204_NO_CONTENT, data={"status": "success"}
         )
-        try:
-            if Token.objects.get(key=request.COOKIES.get("session")):
-                response.delete_cookie("session")
-                return response
-        except ObjectDoesNotExist:
+        Token.objects.filter(key=request.COOKIES.get('session')).delete()
+        response.delete_cookie("session")
+        return response
+    
+    def handle_exception(self, exc):
+        if isinstance(exc, ObjectDoesNotExist):
             return Response(
                 status=status.HTTP_401_UNAUTHORIZED,
                 data={"error": "No session found"},
             )
+        return super().handle_exception(exc)
 
 
 class MovieList(generics.ListCreateAPIView):
@@ -227,6 +228,17 @@ class ReviewDetail(generics.RetrieveUpdateDestroyAPIView):
 
     def put(self, request, id):
         serializer = self.get_serializer(self.get_object(), data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            movie_id = request.data.get("movie")
+            calculate_rating(movie_id)
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    def patch(self, request, id):
+        serializer = self.get_serializer(
+            self.get_object(), data=request.data, partial=True
+        )
         if serializer.is_valid():
             serializer.save()
             movie_id = request.data.get("movie")

@@ -64,7 +64,7 @@ class TestLoginView(TestCase):
             "password": "Aa123456",
         }
         response = self.client.post("/api/users/login/", data)
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 201)
         self.assertIn(
             "session", response.cookies, "Session cookie not found in response"
         )
@@ -118,7 +118,7 @@ class TestUsuarioView(TestCase):
             "password": "Aa123456",
         }
         response = self.client.post("/api/users/login/", data)
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 201)
 
         response = self.client.get("/api/users/me/")
         self.assertEqual(response.status_code, 200)
@@ -137,7 +137,7 @@ class TestUsuarioView(TestCase):
             "password": "Aa123456",
         }
         response = self.client.post("/api/users/login/", data)
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 201)
 
         data = {
             "nombre": "Juanito",
@@ -170,7 +170,7 @@ class TestUsuarioView(TestCase):
             "password": "Aa123456",
         }
         response = self.client.post("/api/users/login/", data)
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 201)
 
         data = {
             "nombre": "Juanito",
@@ -188,7 +188,7 @@ class TestUsuarioView(TestCase):
             "password": "Aa1234567",
         }
         response = self.client.post("/api/users/login/", data)
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 201)
 
 
 class TestLogoutView(TestCase):
@@ -213,7 +213,7 @@ class TestLogoutView(TestCase):
             "password": "Aa123456",
         }
         response = self.client.post("/api/users/login/", data)
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 201)
 
         response = self.client.delete("/api/users/logout/")
         self.assertEqual(response.status_code, 204)
