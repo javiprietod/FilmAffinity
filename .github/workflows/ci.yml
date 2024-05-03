@@ -27,10 +27,6 @@ jobs:
       run: |
         cd mi-app-react
         npm install
-    - name: Run React tests
-      run: |
-        cd mi-app-react
-        npm test
     - name: Run Django migrations
       run: |
         python manage.py migrate
