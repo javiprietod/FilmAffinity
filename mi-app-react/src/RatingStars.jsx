@@ -25,10 +25,14 @@ const RatingStars = ({movie,user,reviewScore,reviewId}) => {
   };
 
   const handleClick = (index) => {
-    alert(movie.id + " has been rated with " + (index+1) + " stars by " + user);
     setRating(index + 1);
-    setConfirmedRating(index+1);
-    postReview(movie, user, rating);
+    setConfirmedRating(rating);
+    if (hasReviewed) {
+      patchReview(reviewId, rating, movie);
+    }
+    else{
+      postReview(movie, user, rating);
+    }
     /* Añadir la llamada a la patch de posible review anterior y llamada a la creación de una nueva (solo si es desigual?) */
   };
 
@@ -51,17 +55,17 @@ const RatingStars = ({movie,user,reviewScore,reviewId}) => {
 
 export default RatingStars;
 
-function postReview(movieId, userId, rating) {
-  fetch('http://localhost:8000/api/reviews', {
+function postReview(movieId, userId, ratingScore) {
+  fetch('http://localhost:8000/api/reviews/', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      Rating: rating,
-      Body: 'Review body',
-      Movie: movieId,
-      User: userId,
+      rating: ratingScore,
+      body: "",
+      movie: movieId,
+      user: userId,
     }),
     credentials: 'include',
   })
@@ -80,3 +84,26 @@ function postReview(movieId, userId, rating) {
   });
 }
 
+function patchReview(reviewId, ratingScore, movieId) {
+  fetch(`http://localhost:8000/api/reviews/${reviewId}/`, {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      movie: movieId,
+      rating: ratingScore
+    }),
+    credentials: 'include',
+  })
+    .then((res) => {
+      if (res.ok) {
+        console.log('Review updated successfully');
+      } else {
+        throw new Error('Failed to update review');
+      }
+    })
+    .catch((error) => {
+      console.error('Error updating review:', error);
+    });
+}

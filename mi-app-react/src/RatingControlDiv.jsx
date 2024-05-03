@@ -31,7 +31,7 @@ function RatingControlDiv({movie}) {
           setIsLoggedIn(true);
 
           // Fetch review for the movie and user if it exists
-          fetch(`http://localhost:8000/api/reviews?movieId=${movie.id}&userId=${data.email}`, {
+          fetch(`http://localhost:8000/api/reviews/`, {
             method: 'GET',
             headers: {
               'Accept': 'application/json',
@@ -63,7 +63,7 @@ function RatingControlDiv({movie}) {
         });
     };
     fetchData();
-  }, [movie]);
+  }, []);
 
   return (
     <div className="rating-container" id="rating-register">
@@ -78,7 +78,7 @@ function RatingControlDiv({movie}) {
             {/* Otra opción es que si que permita verlo pero dentro del HandleClick le mande un pop up de "Log in to set rating" */}
             
             <div className='movie-rating-stars'>
-              <RatingStars movie={movie.id} user={email} reviewScore={reviewScore}> reviewId = {reviewId} </RatingStars>
+              <RatingStars movie={movie.id} user={email} reviewScore={reviewScore} reviewId = {reviewId}>  </RatingStars>
             </div>
           </div>
         ) : (
