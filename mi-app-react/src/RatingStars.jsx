@@ -4,6 +4,8 @@ import './index.css';
 const RatingStars = () => {
   const [rating, setRating] = useState(0);
   const [confirmedRating, setConfirmedRating] = useState(0);
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  {/* setConfirmedRating(llamada_para_ver_si_este_usuario_ha_votado_esta_peli) */}
 
   const handleMouseOver = (index) => {
     setRating(index + 1);
@@ -14,7 +16,7 @@ const RatingStars = () => {
   };
 
   const handleClick = (index) => {
-    alert(`You selected star number ${index + 1}`);
+    
     setRating(index + 1);
     setConfirmedRating(index+1);
     /* Añadir la llamada a la eliminacion de posible review anterior y llamada a la creación de una nueva (solo si es desigual?) */

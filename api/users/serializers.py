@@ -7,7 +7,7 @@ from api.users import models
 class UsuarioSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Usuario
-        fields = "__all__"
+        fields = ["nombre", "tel", "email", "password"]
         extra_kwargs = {"password": {"write_only": True}}
 
     def validate_password(self, value):
