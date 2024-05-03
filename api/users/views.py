@@ -49,7 +49,9 @@ class LoginView(generics.CreateAPIView):
             response.set_cookie(key="session", value=token.key, samesite="lax")
             return response
         else:
-            return Response(serializer.errors, status=status.HTTP_401_UNAUTHORIZED)
+            return Response(
+                serializer.errors, status=status.HTTP_401_UNAUTHORIZED
+            )
 
 
 class UsuarioView(generics.RetrieveUpdateDestroyAPIView):
@@ -86,10 +88,10 @@ class LogoutView(generics.DestroyAPIView):
         response = Response(
             status=status.HTTP_204_NO_CONTENT, data={"status": "success"}
         )
-        Token.objects.filter(key=request.COOKIES.get('session')).delete()
+        Token.objects.filter(key=request.COOKIES.get("session")).delete()
         response.delete_cookie("session")
         return response
-    
+
     def handle_exception(self, exc):
         if isinstance(exc, ObjectDoesNotExist):
             return Response(
@@ -234,7 +236,7 @@ class ReviewDetail(generics.RetrieveUpdateDestroyAPIView):
             calculate_rating(movie_id)
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
+
     def patch(self, request, id):
         serializer = self.get_serializer(
             self.get_object(), data=request.data, partial=True
