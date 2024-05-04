@@ -18,7 +18,7 @@ export function login (formData) {
     .catch((error) => {
         console.log(error.message, 'error');
     });
-};
+}
 
 export function checkLoggedIn () {
     return fetch('http://localhost:8000/api/users/me/', {
@@ -36,7 +36,7 @@ export function checkLoggedIn () {
     .catch((error) => {
         console.log(error.message, 'error');
     });
-};
+}
 
 export function changeProfileInformation (formData) {
     fetch('http://localhost:8000/api/users/me/', {
@@ -57,7 +57,7 @@ export function changeProfileInformation (formData) {
         }).catch((error) => {
         console.log(error.message, 'error');
     });
-};
+}
 
 export function deleteAccount () {
     fetch('http://localhost:8000/api/users/me/', {
@@ -76,7 +76,7 @@ export function deleteAccount () {
         }).catch((error) => {
         console.log(error.message, 'error');
     });
-};
+}
 
 export function logout (setIsLoggedIn, setUserName, navigate) {
     fetch('http://localhost:8000/api/users/logout', {
@@ -96,7 +96,7 @@ export function logout (setIsLoggedIn, setUserName, navigate) {
     .catch((error) => {
             console.log(error.message, 'error');
     });
-};
+}
 
 export function register (formData) {
     fetch('http://localhost:8000/api/users/', {
@@ -116,4 +116,4 @@ export function register (formData) {
     }).catch((error) => {
     console.log(error.message, 'error');
     });
-};
+}
