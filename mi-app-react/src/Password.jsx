@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react';
-import { useNavigate } from "react-router-dom";
+import { changeProfileInformation } from './api.js';
 
 
 export default function Register() {
@@ -7,7 +7,6 @@ export default function Register() {
     const [pass, setPass] = useState('');
     const [passRep, setPassRep] = useState('');
     const val = useRef('');
-    const navigate = useNavigate();
 
     const handleSubmit = (event) => {
         event.preventDefault(); // Prevent the default form submission behavior
@@ -15,27 +14,7 @@ export default function Register() {
         const formData = {
             password: pass,
         };
-        const fetchData = async () => {
-            fetch('http://localhost:8000/api/users/me/', {
-                    method: 'PATCH',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(formData),
-                    credentials: 'include',
-                }).then((res) => {
-                    if (res.ok) {
-                        navigate("/profile")
-                    }
-                    else if (res.status === 409) {
-                        document.getElementById('aviso').className = 'error';
-                    }
-                }).catch((error) => {
-                console.log(error.message, 'error');
-            });
-        };
-        fetchData();
-
+        changeProfileInformation(formData);
     };
 
     const compruebaPass = () => {

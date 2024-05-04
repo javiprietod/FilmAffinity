@@ -196,8 +196,8 @@ class ReviewList(generics.ListCreateAPIView):
 
     def get_queryset(self):
         queryset = models.Review.objects.all()
-        id = self.request.query_params.get("id", None)
-        username = self.request.query_params.get("username", None)
+        id = self.request.GET.get("movieid", None)
+        username = self.request.GET.get("username", None)
         if id is not None:
             queryset = queryset.filter(movie__id=id)
         if username is not None:
