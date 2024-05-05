@@ -37,47 +37,44 @@ export async function checkLoggedIn() {
             return { isLoggedIn: false, user: null };
         }
     } catch (error) {
-        console.log(error.message, 'error');
         return { isLoggedIn: false, user: null };
     }
 }
 
 export function changeProfileInformation (formData) {
     fetch('http://localhost:8000/api/users/me/', {
-            method: 'PATCH',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(formData),
-            credentials: 'include',
-        }).then((res) => {
-            console.log(res.status);
-            if (res.ok) {
-                location.href = '/profile';
-            }
-            else if (res.status === 409) {
-                document.getElementById('aviso').className = 'error';
-            }
-        }).catch((error) => {
+        method: 'PATCH',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+        credentials: 'include',
+    }).then((res) => {
+        if (res.ok) {
+            location.href = '/profile';
+        }
+        else if (res.status === 409) {
+            document.getElementById('aviso').className = 'error';
+        }
+    }).catch((error) => {
         console.log(error.message, 'error');
     });
 }
 
 export function deleteAccount () {
     fetch('http://localhost:8000/api/users/me/', {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            credentials: 'include',
-        }).then((res) => {
-            if (confirm('Are you sure you want to delete your account?')) {
-                console.log(res.status);
-                if (res.ok) {
-                    location.href = '/';
-                }
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+    }).then((res) => {
+        if (confirm('Are you sure you want to delete your account?')) {
+            if (res.ok) {
+                location.href = '/';
             }
-        }).catch((error) => {
+        }
+    }).catch((error) => {
         console.log(error.message, 'error');
     });
 }
@@ -98,7 +95,7 @@ export function logout (setIsLoggedIn, setUserName) {
         }
     })
     .catch((error) => {
-            console.log(error.message, 'error');
+        console.log(error.message, 'error');
     });
 }
 
@@ -118,6 +115,6 @@ export function register (formData) {
             document.getElementById('aviso').className = 'error';
         }
     }).catch((error) => {
-    console.log(error.message, 'error');
+        console.log(error.message, 'error');
     });
 }

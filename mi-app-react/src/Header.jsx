@@ -20,9 +20,7 @@ export default function Header() {
     // If the user is logged in, show the user's name and a logout button
     // first, we need to get the user's name from the server
     useEffect(() => {
-        // console.log("useEffect");
         checkLoggedIn().then((data) => {
-            console.log("data:", data);
             if (data.isLoggedIn) {
 
                 setIsLoggedIn(true);
@@ -55,7 +53,6 @@ export default function Header() {
                         {isLoggedIn ? ( 
                             <div>
                                 <span onClick={() => setIsOpen(!isOpen)}>Welcome, <strong style={{'textDecoration': 'underline'}}>{userName}</strong></span>
-                                {console.log("isOpen:", isOpen)}
                                 {isOpen ?  (
                                     <div className="modal" onClick={() => setIsOpen(false)}>
                                     <div className="modal-content" onClick={e => e.stopPropagation()}>

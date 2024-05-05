@@ -86,7 +86,6 @@ export default function App() {
           throw new Error('No se pudo obtener la lista de peliculas');
         }
         const data = await response.json();
-        // console.log(data);
         setMovieList(data);
       } catch (error) {
         console.error('Error al obtener los peliculas:', error);
