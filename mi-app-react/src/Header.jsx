@@ -1,4 +1,4 @@
-import { useNavigate, NavLink } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import logo from './images/logo.png';
 import { useState, useEffect } from 'react';
 import { checkLoggedIn, logout } from "./api";
@@ -8,14 +8,13 @@ export default function Header() {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [userName, setUserName] = useState('');
     const [isOpen, setIsOpen] = useState(false);
-    const navigate = useNavigate();
 
     const handleLogout = () => {
         // ask if the user is sure they want to log out
         // if they click "yes", log them out
         // if they click "no", do nothing
         if (confirm("Are you sure you want to log out?")) {
-            logout(setIsLoggedIn, setUserName, navigate);
+            logout(setIsLoggedIn, setUserName);
         }
     } 
     // If the user is logged in, show the user's name and a logout button
@@ -23,9 +22,17 @@ export default function Header() {
     useEffect(() => {
         // console.log("useEffect");
         checkLoggedIn().then((data) => {
-            setUserName(data.nombre);
-            setIsLoggedIn(true);
+            console.log("data:", data);
+            if (data.isLoggedIn) {
+
+                setIsLoggedIn(true);
+                setUserName(data.user.nombre);
+            } else {
+                setIsLoggedIn(false);
+                setUserName('');
+            }
         });
+
     }, []);
 
     return (

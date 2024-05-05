@@ -3,6 +3,14 @@ from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
 from django.db.utils import IntegrityError
 from django.core.exceptions import ObjectDoesNotExist
+from django.db.models import (
+    Case,
+    When,
+    Value,
+    IntegerField,
+    Q,
+    Count,
+)
 from api.users import serializers
 from api.users import models
 from django.http import Http404
@@ -120,13 +128,60 @@ class MovieList(generics.ListCreateAPIView):
 
     def list(self, request, *args, **kwargs):
         queryset = self.get_queryset()
-        limit = request.query_params.get(
-            "limit", 9
-        )  # Default limit to 10 if not specified
-        skip = request.query_params.get(
-            "skip", 0
-        )  # Default skip to 0 if not specified
-        # Ensure limit and skip are integers
+
+        token_key = request.COOKIES.get("session")
+        if token_key:
+            try:
+                user = Token.objects.get(key=token_key).user
+            except Token.DoesNotExist:
+                raise Http404("No user found with the provided session token")
+            user_reviews = models.Review.objects.filter(
+                user__username=user.username
+            )
+
+            # Extract genres from user's reviews
+            user_genres = []
+            max_rating = 0
+            for review in user_reviews:
+                if review.rating > max_rating:
+                    max_rating = review.rating
+                    genres = (
+                        review.movie.genre.split(",")
+                        if review.rating >= 3
+                        else []
+                    )
+                    user_genres = [
+                        genre.strip()
+                        for genre in genres
+                        if genre.strip() not in user_genres
+                    ]
+
+            # Find movies with similar genres that the user likes
+            q_objects = [
+                Q(genre__icontains=genre.strip()) for genre in user_genres
+            ]
+            q = q_objects.pop()
+            for obj in q_objects:
+                q |= obj
+
+            recommended_movies = queryset.annotate(
+                similarity_score=Count(
+                    Case(
+                        *[
+                            When(genre__icontains=genre.strip(), then=Value(1))
+                            for genre in user_genres
+                        ],
+                        output_field=IntegerField()
+                    )
+                )
+            )
+
+            queryset = recommended_movies.order_by(
+                "-similarity_score", "-rating"
+            )
+
+        limit = request.query_params.get("limit", 9)
+        skip = request.query_params.get("skip", 0)
         try:
             limit = int(limit)
             skip = int(skip)
