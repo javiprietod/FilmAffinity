@@ -138,47 +138,50 @@ class MovieList(generics.ListCreateAPIView):
             user_reviews = models.Review.objects.filter(
                 user__username=user.username
             )
+            # If the user has no reviews, return the top rated movies
+            if len(user_reviews) == 0:
+                queryset = queryset.order_by("-rating")
+            else:
+                # Extract genres from user's reviews
+                user_genres = []
+                max_rating = 0
+                for review in user_reviews:
+                    if review.rating > max_rating:
+                        max_rating = review.rating
+                        genres = (
+                            review.movie.genre.split(",")
+                            if review.rating >= 3
+                            else []
+                        )
+                        user_genres = [
+                            genre.strip()
+                            for genre in genres
+                            if genre.strip() not in user_genres
+                        ]
 
-            # Extract genres from user's reviews
-            user_genres = []
-            max_rating = 0
-            for review in user_reviews:
-                if review.rating > max_rating:
-                    max_rating = review.rating
-                    genres = (
-                        review.movie.genre.split(",")
-                        if review.rating >= 3
-                        else []
-                    )
-                    user_genres = [
-                        genre.strip()
-                        for genre in genres
-                        if genre.strip() not in user_genres
-                    ]
+                # Find movies with similar genres that the user likes
+                q_objects = [
+                    Q(genre__icontains=genre.strip()) for genre in user_genres
+                ]
+                q = q_objects.pop()
+                for obj in q_objects:
+                    q |= obj
 
-            # Find movies with similar genres that the user likes
-            q_objects = [
-                Q(genre__icontains=genre.strip()) for genre in user_genres
-            ]
-            q = q_objects.pop()
-            for obj in q_objects:
-                q |= obj
-
-            recommended_movies = queryset.annotate(
-                similarity_score=Count(
-                    Case(
-                        *[
-                            When(genre__icontains=genre.strip(), then=Value(1))
-                            for genre in user_genres
-                        ],
-                        output_field=IntegerField()
+                recommended_movies = queryset.annotate(
+                    similarity_score=Count(
+                        Case(
+                            *[
+                                When(genre__icontains=genre.strip(), then=Value(1))
+                                for genre in user_genres
+                            ],
+                            output_field=IntegerField()
+                        )
                     )
                 )
-            )
 
-            queryset = recommended_movies.order_by(
-                "-similarity_score", "-rating"
-            )
+                queryset = recommended_movies.order_by(
+                    "-similarity_score", "-rating"
+                )
 
         limit = request.query_params.get("limit", 9)
         skip = request.query_params.get("skip", 0)
