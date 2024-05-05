@@ -78,7 +78,7 @@ export function deleteAccount () {
     });
 }
 
-export function logout (setIsLoggedIn, setUserName, navigate) {
+export function logout (setIsLoggedIn, setUserName) {
     fetch('http://localhost:8000/api/users/logout', {
         method: 'DELETE',
         headers: {
@@ -90,7 +90,7 @@ export function logout (setIsLoggedIn, setUserName, navigate) {
         if (res.ok) {
             setIsLoggedIn(false);
             setUserName('');
-            navigate('/')
+            location.href = '/';
         }
     })
     .catch((error) => {
