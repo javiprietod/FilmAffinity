@@ -204,6 +204,11 @@ class TestUsuarioView(TestCase):
 
         response = self.client.get("/api/users/me/")
         self.assertEqual(response.status_code, 404)
+        self.assertNotIn(
+            "session",
+            response.cookies,
+            "Session cookie should not be in response",
+        )
 
     def test_funcionalidad_borrar_usuario_sin_sesion(self):
         response = self.client.delete("/api/users/me/")

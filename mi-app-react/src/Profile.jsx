@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { checkLoggedIn, changeProfileInformation } from './api.js';
+import { checkLoggedIn, changeProfileInformation, deleteAccount } from './api.js';
 
 export default function profile() {
 
@@ -8,8 +8,12 @@ export default function profile() {
 
     useEffect(() => {
         checkLoggedIn().then((data) => {
-            setNombre(data.nombre);
-            setTel(data.tel);
+            if (!data.isLoggedIn) {
+                location.href = '/login';
+            } else {
+                setNombre(data.user.nombre);
+                setTel(data.user.tel);
+            }
         });
     }, []);
 

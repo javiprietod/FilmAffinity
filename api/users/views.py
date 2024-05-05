@@ -90,6 +90,21 @@ class UsuarioView(generics.RetrieveUpdateDestroyAPIView):
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+    def delete(self, request):
+        # Check if the user is authenticated
+        token_key = request.COOKIES.get("session")
+        if not token_key:
+            return Response(
+                status=status.HTTP_404_NOT_FOUND,
+                data={"error": "No session cookie found"},
+            )
+        response = Response(
+            status=status.HTTP_204_NO_CONTENT, data={"status": "success"}
+        )
+        Token.objects.filter(key=request.COOKIES.get("session")).delete()
+        response.delete_cookie("session")
+        return response
+
 
 class LogoutView(generics.DestroyAPIView):
     def delete(self, request):
