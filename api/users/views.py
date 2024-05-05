@@ -8,11 +8,8 @@ from django.db.models import (
     When,
     Value,
     IntegerField,
-    Sum,
     Q,
     Count,
-    F,
-    ExpressionWrapper,
 )
 from api.users import serializers
 from api.users import models
