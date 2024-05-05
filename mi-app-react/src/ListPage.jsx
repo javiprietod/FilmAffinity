@@ -8,18 +8,19 @@ const MOVIES_PER_PAGE = 9;
 
 function ListPage({ movieList, currentPage, setCurrentPage }) {
   const [loggedIn, setLoggedIn] = useState(false);
+  const [name, setName] = useState('');
   useEffect(() => {
     checkLoggedIn().then((data) => {
       if (data.isLoggedIn){
-
         setLoggedIn(true);
+        setName(data.user.nombre);
       } else {
         setLoggedIn(false);
       }
     });
   }, []);
   return <div className="container">
-    <h2>{loggedIn ? 'Our recommendations for you' : 'Our movies'}</h2>
+    <h2>{loggedIn ? 'Our recommendations for you, ' + name : 'Our movies'}</h2>
     <PageFilter currentPage={currentPage} setCurrentPage={setCurrentPage} />
     <MovieList movieList={movieList} />
     <PageFilter currentPage={currentPage} setCurrentPage={setCurrentPage} />
