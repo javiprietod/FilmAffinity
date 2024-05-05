@@ -171,7 +171,10 @@ class MovieList(generics.ListCreateAPIView):
                     similarity_score=Count(
                         Case(
                             *[
-                                When(genre__icontains=genre.strip(), then=Value(1))
+                                When(
+                                    genre__icontains=genre.strip(),
+                                    then=Value(1),
+                                )
                                 for genre in user_genres
                             ],
                             output_field=IntegerField()
