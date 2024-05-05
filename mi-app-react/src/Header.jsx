@@ -22,9 +22,17 @@ export default function Header() {
     useEffect(() => {
         // console.log("useEffect");
         checkLoggedIn().then((data) => {
-            setUserName(data.nombre);
-            setIsLoggedIn(true);
+            console.log("data:", data);
+            if (data.isLoggedIn) {
+
+                setIsLoggedIn(true);
+                setUserName(data.user.nombre);
+            } else {
+                setIsLoggedIn(false);
+                setUserName('');
+            }
         });
+
     }, []);
 
     return (

@@ -20,22 +20,26 @@ export function login (formData) {
     });
 }
 
-export function checkLoggedIn () {
-    return fetch('http://localhost:8000/api/users/me/', {
-        method: 'GET',
-        headers: {
-            'Accept': 'application/json',
-        },
-        credentials: 'include',
-    })
-    .then((res) => {
-        if (res.ok) {
-            return res.json();
+export async function checkLoggedIn() {
+    try {
+        const response = await fetch('http://localhost:8000/api/users/me/', {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+            },
+            credentials: 'include',
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+            return { isLoggedIn: true, user: data };
+        } else {
+            return { isLoggedIn: false, user: null };
         }
-    })
-    .catch((error) => {
+    } catch (error) {
         console.log(error.message, 'error');
-    });
+        return { isLoggedIn: false, user: null };
+    }
 }
 
 export function changeProfileInformation (formData) {

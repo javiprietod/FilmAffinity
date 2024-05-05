@@ -1,13 +1,25 @@
 import { useEffect, useState } from 'react';
 import { NavLink as Navlink } from 'react-router-dom';
+import { checkLoggedIn } from './api';
 
 
 const INITIAL_PAGE = 1;
 const MOVIES_PER_PAGE = 9;
 
 function ListPage({ movieList, currentPage, setCurrentPage }) {
+  const [loggedIn, setLoggedIn] = useState(false);
+  useEffect(() => {
+    checkLoggedIn().then((data) => {
+      if (data.isLoggedIn){
+
+        setLoggedIn(true);
+      } else {
+        setLoggedIn(false);
+      }
+    });
+  }, []);
   return <div className="container">
-    <h2>Nuestros productos</h2>
+    <h2>{loggedIn ? 'Our recommendations for you' : 'Our movies'}</h2>
     <PageFilter currentPage={currentPage} setCurrentPage={setCurrentPage} />
     <MovieList movieList={movieList} />
     <PageFilter currentPage={currentPage} setCurrentPage={setCurrentPage} />
