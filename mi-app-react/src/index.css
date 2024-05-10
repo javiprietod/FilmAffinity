@@ -288,52 +288,39 @@ button[type="submit"]:hover {
   text-decoration: none;
 }
 
+.movie-rating-container{
+  padding: 10px;
+  justify-content: space-between;
+  display: flex;
+  flex-direction: row;
+  width: 90%;
+}
+.global-rating, .personal-rating { 
+  flex: 1; 
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Align content vertically */
+}
+.movie-rating-loginlink{
+  color: blue;
+}
 /* Star rating styles */
 .star-rating {
   font-size: 30px;
 }
-
 .star {
   color: gray;
   cursor: pointer;
 }
-
 .star.green {
-  color: green;
+  color:#349a65;
 }
-.star.yellow {
-  color: yellow;
+.star-fixed {
+  font-size: 30px;
+  color:#349a65;
 }
-
-.movie-rating-container{
-  height: auto;
-  color:#333;
-  margin-bottom: 10px;
-  justify-content: space-between;
-  display: flex;
-  flex-direction: row;
-}
-.movie-rating-stars{
-  margin-left:45px;
-}
-
-.movie-rating-loginlink{
+.star.partially-filled {
+  position: relative;
   color: blue;
 }
-
-.rating-container {
-  display: flex;
-}
-.global-rating, .personal-rating {  
-  display: flex;
-  align-items: center; /* Align content vertically */
-}
-.global-rating {
-  flex: 1;
-  margin-left: 60px;
-}
-.personal-rating {
-  flex: 1;
-  margin-left: 70px;
-}
-

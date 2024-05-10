@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { NavLink as Navlink } from 'react-router-dom';
-import RatingFixedStars from './RatingFixedStars';
+import RatingFixedStars from './FixedRating';
 
 
 const INITIAL_PAGE = 1;
@@ -45,12 +45,10 @@ function Movie({ movie }) {
   return (
     <div className="movie-details" id="movieDetails">
       <img src={movie.thumbnail} alt="Thumbnail" className="thumbnail" />
-      <div className="info">
+      <div className="info" >
         <h2>{movie.title}</h2>
+        <RatingFixedStars rating={movie.rating} />
       </div>
-
-      <span className="rating">{movie.rating}</span>
-      <RatingFixedStars rating={movie.rating} />
     </div>)
 }
 

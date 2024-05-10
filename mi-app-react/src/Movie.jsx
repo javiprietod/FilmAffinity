@@ -32,9 +32,7 @@ export default function MovieDescription() {
                     <br />
                 </div>
             </div>
-            <div>
                 <RatingControlDiv movie={movie}></RatingControlDiv>
-            </div>
         </div>
     )
 }

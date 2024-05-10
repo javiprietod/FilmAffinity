@@ -52,7 +52,6 @@ const RatingStars = ({movie,user,reviewScore,reviewId}) => {
     </div>
   );
 };
-
 export default RatingStars;
 
 function postReview(movieId, userId, ratingScore) {
@@ -98,7 +97,6 @@ function patchReview(reviewId, ratingScore, movieId) {
   })
     .then((res) => {
       if (res.ok) {
-        console.log('Review updated successfully');
       } else {
         throw new Error('Failed to update review');
       }

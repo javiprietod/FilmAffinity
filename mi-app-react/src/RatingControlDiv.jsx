@@ -2,6 +2,7 @@ import React from 'react';
 import RatingStars from './RatingStars';
 import { useState, useEffect } from 'react';
 import { useNavigate, NavLink } from "react-router-dom";
+import FixedRating from './FixedRating';
 
 function RatingControlDiv({movie}) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -66,20 +67,18 @@ function RatingControlDiv({movie}) {
   }, []);
 
   return (
-    <div className="rating-container" id="rating-register">
+    <div className="movie-rating-container" id="rating-register">
       <div className='global-rating'>
-        {movie.rating} stars
+        <div>
+          <span> Filmaffinity rating:</span>
+        </div>
+        <FixedRating rating={movie.rating}></FixedRating>
       </div>
       <div className='personal-rating'>
         {isLoggedIn ? ( 
-            <div className="movie-rating-container" id="movieRating">
-
-            {/* Solo queremos mostrar la barra de votación en caso de que estemos logeados para evitar reviews sin usuario*/}
-            {/* Otra opción es que si que permita verlo pero dentro del HandleClick le mande un pop up de "Log in to set rating" */}
-            
-            <div className='movie-rating-stars'>
-              <RatingStars movie={movie.id} user={email} reviewScore={reviewScore} reviewId = {reviewId}>  </RatingStars>
-            </div>
+          <div>
+            <div><span>Your rating: </span></div>
+            <RatingStars movie={movie.id} user={email} reviewScore={reviewScore} reviewId = {reviewId}>  </RatingStars>
           </div>
         ) : (
             <div>
@@ -88,7 +87,6 @@ function RatingControlDiv({movie}) {
               </NavLink>
               <span> to rate your favorite movies! </span>
             </div>
-            
         )}
       </div>
     </div>
