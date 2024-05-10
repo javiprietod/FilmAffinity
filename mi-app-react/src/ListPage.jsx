@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { NavLink as Navlink } from 'react-router-dom';
+import RatingFixedStars from './RatingFixedStars';
 
 
 const INITIAL_PAGE = 1;
@@ -7,7 +8,7 @@ const MOVIES_PER_PAGE = 9;
 
 function ListPage({ movieList, currentPage, setCurrentPage }) {
   return <div className="container">
-    <h2>Nuestros productos</h2>
+    <h2>Nuestras peliculas</h2>
     <PageFilter currentPage={currentPage} setCurrentPage={setCurrentPage} />
     <MovieList movieList={movieList} />
     <PageFilter currentPage={currentPage} setCurrentPage={setCurrentPage} />
@@ -47,6 +48,9 @@ function Movie({ movie }) {
       <div className="info">
         <h2>{movie.title}</h2>
       </div>
+
+      <span className="rating">{movie.rating}</span>
+      <RatingFixedStars rating={movie.rating} />
     </div>)
 }
 
