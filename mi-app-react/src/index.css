@@ -324,3 +324,16 @@ button[type="submit"]:hover {
   position: relative;
   color: blue;
 }
+
+.rating-overlay {
+  position: absolute;
+  top: 10;
+  left: 40;
+  background-color: rgba(0, 0, 0, 0.8); /* Change opacity as needed */
+  color: white;
+  width: 7%;
+  height: 7%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

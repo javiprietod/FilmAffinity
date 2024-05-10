@@ -44,10 +44,13 @@ function MovieList({ movieList }) {
 function Movie({ movie }) {
   return (
     <div className="movie-details" id="movieDetails">
+      <div className='rating-overlay'>
+        <RatingFixedStars rating={movie.rating} />
+      </div>
       <img src={movie.thumbnail} alt="Thumbnail" className="thumbnail" />
       <div className="info" >
         <h2>{movie.title}</h2>
-        <RatingFixedStars rating={movie.rating} />
+        {/*<RatingFixedStars rating={movie.rating} />*/}
       </div>
     </div>)
 }
