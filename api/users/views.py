@@ -17,7 +17,6 @@ def calculate_rating(movie_id):
     rating = sum([review.rating for review in reviews]) / len(reviews)
     movie = models.Movie.objects.get(id=movie_id)
     movie.rating = rating
-    print(f"Rating for movie {movie_id} is {rating}")
     movie.save()
 
 
@@ -236,16 +235,13 @@ class ReviewDetail(generics.RetrieveUpdateDestroyAPIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
     def patch(self, request, id):
-        print('in patch')
         serializer = self.get_serializer(
             self.get_object(), data=request.data, partial=True
         )
         if serializer.is_valid():
             serializer.save()
             movie_id = request.data.get("movie")
-            print('movie_id: ', movie_id)
             calculate_rating(movie_id)
-            print('rating calculated')
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     

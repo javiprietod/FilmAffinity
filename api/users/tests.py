@@ -312,9 +312,123 @@ class TestMovieDetail(TestCase):
         self.assertEqual(movie.summary, data["summary"])
         self.assertEqual(movie.year, data["year"])
 
-# class TestReview(TestCase):
-#     def setUp(self):
-#         data = {
-#             "nombre": "Juan",
-#             "tel": "1234567890",
-#             "email": "
+class TestReview(TestCase):
+    def setUp(self):
+        data = {
+            "nombre": "Juan",
+            "tel": "1234567890",
+            "email": "prueba@prueba.com",
+            "password": "PRUEBAprueba1",
+        }
+        response = self.client.post("/api/users/", data)
+        self.assertEqual(response.status_code, 201)
+
+    def test_funcionalidad_crear_review(self):
+        data = {
+            "title": "Pelicula 1",
+            "summary": "Descripcion 1",
+            "year": 2022,
+            "duration": 130,
+            "director": "Director 1",
+            "genre": "Genero 1",
+        }
+
+        response = self.client.post("/api/movies/", data)
+        self.assertEqual(response.status_code, 201)
+
+        movie = models.Movie.objects.get(title=data["title"])
+
+        data = {
+            "movie": movie.id,
+            "rating": 5,
+            "body": "Comentario",
+            "user": "prueba@prueba.com",
+        }
+
+        response = self.client.post("/api/reviews/", data)
+        self.assertEqual(response.status_code, 201)
+
+        self.assertEqual(response.data["rating"], data["rating"])
+        self.assertEqual(response.data["body"], data["body"])
+        self.assertEqual(response.data["user"], data["user"])
+
+        # Verificar que la review se haya creado
+        review = models.Review.objects.get(movie=movie)
+        self.assertEqual(review.rating, data["rating"])
+        self.assertEqual(review.body, data["body"])
+    
+    def test_funcionalidad_actualizar_review(self):
+        data = {
+            "title": "Pelicula 1",
+            "summary": "Descripcion 1",
+            "year": 2022,
+            "duration": 130,
+            "director": "Director 1",
+            "genre": "Genero 1",
+        }
+
+        response = self.client.post("/api/movies/", data)
+        self.assertEqual(response.status_code, 201)
+
+        movie = models.Movie.objects.get(title=data["title"])
+
+        data = {
+            "movie": movie.id,
+            "rating": 5,
+            "body": "Comentario",
+            "user": "prueba@prueba.com",
+        }
+
+        response = self.client.post("/api/reviews/", data)
+        self.assertEqual(response.status_code, 201)
+
+        review = models.Review.objects.get(movie=movie)
+
+        data = {
+            "rating": 4,
+            "body": "Comentario 2",
+        }
+
+        response = self.client.patch(
+            f"/api/reviews/{review.id}/", data, content_type="application/json"
+        )
+        self.assertEqual(response.status_code, 200)
+
+        review = models.Review.objects.get(movie=movie)
+        self.assertEqual(review.rating, data["rating"])
+        self.assertEqual(review.body, data["body"])
+
+    def test_funcionalidad_eliminar_review(self):
+        data = {
+            "title": "Pelicula 1",
+            "summary": "Descripcion 1",
+            "year": 2022,
+            "duration": 130,
+            "director": "Director 1",
+            "genre": "Genero 1",
+        }
+
+        response = self.client.post("/api/movies/", data)
+        self.assertEqual(response.status_code, 201)
+
+        movie = models.Movie.objects.get(title=data["title"])
+
+        data = {
+            "movie": movie.id,
+            "rating": 5,
+            "body": "Comentario",
+            "user": "prueba@prueba.com",
+        }
+
+        response = self.client.post("/api/reviews/", data)
+        self.assertEqual(response.status_code, 201)
+
+        review = models.Review.objects.get(movie=movie)
+
+        response = self.client.delete(f"/api/reviews/{review.id}/")
+        self.assertEqual(response.status_code, 204)
+
+        with self.assertRaises(models.Review.DoesNotExist):
+            models.Review.objects.get(movie=movie)  
+
+        
