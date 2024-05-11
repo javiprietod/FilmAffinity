@@ -3,6 +3,14 @@ from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
 from django.db.utils import IntegrityError
 from django.core.exceptions import ObjectDoesNotExist
+from django.db.models import (
+    Case,
+    When,
+    Value,
+    IntegerField,
+    Q,
+    Count,
+)
 from api.users import serializers
 from api.users import models
 from django.http import Http404
@@ -45,12 +53,13 @@ class LoginView(generics.CreateAPIView):
         if serializer.is_valid():
             user = serializer.validated_data
             token, created = Token.objects.get_or_create(user=user)
-            response = Response({"status": "success"})
+            response = Response(status=status.HTTP_201_CREATED)
             response.set_cookie(key="session", value=token.key, samesite="lax")
             return response
         else:
-            print("Serializer errors: %s", serializer.errors)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                serializer.errors, status=status.HTTP_401_UNAUTHORIZED
+            )
 
 
 class UsuarioView(generics.RetrieveUpdateDestroyAPIView):
@@ -81,21 +90,38 @@ class UsuarioView(generics.RetrieveUpdateDestroyAPIView):
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+    def delete(self, request):
+        # Check if the user is authenticated
+        token_key = request.COOKIES.get("session")
+        if not token_key:
+            return Response(
+                status=status.HTTP_404_NOT_FOUND,
+                data={"error": "No session cookie found"},
+            )
+        response = Response(
+            status=status.HTTP_204_NO_CONTENT, data={"status": "success"}
+        )
+        Token.objects.filter(key=request.COOKIES.get("session")).delete()
+        response.delete_cookie("session")
+        return response
+
 
 class LogoutView(generics.DestroyAPIView):
     def delete(self, request):
         response = Response(
             status=status.HTTP_204_NO_CONTENT, data={"status": "success"}
         )
-        try:
-            if Token.objects.get(key=request.COOKIES.get("session")):
-                response.delete_cookie("session")
-                return response
-        except ObjectDoesNotExist:
+        Token.objects.filter(key=request.COOKIES.get("session")).delete()
+        response.delete_cookie("session")
+        return response
+
+    def handle_exception(self, exc):
+        if isinstance(exc, ObjectDoesNotExist):
             return Response(
                 status=status.HTTP_401_UNAUTHORIZED,
                 data={"error": "No session found"},
             )
+        return super().handle_exception(exc)
 
 
 class MovieList(generics.ListCreateAPIView):
@@ -117,13 +143,66 @@ class MovieList(generics.ListCreateAPIView):
 
     def list(self, request, *args, **kwargs):
         queryset = self.get_queryset()
-        limit = request.query_params.get(
-            "limit", 9
-        )  # Default limit to 10 if not specified
-        skip = request.query_params.get(
-            "skip", 0
-        )  # Default skip to 0 if not specified
-        # Ensure limit and skip are integers
+
+        token_key = request.COOKIES.get("session")
+        if token_key:
+            try:
+                user = Token.objects.get(key=token_key).user
+            except Token.DoesNotExist:
+                raise Http404("No user found with the provided session token")
+            user_reviews = models.Review.objects.filter(
+                user__username=user.username
+            )
+            # If the user has no reviews, return the top rated movies
+            if len(user_reviews) == 0:
+                queryset = queryset.order_by("-rating")
+            else:
+                # Extract genres from user's reviews
+                user_genres = []
+                max_rating = 0
+                for review in user_reviews:
+                    if review.rating > max_rating:
+                        max_rating = review.rating
+                        genres = (
+                            review.movie.genre.split(",")
+                            if review.rating >= 3
+                            else []
+                        )
+                        user_genres = [
+                            genre.strip()
+                            for genre in genres
+                            if genre.strip() not in user_genres
+                        ]
+
+                # Find movies with similar genres that the user likes
+                q_objects = [
+                    Q(genre__icontains=genre.strip()) for genre in user_genres
+                ]
+                q = q_objects.pop()
+                for obj in q_objects:
+                    q |= obj
+
+                recommended_movies = queryset.annotate(
+                    similarity_score=Count(
+                        Case(
+                            *[
+                                When(
+                                    genre__icontains=genre.strip(),
+                                    then=Value(1),
+                                )
+                                for genre in user_genres
+                            ],
+                            output_field=IntegerField()
+                        )
+                    )
+                )
+
+                queryset = recommended_movies.order_by(
+                    "-similarity_score", "-rating"
+                )
+
+        limit = request.query_params.get("limit", 9)
+        skip = request.query_params.get("skip", 0)
         try:
             limit = int(limit)
             skip = int(skip)
@@ -193,8 +272,8 @@ class ReviewList(generics.ListCreateAPIView):
 
     def get_queryset(self):
         queryset = models.Review.objects.all()
-        id = self.request.query_params.get("movieid", None)
-        username = self.request.query_params.get("username", None)
+        id = self.request.GET.get("movieid", None)
+        username = self.request.GET.get("username", None)
         if id is not None:
             queryset = queryset.filter(movie__id=id)
         if username is not None:
@@ -233,7 +312,7 @@ class ReviewDetail(generics.RetrieveUpdateDestroyAPIView):
             calculate_rating(movie_id)
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
+
     def patch(self, request, id):
         serializer = self.get_serializer(
             self.get_object(), data=request.data, partial=True
@@ -244,7 +323,7 @@ class ReviewDetail(generics.RetrieveUpdateDestroyAPIView):
             calculate_rating(movie_id)
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
+
     def delete(self, request, id):
         review = self.get_object()
         movie_id = review.movie.id

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { login } from './api.js';
 
 
 export default function Login() {
@@ -12,28 +13,7 @@ export default function Login() {
             email: email,
             password: password
         };
-        const fetchData = async () => {
-            fetch('http://localhost:8000/api/users/login/', {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(formData),
-                credentials: 'include',
-            })
-            .then((res) => {
-                if (res.ok) {
-                    location.href = '/';
-                } else if (res.status === 401) {
-                    document.getElementById('aviso').innerHTML = '✖︎ Email or password incorrect';
-                    document.getElementById('aviso').className = 'error';
-                }
-            })
-            .catch((error) => {
-                console.log(error.message, 'error');
-            });
-        };
-        fetchData();
+        login(formData)
 
     };
     // {entrar(form2json(event))}
@@ -57,3 +37,4 @@ export default function Login() {
     </div>
     )
 };
+

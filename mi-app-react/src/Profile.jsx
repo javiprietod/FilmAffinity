@@ -1,36 +1,20 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from "react-router-dom";
+import { checkLoggedIn, changeProfileInformation, deleteAccount } from './api.js';
 
-export default function Register() {
+export default function profile() {
 
     const [nombre, setNombre] = useState('');
     const [tel, setTel] = useState('');
-    const navigate = useNavigate();
 
     useEffect(() => {
-        const fetchData = async () => {
-        fetch('http://localhost:8000/api/users/me/', {
-            method: 'GET',
-            headers: {
-                'Accept': 'application/json',
-            },
-            credentials: 'include',
-        })
-        .then((res) => {
-            if (res.ok) {
-                return res.json();
+        checkLoggedIn().then((data) => {
+            if (!data.isLoggedIn) {
+                location.href = '/login';
+            } else {
+                setNombre(data.user.nombre);
+                setTel(data.user.tel);
             }
-        })
-        .then((data) => {
-            setNombre(data.nombre);
-            setTel(data.tel);
-        }
-        )
-        .catch((error) => {
-            console.log(error.message, 'error');
         });
-    };
-    fetchData();
     }, []);
 
 
@@ -40,29 +24,13 @@ export default function Register() {
             nombre: nombre,
             tel: tel,
         };
-        console.log(formData);
-        const fetchData = async () => {
-            fetch('http://localhost:8000/api/users/me/', {
-                    method: 'PATCH',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(formData),
-                    credentials: 'include',
-                }).then((res) => {
-                    console.log(res.status);
-                    if (res.ok) {
-                        location.href = '/profile';
-                    }
-                    else if (res.status === 409) {
-                        document.getElementById('aviso').className = 'error';
-                    }
-                }).catch((error) => {
-                console.log(error.message, 'error');
-            });
-        };
-        fetchData();
+        changeProfileInformation(formData);
+    };
 
+
+    const handleDeletion = (event) => {
+        event.preventDefault(); // Prevent the default form submission behavior
+        deleteAccount();
     };
 
 
@@ -78,6 +46,8 @@ export default function Register() {
             <input type="submit" value="Update profile information" />
         </form> 
         <button onClick={() => location.href = '/password'}>Change Password</button>
+        <hr />
+        <button onClick={handleDeletion}>Delete account</button>
   </div>
   )
 };

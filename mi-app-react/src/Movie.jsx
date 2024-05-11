@@ -8,6 +8,9 @@ export default function MovieDescription() {
     return (
     <div>
         <div className="container">
+             <div className="back-button">
+                <a href="/" className="back"><strong>← Back</strong></a>
+            </div>
             <div className="movie-details full-info" id="movieDetails">
                 <img src={movie.thumbnail} alt="Thumbnail" id="thumbnail" className='thumbnail' />
                 <div className="info">

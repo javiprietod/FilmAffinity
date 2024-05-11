@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react';
-import { useNavigate } from "react-router-dom";
+import { register } from './api';
 
 export default function Register() {
 
@@ -9,7 +9,6 @@ export default function Register() {
     const [pass, setPass] = useState('');
     const [passRep, setPassRep] = useState('');
     const val = useRef('');
-    const navigate = useNavigate();
 
     const handleSubmit = (event) => {
         event.preventDefault(); // Prevent the default form submission behavior
@@ -19,28 +18,7 @@ export default function Register() {
             email: email,
             password: pass
         };
-        const fetchData = async () => {
-            fetch('http://localhost:8000/api/users/', {
-                    method: 'POST',
-                    headers: {
-                    'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(formData),
-                }).then((res) => {
-                    if (res.ok) {
-                        navigate("/login")
-                        console.log("Register successful");
-                    }
-                    else if (res.status === 409) {
-                        document.getElementById('aviso').innerHTML = '✖︎ This email is already registered';
-                        document.getElementById('aviso').className = 'error';
-                    }
-                }).catch((error) => {
-                console.log(error.message, 'error');
-            });
-        };
-        fetchData();
-
+        register(formData);
     };
 
     const compruebaPass = () => {

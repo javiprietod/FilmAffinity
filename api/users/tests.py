@@ -64,7 +64,7 @@ class TestLoginView(TestCase):
             "password": "Aa123456",
         }
         response = self.client.post("/api/users/login/", data)
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 201)
         self.assertIn(
             "session", response.cookies, "Session cookie not found in response"
         )
@@ -118,7 +118,7 @@ class TestUsuarioView(TestCase):
             "password": "Aa123456",
         }
         response = self.client.post("/api/users/login/", data)
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 201)
 
         response = self.client.get("/api/users/me/")
         self.assertEqual(response.status_code, 200)
@@ -137,7 +137,7 @@ class TestUsuarioView(TestCase):
             "password": "Aa123456",
         }
         response = self.client.post("/api/users/login/", data)
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 201)
 
         data = {
             "nombre": "Juanito",
@@ -170,7 +170,7 @@ class TestUsuarioView(TestCase):
             "password": "Aa123456",
         }
         response = self.client.post("/api/users/login/", data)
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 201)
 
         data = {
             "nombre": "Juanito",
@@ -188,7 +188,31 @@ class TestUsuarioView(TestCase):
             "password": "Aa1234567",
         }
         response = self.client.post("/api/users/login/", data)
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 201)
+
+    def test_funcionalidad_borrar_usuario(self):
+        # Iniciar sesión
+        data = {
+            "email": "hola@gmail.com",
+            "password": "Aa123456",
+        }
+        response = self.client.post("/api/users/login/", data)
+        self.assertEqual(response.status_code, 201)
+
+        response = self.client.delete("/api/users/me/")
+        self.assertEqual(response.status_code, 204)
+
+        response = self.client.get("/api/users/me/")
+        self.assertEqual(response.status_code, 404)
+        self.assertNotIn(
+            "session",
+            response.cookies,
+            "Session cookie should not be in response",
+        )
+
+    def test_funcionalidad_borrar_usuario_sin_sesion(self):
+        response = self.client.delete("/api/users/me/")
+        self.assertEqual(response.status_code, 404)
 
 
 class TestLogoutView(TestCase):
@@ -213,7 +237,7 @@ class TestLogoutView(TestCase):
             "password": "Aa123456",
         }
         response = self.client.post("/api/users/login/", data)
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 201)
 
         response = self.client.delete("/api/users/logout/")
         self.assertEqual(response.status_code, 204)
@@ -311,6 +335,31 @@ class TestMovieDetail(TestCase):
         self.assertEqual(movie.title, data["title"])
         self.assertEqual(movie.summary, data["summary"])
         self.assertEqual(movie.year, data["year"])
+
+    def test_funcionalidad_eliminar_pelicula(self):
+        data = {
+            "title": "Pelicula 1",
+            "summary": "Descripcion 1",
+            "year": 2022,
+            "duration": 130,
+            "director": "Director 1",
+            "genre": "Genero 1",
+        }
+
+        response = self.client.post("/api/movies/", data)
+        self.assertEqual(response.status_code, 201)
+
+        movie = models.Movie.objects.get(title=data["title"])
+
+        response = self.client.delete(f"/api/movies/{movie.id}/")
+        self.assertEqual(response.status_code, 204)
+
+        with self.assertRaises(models.Movie.DoesNotExist):
+            models.Movie.objects.get(title=data["title"])
+
+    def test_funcionalidad_eliminar_pelicula_inexistente(self):
+        response = self.client.delete("/api/movies/1/")
+        self.assertEqual(response.status_code, 404)
 
 class TestReview(TestCase):
     def setUp(self):

@@ -355,3 +355,8 @@ button[type="submit"]:hover {
   justify-content: space-between;
   align-items: center;
 }
+
+.back {
+  color: #349a65;
+  text-decoration: none;
+}
