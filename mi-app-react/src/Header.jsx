@@ -1,65 +1,36 @@
-import { useNavigate, NavLink } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import logo from './images/logo.png';
 import { useState, useEffect } from 'react';
+import { checkLoggedIn, logout } from "./api";
 
 export default function Header() {
 
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [userName, setUserName] = useState('');
     const [isOpen, setIsOpen] = useState(false);
-    const navigate = useNavigate();
 
     const handleLogout = () => {
         // ask if the user is sure they want to log out
         // if they click "yes", log them out
         // if they click "no", do nothing
         if (confirm("Are you sure you want to log out?")) {
-            fetch('http://localhost:8000/api/users/logout', {
-                method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                credentials: 'include',
-            })
-            .then((res) => {
-                if (res.ok) {
-                    setIsLoggedIn(false);
-                    setUserName('');
-                    navigate('/')
-                }
-            })
-            .catch((error) => {
-                    console.log(error.message, 'error');
-            });
+            logout(setIsLoggedIn, setUserName);
         }
     } 
     // If the user is logged in, show the user's name and a logout button
     // first, we need to get the user's name from the server
     useEffect(() => {
-        // console.log("useEffect");
-        const fetchData = async () => {
-            fetch('http://localhost:8000/api/users/me/', {
-                method: 'GET',
-                headers: {
-                    'Accept': 'application/json',
-                },
-                credentials: 'include',
-            })
-            .then((res) => {
-                if (res.ok) {
-                    return res.json();
-                }
-            })
-            .then((data) => {
-                setUserName(data.nombre);
+        checkLoggedIn().then((data) => {
+            if (data.isLoggedIn) {
+
                 setIsLoggedIn(true);
+                setUserName(data.user.nombre);
+            } else {
+                setIsLoggedIn(false);
+                setUserName('');
             }
-            )
-            .catch((error) => {
-                console.log(error.message, 'error');
-            });
-        };
-        fetchData();
+        });
+
     }, []);
 
     return (
@@ -82,7 +53,6 @@ export default function Header() {
                         {isLoggedIn ? ( 
                             <div>
                                 <span onClick={() => setIsOpen(!isOpen)}>Welcome, <strong style={{'textDecoration': 'underline'}}>{userName}</strong></span>
-                                {console.log("isOpen:", isOpen)}
                                 {isOpen ?  (
                                     <div className="modal" onClick={() => setIsOpen(false)}>
                                     <div className="modal-content" onClick={e => e.stopPropagation()}>

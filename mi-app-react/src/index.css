@@ -127,11 +127,11 @@ header nav div {
 .container {
   max-width: 800px;
   margin: 20px auto;
+  margin-bottom:0px;
   padding: 20px;
   background-color: #fff;
   border-radius: 5px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  
 }
 
 h1 {
@@ -285,5 +285,78 @@ button[type="submit"]:hover {
 
 .modal-content p, .modal-content a {
   color : #447CAD;
+  text-decoration: none;
+}
+
+.movie-rating-container{
+  padding: 10px;
+  justify-content: space-between;
+  display: flex;
+  flex-direction: row;
+  width: 90%;
+}
+.global-rating, .personal-rating { 
+  flex: 1; 
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Align content vertically */
+}
+.movie-rating-loginlink{
+  color: blue;
+}
+/* Star rating styles */
+.star-rating {
+  font-size: 30px;
+}
+.star {
+  color: gray;
+  cursor: pointer;
+}
+.star.green {
+  color:#349a65;
+}
+.star-fixed {
+  font-size: 30px;
+  color:#349a65;
+}
+
+.rating-overlay {
+  position: absolute;
+  top: 10;
+  left: 40;
+  background-color: rgba(0, 0, 0, 0.8); /* Change opacity as needed */
+  color: white;
+  width: 7%;
+  height: 7%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.review-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 90%;
+  padding: 10px;
+}
+
+.individual-review {
+  width: 100%;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 10px;
+  margin: 10px 0;
+}
+
+.user-side-rating {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.back {
+  color: #349a65;
   text-decoration: none;
 }
