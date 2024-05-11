@@ -22,7 +22,7 @@ def calculate_rating(movie_id):
     reviews = models.Review.objects.filter(movie__id=movie_id)
     if len(reviews) == 0:
         return 0
-    rating = sum([review.rating for review in reviews]) / len(reviews)
+    rating = round(sum([review.rating for review in reviews]) / len(reviews), 1)
     movie = models.Movie.objects.get(id=movie_id)
     movie.rating = rating
     movie.save()
