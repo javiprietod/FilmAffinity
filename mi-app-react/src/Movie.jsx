@@ -1,10 +1,12 @@
 import React from 'react';
 import { useLoaderData } from 'react-router-dom';
+import RatingControlDiv from './RatingControlDiv';
+import ReviewSection from './ReviewSection';
 
 export default function MovieDescription() {
     let movie = useLoaderData();
     return (
-       
+    <div>
         <div className="container">
              <div className="back-button">
                 <a href="/" className="back"><strong>← Back</strong></a>
@@ -34,11 +36,14 @@ export default function MovieDescription() {
                     </p>
                     <br />
                 </div>
-                {/* <div className='voting-control'>
-
-
-                </div> */}
+            </div>
+            <RatingControlDiv movie={movie}></RatingControlDiv>
+        </div>
+        <div>
+            <div className="review-section" id="reviews">
+                <ReviewSection movieid={movie.id}></ReviewSection>
             </div>
         </div>
+    </div>
     )
 }

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { NavLink as Navlink } from 'react-router-dom';
 import { checkLoggedIn } from './api';
+import RatingFixedStars from './FixedRating';
 
 
 const INITIAL_PAGE = 1;
@@ -56,8 +57,11 @@ function MovieList({ movieList }) {
 function Movie({ movie }) {
   return (
     <div className="movie-details" id="movieDetails">
+      <div className='rating-overlay'>
+        <RatingFixedStars rating={movie.rating} />
+      </div>
       <img src={movie.thumbnail} alt="Thumbnail" className="thumbnail" />
-      <div className="info">
+      <div className="info" >
         <h2>{movie.title}</h2>
       </div>
     </div>)
