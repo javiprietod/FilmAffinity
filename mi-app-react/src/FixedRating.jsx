@@ -1,5 +1,3 @@
-import React from 'react';
-
 const FixedRating = ({ rating }) => {
   return (
     <div>
@@ -8,4 +6,3 @@ const FixedRating = ({ rating }) => {
     </div>
   );};
 export default FixedRating;
-

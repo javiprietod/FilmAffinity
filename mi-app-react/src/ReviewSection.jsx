@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import RatingFixedStars from './FixedRating';
-
+import FixedRating from './FixedRating';
+import FixedStars from './FixedStars';
 
 const INITIAL_PAGE = 1;
 const REVIEWS_PER_PAGE = 10;
@@ -45,12 +45,16 @@ function Review({ review }) {
     <div className="individual-review" id="reviewDetails">
       <div className='user-side-rating'>
         <div>
-          <h2>{review.user}</h2>
+          <h2>{review.user}</h2> {/* Aquí debería ir el nombre del usuario, el cual o cambiamos la base de datos para guardar tb el nombre del usuario o hacemos llamada a la api*/}
         </div>
         <div>
-          <h2>{review.rating}</h2>
+          {/*<FixedRating rating={review.rating}></FixedRating>*/}
+          <FixedStars rating={review.rating}></FixedStars>
         </div>
       </div> 
+      <div className="review-info" >
+        <p>{review.body}</p>
+      </div>
     </div>
     )
 }
