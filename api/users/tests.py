@@ -361,6 +361,7 @@ class TestMovieDetail(TestCase):
         response = self.client.delete("/api/movies/1/")
         self.assertEqual(response.status_code, 404)
 
+
 class TestReview(TestCase):
     def setUp(self):
         data = {
@@ -405,7 +406,7 @@ class TestReview(TestCase):
         review = models.Review.objects.get(movie=movie)
         self.assertEqual(review.rating, data["rating"])
         self.assertEqual(review.body, data["body"])
-    
+
     def test_funcionalidad_actualizar_review(self):
         data = {
             "title": "Pelicula 1",
@@ -478,6 +479,4 @@ class TestReview(TestCase):
         self.assertEqual(response.status_code, 204)
 
         with self.assertRaises(models.Review.DoesNotExist):
-            models.Review.objects.get(movie=movie)  
-
-        
+            models.Review.objects.get(movie=movie)
