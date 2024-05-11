@@ -50,7 +50,6 @@ function Movie({ movie }) {
       <img src={movie.thumbnail} alt="Thumbnail" className="thumbnail" />
       <div className="info" >
         <h2>{movie.title}</h2>
-        {/*<RatingFixedStars rating={movie.rating} />*/}
       </div>
     </div>)
 }

@@ -1,10 +1,12 @@
 import React from 'react';
 import { useLoaderData } from 'react-router-dom';
 import RatingControlDiv from './RatingControlDiv';
+import ReviewSection from './ReviewSection';
 
 export default function MovieDescription() {
     let movie = useLoaderData();
     return (
+    <div>
         <div className="container">
             <div className="movie-details full-info" id="movieDetails">
                 <img src={movie.thumbnail} alt="Thumbnail" id="thumbnail" className='thumbnail' />
@@ -32,7 +34,13 @@ export default function MovieDescription() {
                     <br />
                 </div>
             </div>
-                <RatingControlDiv movie={movie}></RatingControlDiv>
+            <RatingControlDiv movie={movie}></RatingControlDiv>
         </div>
+        <div>
+            <div className="review-section" id="reviews">
+                <ReviewSection movieid={movie.id}></ReviewSection>
+            </div>
+        </div>
+    </div>
     )
 }
