@@ -54,7 +54,7 @@ class LoginView(generics.CreateAPIView):
             user = serializer.validated_data
             token, created = Token.objects.get_or_create(user=user)
             response = Response(status=status.HTTP_201_CREATED)
-            response.set_cookie(key="session", value=token.key, samesite="lax")
+            response.set_cookie(key="session", value=token.key, samesite="None", secure=True)
             return response
         else:
             return Response(
