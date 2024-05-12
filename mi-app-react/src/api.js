@@ -114,6 +114,10 @@ export function register (formData) {
             document.getElementById('aviso').innerHTML = '✖︎ This email is already registered';
             document.getElementById('aviso').className = 'error';
         }
+        else if (res.status === 400) {
+            document.getElementById('aviso').innerHTML = '✖︎ The email is already associated with an account';
+            document.getElementById('aviso').className = 'error';
+        }
     }).catch((error) => {
         console.log(error.message, 'error');
     });
