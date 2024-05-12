@@ -76,7 +76,7 @@ export default function App() {
     const fetchMovies = async () => {
       try {
         const response = await fetch(
-          `http://localhost:8000/api/movies?limit=${MOVIES_PER_PAGE}&skip=${skip}`,
+          `https://filmaff.onrender.com/api/movies?limit=${MOVIES_PER_PAGE}&skip=${skip}`,
           {
             method: 'GET',
             headers: {

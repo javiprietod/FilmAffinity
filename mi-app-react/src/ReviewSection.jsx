@@ -66,7 +66,7 @@ function ReviewSection({movieid}) {
     let skip = (currentPage - INITIAL_PAGE) * REVIEWS_PER_PAGE;
     const fetchReviews = async () => {
       try {
-        const response = await fetch(`http://localhost:8000/api/reviews/?movieid=${movieid}&limit=${REVIEWS_PER_PAGE}&skip=${skip}`); // 
+        const response = await fetch(`https://filmaff.onrender.com/api/reviews/?movieid=${movieid}&limit=${REVIEWS_PER_PAGE}&skip=${skip}`); // 
 
         if (!response.ok) {
           throw new Error('Unable to retrieve the reviews');
