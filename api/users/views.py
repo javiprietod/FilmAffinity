@@ -1,7 +1,7 @@
 from rest_framework import generics, status
 from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
-from django.db.utils import IntegrityError
+from rest_framework.exceptions import ValidationError, AuthenticationFailed
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import (
     Case,
@@ -16,6 +16,7 @@ from api.users import models
 from django.http import Http404
 from django.core.paginator import Paginator
 from rest_framework.decorators import api_view
+from drf_spectacular.utils import extend_schema, OpenApiResponse
 
 
 def calculate_rating(movie_id):
@@ -36,13 +37,23 @@ class RegistroView(generics.ListCreateAPIView):
         return users
 
     def handle_exception(self, exc):
-        if isinstance(exc, IntegrityError):
-            return Response(
-                status=status.HTTP_409_CONFLICT,
-                data={"error": "Email already exists"},
-            )
-        else:
-            return super().handle_exception(exc)
+        if isinstance(exc, ValidationError):
+            if "email" in exc.detail:
+                if exc.detail["email"][0] == "Enter a valid email address.":
+                    return Response(
+                    status=status.HTTP_400_BAD_REQUEST,
+                    data={"error": exc.detail["email"][0]},
+                    )
+                return Response(
+                    status=status.HTTP_409_CONFLICT,
+                    data={"error": "Email already exists"},
+                )
+            elif "password" in exc.detail:
+                return Response(
+                    status=status.HTTP_400_BAD_REQUEST,
+                    data={"error": "Invalid password"},
+                )
+        return super().handle_exception(exc)
 
 
 class LoginView(generics.CreateAPIView):
@@ -78,6 +89,14 @@ class UsuarioView(generics.RetrieveUpdateDestroyAPIView):
             raise Http404("No user found with the provided session token")
 
         return user
+    
+    def handle_exception(self, exc):
+        if isinstance(exc, Http404):
+            return Response(
+                status=status.HTTP_404_NOT_FOUND,
+                data={"error": "No user found with the provided session token"},
+            )
+        return super().handle_exception(exc)
 
     def get(self, request):
         serializer = self.get_serializer(self.get_object())
@@ -89,28 +108,41 @@ class UsuarioView(generics.RetrieveUpdateDestroyAPIView):
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    def patch(self, request):
+        serializer = self.get_serializer(self.get_object(), data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request):
-        # Check if the user is authenticated
-        token_key = request.COOKIES.get("session")
-        if not token_key:
-            return Response(
-                status=status.HTTP_404_NOT_FOUND,
-                data={"error": "No session cookie found"},
-            )
-        response = Response(
-            status=status.HTTP_204_NO_CONTENT, data={"status": "success"}
-        )
-        Token.objects.filter(key=request.COOKIES.get("session")).delete()
-        response.delete_cookie("session")
-        return response
-
+        return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
+    #     # Check if the user is authenticated
+    #     token_key = request.COOKIES.get("session")
+    #     if not token_key:
+    #         return Response(
+    #             status=status.HTTP_404_NOT_FOUND,
+    #             data={"error": "No session cookie found"},
+    #         )
+    #     response = Response(
+    #         status=status.HTTP_204_NO_CONTENT, data={"status": "success"}
+    #     )
+    #     Token.objects.filter(key=request.COOKIES.get("session")).delete()
+    #     response.delete_cookie("session")
+    #     return response
 
 class LogoutView(generics.DestroyAPIView):
     def delete(self, request):
         response = Response(
             status=status.HTTP_204_NO_CONTENT, data={"status": "success"}
         )
+        token_key = request.COOKIES.get("session")
+        if not token_key:
+            return Response(
+                status=status.HTTP_405_METHOD_NOT_ALLOWED,
+                data={"error": "No session cookie found"},
+            )
         Token.objects.filter(key=request.COOKIES.get("session")).delete()
         response.delete_cookie("session")
         return response

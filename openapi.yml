@@ -1,0 +1,216 @@
+openapi: 3.0.0
+info:
+  title: Example API
+  version: 1.0.0
+servers:
+  # Added by API Auto Mocking Plugin
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/JAVIPRIETOD_1/FilmAff/1.0.0
+  - url: https://filmaff.onrender.com/api/
+    description: Development server
+paths:
+  /users/:
+    get:
+      summary: List users
+      operationId: listUsers
+      tags:
+        - Users
+      responses:
+        '200':
+          description: A list of users
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserResponse'
+    post:
+      summary: Create a user
+      operationId: createUser
+      tags:
+        - Users
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '201':
+          description: User created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+        '409':
+          description: Email already exists
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: 'Email already exists'
+        '400':
+          description: Invalid password
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: 'Invalid password'
+  /users/login/:
+    post:
+      summary: User login
+      operationId: loginUser
+      tags:
+        - Users
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Login'
+      responses:
+        '201':
+          description: Login successful, session cookie set
+          headers:
+            Set-Cookie:
+              schema:
+                type: string
+                example: 'session=abc123; Path=/; Secure; HttpOnly'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: 'Invalid credentials'
+  /users/me/:
+    get:
+      summary: Retrieve current user's profile
+      operationId: getCurrentUser
+      tags:
+        - Users
+      responses:
+        '200':
+          description: Current user profile retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+        '404':
+          description: No session cookie found or session is invalid
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: 'No session cookie found'
+    patch:
+      summary: Update current user's profile
+      operationId: updateCurrentUser
+      tags:
+        - Users
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserResponse'
+      responses:
+        '200':
+          description: User profile updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: Bad request data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: 'Invalid data provided'
+        '404':
+          description: No session cookie found or session is invalid
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: 'No user found with the provided session token'
+  /users/logout/:
+    delete:
+      summary: Log out the current user
+      operationId: logoutUser
+      tags:
+        - Users
+      responses:
+        '204':
+          description: User logged out successfully
+          headers:
+            Set-Cookie:
+              description: Deletes the session cookie
+              schema:
+                type: string
+                example: 'session=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT'
+        '405':
+          description: No session found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: 'No session cookie found'
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        nombre:
+          type: string
+          example: Name
+        tel:
+          type: integer
+          example: 123456789
+        email:
+          type: string
+          example: example@gmail.com
+        password:
+          type: string
+          example: Password123
+    UserResponse:
+      type: object
+      properties:
+        nombre:
+          type: string
+          example: Name
+        tel:
+          type: integer
+          example: 123456789
+        email:
+          type: string
+          example: example@gmail.com
+    Login:
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
