@@ -1,5 +1,5 @@
 export function login (formData) {
-    fetch('http://localhost:8000/api/users/login/', {
+    fetch('https://filmaff.onrender.com/api/users/login/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -20,66 +20,67 @@ export function login (formData) {
     });
 }
 
-export function checkLoggedIn () {
-    return fetch('http://localhost:8000/api/users/me/', {
-        method: 'GET',
-        headers: {
-            'Accept': 'application/json',
-        },
-        credentials: 'include',
-    })
-    .then((res) => {
-        if (res.ok) {
-            return res.json();
+export async function checkLoggedIn() {
+    try {
+        const response = await fetch('https://filmaff.onrender.com/api/users/me/', {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+            },
+            credentials: 'include',
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+            return { isLoggedIn: true, user: data };
+        } else {
+            return { isLoggedIn: false, user: null };
         }
-    })
-    .catch((error) => {
-        console.log(error.message, 'error');
-    });
+    } catch (error) {
+        return { isLoggedIn: false, user: null };
+    }
 }
 
 export function changeProfileInformation (formData) {
-    fetch('http://localhost:8000/api/users/me/', {
-            method: 'PATCH',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(formData),
-            credentials: 'include',
-        }).then((res) => {
-            console.log(res.status);
-            if (res.ok) {
-                location.href = '/profile';
-            }
-            else if (res.status === 409) {
-                document.getElementById('aviso').className = 'error';
-            }
-        }).catch((error) => {
+    fetch('https://filmaff.onrender.com/api/users/me/', {
+        method: 'PATCH',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+        credentials: 'include',
+    }).then((res) => {
+        if (res.ok) {
+            location.href = '/profile';
+        }
+        else if (res.status === 409) {
+            document.getElementById('aviso').className = 'error';
+        }
+    }).catch((error) => {
         console.log(error.message, 'error');
     });
 }
 
 export function deleteAccount () {
-    fetch('http://localhost:8000/api/users/me/', {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            credentials: 'include',
-        }).then((res) => {
-            if (confirm('Are you sure you want to delete your account?')) {
-                console.log(res.status);
-                if (res.ok) {
-                    location.href = '/';
-                }
+    fetch('https://filmaff.onrender.com/api/users/me/', {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+    }).then((res) => {
+        if (confirm('Are you sure you want to delete your account?')) {
+            if (res.ok) {
+                location.href = '/';
             }
-        }).catch((error) => {
+        }
+    }).catch((error) => {
         console.log(error.message, 'error');
     });
 }
 
-export function logout (setIsLoggedIn, setUserName, navigate) {
-    fetch('http://localhost:8000/api/users/logout', {
+export function logout (setIsLoggedIn, setUserName) {
+    fetch('https://filmaff.onrender.com/api/users/logout', {
         method: 'DELETE',
         headers: {
             'Content-Type': 'application/json',
@@ -90,16 +91,16 @@ export function logout (setIsLoggedIn, setUserName, navigate) {
         if (res.ok) {
             setIsLoggedIn(false);
             setUserName('');
-            navigate('/')
+            location.href = '/';
         }
     })
     .catch((error) => {
-            console.log(error.message, 'error');
+        console.log(error.message, 'error');
     });
 }
 
 export function register (formData) {
-    fetch('http://localhost:8000/api/users/', {
+    fetch('https://filmaff.onrender.com/api/users/', {
         method: 'POST',
         headers: {
         'Content-Type': 'application/json',
@@ -113,7 +114,11 @@ export function register (formData) {
             document.getElementById('aviso').innerHTML = '✖︎ This email is already registered';
             document.getElementById('aviso').className = 'error';
         }
+        else if (res.status === 400) {
+            document.getElementById('aviso').innerHTML = '✖︎ The email is already associated with an account';
+            document.getElementById('aviso').className = 'error';
+        }
     }).catch((error) => {
-    console.log(error.message, 'error');
+        console.log(error.message, 'error');
     });
 }

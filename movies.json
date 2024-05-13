@@ -101,6 +101,15 @@
             "summary": "The aging patriarch of an organized crime dynasty transfers control of his clandestine empire to his reluctant son.",
             "director": "Francis Ford Coppola",
             "thumbnail":"https://m.media-amazon.com/images/M/MV5BM2MyNjYxNmUtYTAwNi00MTYxLWJmNWYtYzZlODY3ZTk3OTFlXkEyXkFqcGdeQXVyNzkwMjQ5NzM@._V1_FMjpg_UX1000_.jpg"
+        },
+        {
+            "title": "Forrest Gump",
+            "year": 1994,
+            "duration": 142,
+            "genre": "Drama, Romance",
+            "summary": "The presidencies of Kennedy and Johnson, the Vietnam War, the Watergate scandal and other historical events unfold from the perspective of an Alabama man with an IQ of 75, whose only desire is to be reunited with his childhood sweetheart.",
+            "director": "Robert Zemeckis",
+            "thumbnail": "https://m.media-amazon.com/images/M/MV5BNWIwODRlZTUtY2U3ZS00Yzg1LWJhNzYtMmZiYmEyNmU1NjMzXkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_.jpg"
         }
     ]
 }

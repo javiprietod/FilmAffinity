@@ -1,13 +1,35 @@
 import { useEffect, useState } from 'react';
 import { NavLink as Navlink } from 'react-router-dom';
+import { checkLoggedIn } from './api';
+import RatingFixedStars from './FixedRating';
 
 
 const INITIAL_PAGE = 1;
 const MOVIES_PER_PAGE = 9;
 
-function ListPage({ movieList, currentPage, setCurrentPage, numFilms=-1}) {
+function ListPage({ movieList, currentPage, setCurrentPage, numFilms=-1 }) {
+  const [loggedIn, setLoggedIn] = useState(false);
+  const [name, setName] = useState('');
+  useEffect(() => {
+    checkLoggedIn().then((data) => {
+      if (data.isLoggedIn){
+        setLoggedIn(true);
+        setName(data.user.nombre);
+      } else {
+        setLoggedIn(false);
+      }
+    });
+  }, []);
   return <div className="container">
-    {numFilms===-1 ? <h2>Películas</h2> : <h2>Películas encontradas: {numFilms}</h2>}
+    <h2>
+      {numFilms===-1 ? 
+        (loggedIn ? 
+          "Our recommendations for you, " + name 
+          : 'Our movies'
+        )
+        : 'Películas encontradas: ' + numFilms
+      }
+    </h2>
     <PageFilter currentPage={currentPage} setCurrentPage={setCurrentPage} />
     <MovieList movieList={movieList} />
   </div>
@@ -42,14 +64,17 @@ function MovieList({ movieList }) {
 function Movie({ movie }) {
   return (
     <div className="movie-details" id="movieDetails">
+      <div className='rating-overlay'>
+        <RatingFixedStars rating={movie.rating} />
+      </div>
       <img src={movie.thumbnail} alt="Thumbnail" className="thumbnail" />
-      <div className="info">
+      <div className="info" >
         <h2>{movie.title}</h2>
       </div>
     </div>)
 }
 
-function App() {
+export default function App() {
   const [currentPage, setCurrentPage] = useState(INITIAL_PAGE);
   const [movieList, setMovieList] = useState([]);
   const [numFilms, setNumFilms] = useState(-1);
@@ -84,7 +109,6 @@ function App() {
           throw new Error('No se pudo obtener la lista de peliculas');
         }
         const data = await response.json();
-        // console.log(data);
         setMovieList(data);
       } catch (error) {
         console.error('Error al obtener los peliculas:', error);
@@ -99,4 +123,33 @@ function App() {
   )
 }
 
-export default App
+function sortMovies(movies, preferences) {
+  // Weighting system - adjust numbers as needed
+  const genreWeight = {
+    liked: 1,
+    neutral: 0,
+    disliked: -1
+  };
+
+  return movies.sort((a, b) => {
+    // Determine genre preference weight
+    const weightA = preferences.likedGenres.includes(a.genre) ? genreWeight.liked :
+                    preferences.dislikedGenres.includes(a.genre) ? genreWeight.disliked :
+                    genreWeight.neutral;
+    const weightB = preferences.likedGenres.includes(b.genre) ? genreWeight.liked :
+                    preferences.dislikedGenres.includes(b.genre) ? genreWeight.disliked :
+                    genreWeight.neutral;
+
+    // First, compare based on genre preference
+    if (weightA !== weightB) {
+      return weightB - weightA; // Note: Higher weight should come first
+    }
+
+    // If genres have the same preference weight, sort by rating
+    return b.rating - a.rating;
+  });
+}
+
+
+
+

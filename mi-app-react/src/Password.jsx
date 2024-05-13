@@ -10,7 +10,6 @@ export default function Register() {
 
     const handleSubmit = (event) => {
         event.preventDefault(); // Prevent the default form submission behavior
-        console.log("Form submission started");
         const formData = {
             password: pass,
         };

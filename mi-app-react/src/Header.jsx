@@ -1,4 +1,4 @@
-import { useNavigate, NavLink } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import logo from './images/logo.png';
 import RatingStars from './RatingStars';
 import { useState, useEffect } from 'react';
@@ -18,7 +18,7 @@ export default function Header() {
         // if they click "yes", log them out
         // if they click "no", do nothing
         if (confirm("Are you sure you want to log out?")) {
-            logout(setIsLoggedIn, setUserName, navigate);
+            logout(setIsLoggedIn, setUserName);
         }
     } 
     // If the user is logged in, show the user's name and a logout button
@@ -26,9 +26,16 @@ export default function Header() {
     useEffect(() => {
         // Check if the user is logged in
         checkLoggedIn().then((data) => {
-            setUserName(data.nombre);
-            setIsLoggedIn(true);
+            if (data.isLoggedIn) {
+
+                setIsLoggedIn(true);
+                setUserName(data.user.nombre);
+            } else {
+                setIsLoggedIn(false);
+                setUserName('');
+            }
         });
+
     }, []);
 
     useEffect(() => {
