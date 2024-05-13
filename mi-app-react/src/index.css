@@ -312,3 +312,23 @@ button[type="submit"]:hover {
   color : #447CAD;
   text-decoration: none;
 }
+
+.movie-rating-stars {
+  height: 10%;
+  padding: 0px;
+}
+
+.star-rating {
+  font-size: 30px;
+  padding: 0px;
+  padding-left: 5%;
+}
+
+.star {
+  color: gray;
+  cursor: pointer;
+}
+
+.star.green {
+  color:#349a65;
+}

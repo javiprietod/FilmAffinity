@@ -60,7 +60,7 @@ function App() {
     let skip = (currentPage - INITIAL_PAGE) * MOVIES_PER_PAGE;
     const fetchMovies = async () => {
       let url = 'http://localhost:8000/api/movies?'
-      for (const elem of ['title', 'director', 'genre', 'year']) {
+      for (const elem of ['title', 'director', 'genre', 'year', 'rating']) {
         if (params.get(elem)) {
           url += `${elem}=${params.get(elem)}&`;
         }

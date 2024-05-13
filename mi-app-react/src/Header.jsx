@@ -73,13 +73,18 @@ export default function Header() {
                     <div id='advanced-search' className="modal" onClick={() => setAdvancedSearch(false)}>
                         <div className="modal-content" onClick={e => e.stopPropagation()}>
                             <form id="advanced-search-form">
+                                <label for="title" style={{'color': 'black'}}>Title:</label>
                                 <input type="text" name="title" id="title" placeholder="Title" />
+                                <label for="director" style={{'color': 'black'}}>Director:</label>
                                 <input type="text" name="director" id="director" placeholder="Director" />
+                                <label for="genre" style={{'color': 'black'}}>Genre:</label>
                                 <input type="text" name="genre" id="genre" placeholder="Genre" />
+                                <label for="year" style={{'color': 'black'}}>Year:</label>
                                 <input type="text" name="year" id="year" placeholder="Year" />
-                                <input type="text" name="rating" id="rating" placeholder="rating" value={ratingFilter} />
+                                <label for="rating" style={{'color': 'black'}}>Rating:</label>
+                                <input type="hidden" name="rating" id="rating" placeholder="rating" value={ratingFilter} />
                                 <div className='movie-rating-stars'>
-                                    <RatingStars movie={movie.id} user={email} reviewScore={ratingFilter} reviewId = {reviewId}>  </RatingStars>
+                                    <RatingStars reviewScore={ratingFilter} changeReviewScore={setRatingFilter}>  </RatingStars>
                                 </div>
                                 <hr />
                                 <input type="submit" id='search-button' value="Search" />

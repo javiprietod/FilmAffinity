@@ -121,6 +121,9 @@ class MovieList(generics.ListCreateAPIView):
         year = self.request.GET.get("year")
         if year is not None:
             queryset = queryset.filter(year=year)
+        # rating = self.request.GET.get("rating")
+        # if rating is not None:
+        #     queryset = queryset.filter(rating>=rating)
         return queryset
 
     def post(self, request):
