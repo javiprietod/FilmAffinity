@@ -1,5 +1,6 @@
 import { useNavigate, NavLink } from "react-router-dom";
 import logo from './images/logo.png';
+import RatingStars from './RatingStars';
 import { useState, useEffect } from 'react';
 import { checkLoggedIn, logout } from "./api";
 
@@ -8,6 +9,8 @@ export default function Header() {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [userName, setUserName] = useState('');
     const [isOpen, setIsOpen] = useState(false);
+    const [advancedSearch, setAdvancedSearch] = useState(false);
+    const [ratingFilter, setRatingFilter] = useState(0);
     const navigate = useNavigate();
 
     const handleLogout = () => {
@@ -21,12 +24,33 @@ export default function Header() {
     // If the user is logged in, show the user's name and a logout button
     // first, we need to get the user's name from the server
     useEffect(() => {
-        // console.log("useEffect");
+        // Check if the user is logged in
         checkLoggedIn().then((data) => {
             setUserName(data.nombre);
             setIsLoggedIn(true);
         });
     }, []);
+
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (event.target.id !== 'advanced') {
+                if (event.target.id !== 'advanced-search' && advancedSearch) {
+                    setAdvancedSearch(false);
+                }
+            }
+            if (event.target.id !== 'profile-actions' && event.target.id !== 'name-bold') {
+                if (event.target.id !== 'modal' && isOpen) {
+                    setIsOpen(false);
+                }
+            }
+        };
+
+        document.addEventListener('click', handleClickOutside);
+
+        return () => {
+            document.removeEventListener('click', handleClickOutside);
+        };
+    }, [advancedSearch, isOpen]);
 
     return (
         <header>
@@ -37,27 +61,46 @@ export default function Header() {
                         <img id="logo" src={logo} height="44" />
                     </NavLink>
                 </div>
-                <div>
+                <div id="search-bar-container">
                     <form id="search-bar">
-                        <input type="text" name="search" id="search" placeholder="Search..." />
-                        {/* <input type="submit" value="Search"> */}
+                        <input type="text" name="title" id="title" placeholder="Search..." />
                     </form>
+                    <div id="advanced" onClick={() => setAdvancedSearch(!advancedSearch)}>
+                        Advanced Search &gt;&gt;&gt;
+                    </div>
                 </div>
+                {advancedSearch ?
+                    <div id='advanced-search' className="modal" onClick={() => setAdvancedSearch(false)}>
+                        <div className="modal-content" onClick={e => e.stopPropagation()}>
+                            <form id="advanced-search-form">
+                                <input type="text" name="title" id="title" placeholder="Title" />
+                                <input type="text" name="director" id="director" placeholder="Director" />
+                                <input type="text" name="genre" id="genre" placeholder="Genre" />
+                                <input type="text" name="year" id="year" placeholder="Year" />
+                                <input type="text" name="rating" id="rating" placeholder="rating" value={ratingFilter} />
+                                <div className='movie-rating-stars'>
+                                    <RatingStars movie={movie.id} user={email} reviewScore={ratingFilter} reviewId = {reviewId}>  </RatingStars>
+                                </div>
+                                <hr />
+                                <input type="submit" id='search-button' value="Search" />
+                            </form>
+                        </div>
+                    </div> : null
+                }
                 <div id="user-login-container">
                     <div id="login-register">
                         {isLoggedIn ? ( 
                             <div>
-                                <span onClick={() => setIsOpen(!isOpen)}>Welcome, <strong style={{'textDecoration': 'underline'}}>{userName}</strong></span>
-                                {console.log("isOpen:", isOpen)}
+                                <span id='profile-actions' onClick={() => setIsOpen(!isOpen)} style={{'z-index': '1'}}>
+                                    Welcome, <strong id='name-bold' style={{'textDecoration': 'underline'}}>{userName}</strong>
+                                </span>
                                 {isOpen ?  (
                                     <div className="modal" onClick={() => setIsOpen(false)}>
-                                    <div className="modal-content" onClick={e => e.stopPropagation()}>
-                                            
-                                        <p><a href="/profile">Profile</a></p>
-                                        <hr />
-                                        <p onClick={handleLogout}><a>Logout</a></p>
-                                            
-                                    </div>
+                                        <div className="modal-content" onClick={e => e.stopPropagation()}>
+                                            <p><a href="/profile">Profile</a></p>
+                                            <hr />
+                                            <p onClick={handleLogout}><a>Logout</a></p>
+                                        </div>
                                     </div>
                                 ) : null
                                 }
