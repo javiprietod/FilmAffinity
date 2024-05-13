@@ -3,6 +3,7 @@ header {
   background-color: #349a65;
   color: #fff;
   text-align: left; 
+  z-index: 1;
 }
 
 body {
@@ -274,11 +275,12 @@ button[type="submit"]:hover {
 
 #advanced-search {
   width: 40%;
-  right: auto;
   left: 33%;
   top: -5px;
   margin: 0%;
   padding: 0%;
+  position: absolute;
+  z-index: 2;          /* Mayor z-index para que se muestre por encima */
 }
 
 #advanced-search-form > * {
@@ -347,9 +349,7 @@ button[type="submit"]:hover {
 
 .rating-overlay {
   position: absolute;
-  top: 10;
-  left: 40;
-  background-color: rgba(0, 0, 0, 0.8); /* Change opacity as needed */
+  background-color: rgba(0, 0, 0, 0.8); 
   color: white;
   width: 7%;
   height: 7%;

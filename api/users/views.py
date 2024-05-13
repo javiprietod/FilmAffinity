@@ -54,7 +54,9 @@ class LoginView(generics.CreateAPIView):
             user = serializer.validated_data
             token, created = Token.objects.get_or_create(user=user)
             response = Response(status=status.HTTP_201_CREATED)
-            response.set_cookie(key="session", value=token.key, samesite="None", secure=True)
+            response.set_cookie(
+                key="session", value=token.key, samesite="None", secure=True
+            )
             return response
         else:
             return Response(
@@ -144,9 +146,9 @@ class MovieList(generics.ListCreateAPIView):
         year = self.request.GET.get("year")
         if year is not None:
             queryset = queryset.filter(year=year)
-        # rating = self.request.GET.get("rating")
-        # if rating is not None:
-        #     queryset = queryset.filter(rating>=rating)
+        rating = self.request.GET.get("rating")
+        if rating is not None:
+            queryset = queryset.filter(rating__gte=rating)
         return queryset
 
     def post(self, request):

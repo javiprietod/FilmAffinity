@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom";
+import { useNavigate, NavLink } from "react-router-dom";
 import logo from './images/logo.png';
 import RatingStars from './RatingStars';
 import { useState, useEffect } from 'react';
