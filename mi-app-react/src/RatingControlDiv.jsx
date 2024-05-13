@@ -67,27 +67,32 @@ function RatingControlDiv({movie}) {
   }, []);
 
   return (
-    <div className="movie-rating-container" id="rating-register">
-      <div className='global-rating'>
-        <div>
-          <span> Filmaffinity rating:</span>
-        </div>
-        <FixedRating rating={movie.rating}></FixedRating>
-      </div>
-      <div className='personal-rating'>
-        {isLoggedIn ? ( 
+    <div>
+      <div className="movie-rating-container" id="rating-register">
+        <div className='global-rating'>
           <div>
-            <div><span>Your rating: </span></div>
-            <RatingStars movie={movie.id} user={email} reviewScore={reviewScore} reviewId = {reviewId}>  </RatingStars>
+            <span> Filmaffinity rating:</span>
           </div>
-        ) : (
+          <FixedRating rating={movie.rating}></FixedRating>
+        </div>
+        <div className='personal-rating'>
+          {isLoggedIn ? ( 
             <div>
-              <NavLink to="/login">
-                <strong className="movie-rating-loginlink">Login</strong> 
-              </NavLink>
-              <span> to rate your favorite movies! </span>
+              <div><span>Your rating: </span></div>
+              <RatingStars movie={movie.id} user={email} reviewScore={reviewScore} reviewId = {reviewId}>  </RatingStars>
             </div>
-        )}
+          ) : (
+              <div>
+                <NavLink to="/login">
+                  <strong className="movie-rating-loginlink">Login</strong> 
+                </NavLink>
+                <span> to rate your favorite movies! </span>
+              </div>
+          )}
+        </div>
+      </div>
+      <div>
+        {/* Allow body for review */}
       </div>
     </div>
     

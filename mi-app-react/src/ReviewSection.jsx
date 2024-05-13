@@ -45,7 +45,7 @@ function Review({ review }) {
     <div className="individual-review" id="reviewDetails">
       <div className='user-side-rating'>
         <div>
-          <h2>{review.user}</h2> {/* Aquí debería ir el nombre del usuario, el cual o cambiamos la base de datos para guardar tb el nombre del usuario o hacemos llamada a la api*/}
+          <h2>{review.nombre}</h2> {/* Aquí debería ir el nombre del usuario, el cual o cambiamos la base de datos para guardar tb el nombre del usuario o hacemos llamada a la api*/}
         </div>
         <div>
           {/*<FixedRating rating={review.rating}></FixedRating>*/}

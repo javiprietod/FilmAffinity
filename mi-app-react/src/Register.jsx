@@ -39,7 +39,7 @@ export default function Register() {
     <h2>Register</h2>
     
         <form className="form-control" onSubmit={handleSubmit}>
-            <label for="nombre">Name:</label>
+            <label for="nombre">Username:</label>
             <input type="text" name="nombre" id="nombre" value={nombre} onChange={e => setNombre(e.target.value)} required />
             <label for="tel">Phone Number:</label>
             <input type="tel" name="tel" id="tel" value={tel} onChange={e => setTel(e.target.value)} required />

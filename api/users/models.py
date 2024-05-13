@@ -49,13 +49,20 @@ class Review(models.Model):
     id = models.AutoField(primary_key=True)
     movie = models.ForeignKey(Movie, on_delete=models.CASCADE)
     user = models.ForeignKey(Usuario, on_delete=models.CASCADE)
+    nombre = models.CharField(max_length=256, null=True, blank=True)
     rating = models.FloatField()
     body = models.TextField(null=True, blank=True)
+
+    def save(self, *args, **kwargs):
+        if not self.nombre:
+            self.nombre = self.user.nombre
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return f"""
         movie: {self.movie}
         user: {self.user}
+        nombre: {self.nombre}
         rating: {self.rating}
         body: {self.body}
         """
