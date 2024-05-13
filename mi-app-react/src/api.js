@@ -118,3 +118,55 @@ export function register (formData) {
         console.log(error.message, 'error');
     });
 }
+
+export function postReview(movieId, userId, ratingScore) {
+    fetch('http://localhost:8000/api/reviews/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        rating: ratingScore,
+        body: "",
+        movie: movieId,
+        user: userId,
+      }),
+      credentials: 'include',
+    })
+    .then((res) => {
+      if (res.ok) {
+        return res.json();
+      } else {
+        throw new Error('Failed to post review');
+      }
+    })
+    .then((data) => {
+      console.log('Review posted successfully:', data);
+    })
+    .catch((error) => {
+      console.error('Error posting review:', error);
+    });
+  }
+  
+export function patchReview(reviewId, ratingScore, movieId) {
+    fetch(`http://localhost:8000/api/reviews/${reviewId}/`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        movie: movieId,
+        rating: ratingScore
+      }),
+      credentials: 'include',
+    })
+      .then((res) => {
+        if (res.ok) {
+        } else {
+          throw new Error('Failed to update review');
+        }
+      })
+      .catch((error) => {
+        console.error('Error updating review:', error);
+      });
+  }

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './index.css';
+import { postReview, patchReview } from './api';
 
 const RatingStars = ({movie,user,reviewScore,reviewId}) => {
   const [rating, setRating] = useState(0);
@@ -53,55 +54,3 @@ const RatingStars = ({movie,user,reviewScore,reviewId}) => {
   );
 };
 export default RatingStars;
-
-function postReview(movieId, userId, ratingScore) {
-  fetch('http://localhost:8000/api/reviews/', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      rating: ratingScore,
-      body: "",
-      movie: movieId,
-      user: userId,
-    }),
-    credentials: 'include',
-  })
-  .then((res) => {
-    if (res.ok) {
-      return res.json();
-    } else {
-      throw new Error('Failed to post review');
-    }
-  })
-  .then((data) => {
-    console.log('Review posted successfully:', data);
-  })
-  .catch((error) => {
-    console.error('Error posting review:', error);
-  });
-}
-
-function patchReview(reviewId, ratingScore, movieId) {
-  fetch(`http://localhost:8000/api/reviews/${reviewId}/`, {
-    method: 'PATCH',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      movie: movieId,
-      rating: ratingScore
-    }),
-    credentials: 'include',
-  })
-    .then((res) => {
-      if (res.ok) {
-      } else {
-        throw new Error('Failed to update review');
-      }
-    })
-    .catch((error) => {
-      console.error('Error updating review:', error);
-    });
-}
