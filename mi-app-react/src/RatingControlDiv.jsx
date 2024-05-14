@@ -13,6 +13,16 @@ function RatingControlDiv({movie}) {
   const [reviewScore, setReviewScore] = useState(0);
   const [prueba, setPrueba] = useState(0);
   
+  const handleSubmit = () => {
+    // Call the API to patch the review with the new body text
+    console.log('Input value:', prueba);
+  };
+
+  const handleDelete = () => {
+    // Call API to delete the review
+    console.log('Review deleted');
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       // Fetch user data
@@ -98,7 +108,7 @@ function RatingControlDiv({movie}) {
         {isLoggedIn ? (
           <div>
             <RatingTextInput movie={movie.id} user={email} reviewId = {reviewId} prueba={prueba}>  </RatingTextInput>
-            <RatingButtons movie={movie.id} user={email} reviewId = {reviewId} prueba={prueba}>  </RatingButtons>
+            <RatingButtons submitHandler={handleSubmit} deleteHandler={handleDelete}> </RatingButtons>
           </div>
         ) : null}
       </div>

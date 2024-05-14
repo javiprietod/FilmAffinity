@@ -6,7 +6,7 @@ const RatingStars = ({movie, user, reviewScore, reviewId, setPrueba}) => {
   const [rating, setRating] = useState(0);
   const [confirmedRating, setConfirmedRating] = useState(0);
   const [hasReviewed, setHasReviewed] = useState(false);
-  {/* setConfirmedRating(llamada_para_ver_si_este_usuario_ha_votado_esta_peli) */}
+  
   useEffect(() => {
     if (reviewScore === 0) {
       setHasReviewed(false);

@@ -1,24 +1,18 @@
 import React, { useState } from 'react';
 
-const RatingButtons = ({ movie, user, reviewId, prueba}) => {
-  const [inputValue, setInputValue] = useState('');
-
-
+const RatingButtons = ({submitHandler, deleteHandler}) => {
   const handleSubmit = () => {
-    // Call the API to patch the review with the new body text
-    console.log('Input value:', inputValue);
+    submitHandler();
   };
 
   const handleDelete = () => {
-    // Call API to delete the review
-    console.log('Review deleted');
+    deleteHandler();
   };
 
   return (
     <div className='personal-rating-buttons'>
-        <span> {prueba} </span>
-        <button onClick={handleSubmit}>Submit Review</button>
-        <button onClick={handleDelete}>Delete Review</button>
+        <button className='personal-rating-button' onClick={handleSubmit}>Submit Review</button>
+        <button className='personal-rating-button' onClick={handleDelete}>Delete Review</button>
     </div>
   );
 };

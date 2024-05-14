@@ -6,17 +6,6 @@ const RatingTextInput = ({ movie, user, reviewId, prueba}) => {
   const handleChange = (event) => {
     setInputValue(event.target.value);
   };
-
-  const handleSubmit = () => {
-    // Call the API to patch the review with the new body text
-    console.log('Input value:', inputValue);
-  };
-
-  const handleDelete = () => {
-    // You can perform any action for deleting a review here.
-    console.log('Review deleted');
-  };
-
   return (
     <div>
       <textarea  className='personal-rating-text'
