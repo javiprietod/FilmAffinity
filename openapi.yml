@@ -153,6 +153,24 @@ paths:
                   error:
                     type: string
                     example: 'No user found with the provided session token'
+    delete:
+      summary: Delete current user's profile
+      operationId: deleteCurrentUser
+      tags:
+        - Users
+      responses:
+        '204':
+          description: User profile deleted successfully
+        '404':
+          description: No session cookie found or session is invalid
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: 'No session cookie found'
   /users/logout/:
     delete:
       summary: Log out the current user
