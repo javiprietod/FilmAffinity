@@ -92,7 +92,15 @@ function RatingControlDiv({movie}) {
         </div>
       </div>
       <div>
-        {/* Allow body for review */}
+        {isLoggedIn ? (
+          <div>
+            {/* add the form and button inside this div */}
+          </div>
+        ) : (
+          <div>
+            {/* add nothing here */}
+          </div>
+        )}
       </div>
     </div>
     
