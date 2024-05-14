@@ -13,7 +13,7 @@ function RatingControlDiv({movie}) {
   useEffect(() => {
     const fetchData = async () => {
       // Fetch user data
-      fetch('https://filmaff.onrender.com/api/users/me/', {
+      fetch('http://localhost:8000/api/users/me/', {
         method: 'GET',
         headers: {
           'Accept': 'application/json',
@@ -32,7 +32,7 @@ function RatingControlDiv({movie}) {
           setIsLoggedIn(true);
 
           // Fetch review for the movie and user if it exists
-          fetch(`https://filmaff.onrender.com/api/reviews/`, {
+          fetch(`http://localhost:8000/api/reviews/`, {
             method: 'GET',
             headers: {
               'Accept': 'application/json',
