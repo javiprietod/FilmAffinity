@@ -62,16 +62,14 @@ class LoginView(generics.CreateAPIView):
         serializer = self.get_serializer(data=request.data)
         if serializer.is_valid():
             user = serializer.validated_data
-            token, created = Token.objects.get_or_create(user=user)
+            token, _ = Token.objects.get_or_create(user=user)
             response = Response(status=status.HTTP_201_CREATED)
             response.set_cookie(
                 key="session", value=token.key, samesite="None", secure=True
             )
             return response
         else:
-            return Response(
-                serializer.errors, status=status.HTTP_401_UNAUTHORIZED
-            )
+            return Response(serializer.errors, status=status.HTTP_401_UNAUTHORIZED)
 
 
 class UsuarioView(generics.RetrieveUpdateDestroyAPIView):
@@ -102,13 +100,6 @@ class UsuarioView(generics.RetrieveUpdateDestroyAPIView):
     def get(self, request):
         serializer = self.get_serializer(self.get_object())
         return Response(serializer.data)
-
-    def put(self, request):
-        serializer = self.get_serializer(self.get_object(), data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def patch(self, request):
         serializer = self.get_serializer(
@@ -200,9 +191,7 @@ class MovieList(generics.ListCreateAPIView):
                 user = Token.objects.get(key=token_key).user
             except Token.DoesNotExist:
                 raise Http404("No user found with the provided session token")
-            user_reviews = models.Review.objects.filter(
-                user__username=user.username
-            )
+            user_reviews = models.Review.objects.filter(user__username=user.username)
             # If the user has no reviews, return the top rated movies
             if len(user_reviews) == 0:
                 queryset = queryset.order_by("-rating")
@@ -214,9 +203,7 @@ class MovieList(generics.ListCreateAPIView):
                     if review.rating > max_rating:
                         max_rating = review.rating
                         genres = (
-                            review.movie.genre.split(",")
-                            if review.rating >= 3
-                            else []
+                            review.movie.genre.split(",") if review.rating >= 3 else []
                         )
                         user_genres = [
                             genre.strip()
@@ -225,9 +212,7 @@ class MovieList(generics.ListCreateAPIView):
                         ]
 
                 # Find movies with similar genres that the user likes
-                q_objects = [
-                    Q(genre__icontains=genre.strip()) for genre in user_genres
-                ]
+                q_objects = [Q(genre__icontains=genre.strip()) for genre in user_genres]
                 q = q_objects.pop()
                 for obj in q_objects:
                     q |= obj
@@ -247,9 +232,7 @@ class MovieList(generics.ListCreateAPIView):
                     )
                 )
 
-                queryset = recommended_movies.order_by(
-                    "-similarity_score", "-rating"
-                )
+                queryset = recommended_movies.order_by("-similarity_score", "-rating")
 
         limit = request.query_params.get("limit", 9)
         skip = request.query_params.get("skip", 0)
@@ -277,26 +260,24 @@ class MovieDetail(generics.RetrieveUpdateDestroyAPIView):
         except models.Movie.DoesNotExist:
             raise Http404("No movie found with the provided id")
 
-    def get(self, request, id):
+    def get(self, request, **kwargs):
         serializer = self.get_serializer(self.get_object())
         return Response(serializer.data)
 
-    def put(self, request, id):
+    def put(self, request, **kwargs):
         serializer = self.get_serializer(self.get_object(), data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def delete(self, request, id):
+    def delete(self, request, **kwargs):
         self.get_object().delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
     def handle_exception(self, exc):
         if isinstance(exc, Http404):
-            return Response(
-                status=status.HTTP_404_NOT_FOUND, data={"error": str(exc)}
-            )
+            return Response(status=status.HTTP_404_NOT_FOUND, data={"error": str(exc)})
         return super().handle_exception(exc)
 
 
@@ -320,10 +301,10 @@ class ReviewList(generics.ListCreateAPIView):
 
     def get_queryset(self):
         queryset = models.Review.objects.all()
-        id = self.request.GET.get("movieid", None)
+        movie_id = self.request.GET.get("movieid", None)
         username = self.request.GET.get("username", None)
-        if id is not None:
-            queryset = queryset.filter(movie__id=id)
+        if movie_id is not None:
+            queryset = queryset.filter(movie__id=movie_id)
         if username is not None:
             queryset = queryset.filter(user__username=username)
         return queryset
@@ -348,11 +329,11 @@ class ReviewDetail(generics.RetrieveUpdateDestroyAPIView):
         except models.Review.DoesNotExist:
             raise Http404("No review found with the provided id")
 
-    def get(self, request, id):
+    def get(self, request, **kwargs):
         serializer = self.get_serializer(self.get_object())
         return Response(serializer.data)
 
-    def put(self, request, id):
+    def put(self, request, **kwargs):
         serializer = self.get_serializer(self.get_object(), data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -361,7 +342,7 @@ class ReviewDetail(generics.RetrieveUpdateDestroyAPIView):
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def patch(self, request, id):
+    def patch(self, request, **kwargs):
         serializer = self.get_serializer(
             self.get_object(), data=request.data, partial=True
         )
@@ -372,7 +353,7 @@ class ReviewDetail(generics.RetrieveUpdateDestroyAPIView):
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def delete(self, request, id):
+    def delete(self, request, **kwargs):
         review = self.get_object()
         movie_id = review.movie.id
         self.get_object().delete()
@@ -381,7 +362,5 @@ class ReviewDetail(generics.RetrieveUpdateDestroyAPIView):
 
     def handle_exception(self, exc):
         if isinstance(exc, Http404):
-            return Response(
-                status=status.HTTP_404_NOT_FOUND, data={"error": str(exc)}
-            )
+            return Response(status=status.HTTP_404_NOT_FOUND, data={"error": str(exc)})
         return super().handle_exception(exc)
