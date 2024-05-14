@@ -425,6 +425,167 @@ paths:
                   error:
                     type: string
                     example: 'HTTP method not allowed'
+  /reviews/:
+    get:
+      summary: List all reviews
+      operationId: listReviews
+      tags:
+        - Reviews
+      parameters:
+        - in: query
+          name: movieid
+          schema:
+            type: integer
+            example: 10
+          description: Optional movieid to filter the list of reviews
+        - in: query
+          name: limit
+          schema:
+            type: integer
+            default: 9
+          description: Limit the number of reviews returned
+        - in: query
+          name: skip
+          schema:
+            type: integer
+            default: 0
+          description: Number of reviews to skip before starting to return results
+      responses:
+        '200':
+          description: An array of movies
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Movie'
+    post:
+      summary: Create a new review
+      operationId: createReview
+      tags:
+        - Reviews
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Review'
+      responses:
+        '201':
+          description: New review created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Review'
+        '400':
+          description: Invalid input, object invalid
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: 'Invalid data provided'
+  /reviews/{id}/:
+    get:
+      summary: Retrieve a specific review
+      operationId: getReview
+      tags:
+        - Reviews
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            example: 1
+          description: Unique identifier of the review
+      responses:
+        '200':
+          description: Detailed information about a review
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Review'
+        '404':
+          description: Review not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: 'No review found with the provided id'
+    patch:
+      summary: Update a review
+      operationId: updateReview
+      tags:
+        - Reviews
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Review'
+      responses:
+        '200':
+          description: Review updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Review'
+        '400':
+          description: Invalid input, object invalid
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: 'Invalid data provided'
+        '404':
+          description: Review not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: 'No review found with the provided id'
+    delete:
+      summary: Delete a review
+      operationId: deleteReview
+      tags:
+        - Reviews
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Review deleted successfully
+        '404':
+          description: Review not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: 'No review found with the provided id'
 components:
   schemas:
     User:
@@ -435,7 +596,7 @@ components:
           example: Name
         tel:
           type: integer
-          example: 123456789
+          example: 623456789
         email:
           type: string
           example: example@gmail.com
@@ -450,7 +611,7 @@ components:
           example: Name
         tel:
           type: integer
-          example: 123456789
+          example: 623456789
         email:
           type: string
           example: example@gmail.com
@@ -491,3 +652,21 @@ components:
         thumbnail:
           type: string
           example: link.url
+    Review:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        rating:
+          type: number
+          example: 5.0
+        body:
+          type: string
+          example: The movie is great
+        movie:
+          type: integer
+          example: 1
+        user:
+          type: string
+          example: example@gmail.com

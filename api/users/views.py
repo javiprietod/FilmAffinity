@@ -41,8 +41,8 @@ class RegistroView(generics.ListCreateAPIView):
             if "email" in exc.detail:
                 if exc.detail["email"][0] == "Enter a valid email address.":
                     return Response(
-                    status=status.HTTP_400_BAD_REQUEST,
-                    data={"error": exc.detail["email"][0]},
+                        status=status.HTTP_400_BAD_REQUEST,
+                        data={"error": exc.detail["email"][0]},
                     )
                 return Response(
                     status=status.HTTP_409_CONFLICT,
@@ -65,7 +65,9 @@ class LoginView(generics.CreateAPIView):
             user = serializer.validated_data
             token, created = Token.objects.get_or_create(user=user)
             response = Response(status=status.HTTP_201_CREATED)
-            response.set_cookie(key="session", value=token.key, samesite="None", secure=True)
+            response.set_cookie(
+                key="session", value=token.key, samesite="None", secure=True
+            )
             return response
         else:
             return Response(
@@ -89,7 +91,7 @@ class UsuarioView(generics.RetrieveUpdateDestroyAPIView):
             raise Http404("No user found with the provided session token")
 
         return user
-    
+
     def handle_exception(self, exc):
         if isinstance(exc, Http404):
             return Response(
@@ -108,9 +110,11 @@ class UsuarioView(generics.RetrieveUpdateDestroyAPIView):
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
+
     def patch(self, request):
-        serializer = self.get_serializer(self.get_object(), data=request.data, partial=True)
+        serializer = self.get_serializer(
+            self.get_object(), data=request.data, partial=True
+        )
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
@@ -130,6 +134,7 @@ class UsuarioView(generics.RetrieveUpdateDestroyAPIView):
         Token.objects.filter(key=request.COOKIES.get("session")).delete()
         response.delete_cookie("session")
         return response
+
 
 class LogoutView(generics.DestroyAPIView):
     def delete(self, request):
