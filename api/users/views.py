@@ -186,7 +186,7 @@ class MovieList(generics.ListCreateAPIView):
         queryset = self.get_queryset()
 
         token_key = request.COOKIES.get("session")
-        
+
         if token_key:
             try:
                 user = Token.objects.get(key=token_key).user
