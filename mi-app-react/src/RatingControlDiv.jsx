@@ -16,17 +16,12 @@ function RatingControlDiv({movie}) {
   
   const handleSubmit = async () => {
     // Call the API to patch the review with the new body text
-    console.log('Review submitted');
     if (reviewId === -1) {
-      console.log('Review does not exist, posting', reviewScore);
       if (reviewScore !== 0) {
         postReview(movie.id, email, reviewScore, reviewBody);
         setTimeout(async() => {window.location.reload();}, 1000);
-      } else {
-        console.log('Unable to post review without rating');
-      }
+      } 
     } else {
-      console.log('Review already exists, patching', movie.id);
       patchReview(reviewId, movie.id, reviewScore, reviewBody);
     }
   };
@@ -39,9 +34,6 @@ function RatingControlDiv({movie}) {
       setReviewBody('');
       setReviewId(-1);
     }
-    else {
-      console.log('No review to delete');
-    } 
   };
 
   useEffect(() => {
@@ -55,10 +47,6 @@ function RatingControlDiv({movie}) {
             setReviewId(data.id);
             setReviewScore(data.rating);
             setReviewBody(data.body);
-            console.log('Review found is :', data);
-          }
-          else {
-            console.log('Not reviewed yet');
           }
         });
       }

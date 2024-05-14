@@ -17,7 +17,7 @@ export function login (formData) {
         }
     })
     .catch((error) => {
-        console.log(error.message, 'error');
+        console.error(error.message, 'error');
     });
 }
 
@@ -56,7 +56,7 @@ export function changeProfileInformation (formData) {
             document.getElementById('aviso').className = 'error';
         }
     }).catch((error) => {
-        console.log(error.message, 'error');
+        console.error(error.message, 'error');
     });
 }
 
@@ -74,7 +74,7 @@ export function deleteAccount () {
                 location.href = '/';
             }
         }).catch((error) => {
-            console.log(error.message, 'error');
+            console.error(error.message, 'error');
         });
     }
 }
@@ -96,7 +96,7 @@ export function logout (setIsLoggedIn, setUserName) {
         }
     })
     .catch((error) => {
-        console.log(error.message, 'error');
+        console.error(error.message, 'error');
     });
 }
 
@@ -121,12 +121,11 @@ export function register (formData) {
             document.getElementById('aviso').className = 'error';
         }
         else if (res.status === 400) {
-            console.log(res);
             document.getElementById('aviso').innerHTML = '✖︎ The phone number introduced is not valid';
             document.getElementById('aviso').className = 'error';
         }
     }).catch((error) => {
-        console.log(error.message, 'error');
+        console.error(error.message, 'error');
     });
 }
 
@@ -176,9 +175,7 @@ export function patchReview(reviewId, movieId, reviewScore, reviewBody) {
         },
         body: body,
     }).then((res) => {
-        if (res.ok) {
-            console.log('Review updated successfully');
-        } else {
+        if (!res.ok) {
             throw new Error('Failed to update review');
         }
     }).catch((error) => {
@@ -193,14 +190,11 @@ export function deleteReview(reviewId) {
             'Content-Type': 'application/json',
         },
     }).then((res) => {
-        if (res.ok) {
-            console.log('Review deleted successfully');
-        } else {
+        if (!res.ok) {
             throw new Error('Failed to delete review');
         }
     }).catch((error) => {
           console.error('Error deleting review:', error);
-          console.log('Review ID:', reviewId);
     });
   }
 
@@ -214,7 +208,6 @@ export function deleteReview(reviewId) {
       
       if (response.ok) {
           const data = await response.json();
-          console.log('I`ve found this in the API', data);
           return data;
       } else {
           throw new Error('Failed to get review');

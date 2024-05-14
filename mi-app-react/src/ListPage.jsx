@@ -7,7 +7,7 @@ import RatingFixedStars from './FixedRating';
 const INITIAL_PAGE = 1;
 const MOVIES_PER_PAGE = 9;
 
-function ListPage({ movieList, currentPage, setCurrentPage, numFilms=-1 }) {
+function ListPage({ movieList, currentPage, setCurrentPage, numFilms=-1, maxPages=-1 }) {
   const [loggedIn, setLoggedIn] = useState(false);
   const [name, setName] = useState('');
   useEffect(() => {
@@ -36,12 +36,12 @@ function ListPage({ movieList, currentPage, setCurrentPage, numFilms=-1 }) {
                 : 'Movies found: ' + numFilms
               }
             </h2>
-            <PageFilter currentPage={currentPage} setCurrentPage={setCurrentPage} />
+            <PageFilter currentPage={currentPage} setCurrentPage={setCurrentPage} numPages={maxPages}/>
             <MovieList movieList={movieList} />
           </div>
 }
 
-function PageFilter({ currentPage, setCurrentPage }) {
+function PageFilter({ currentPage, setCurrentPage, numPages }) {
 
   function changePage(page) {
     page = Math.max(1, page);
@@ -50,9 +50,9 @@ function PageFilter({ currentPage, setCurrentPage }) {
 
   return <>
     <div className="buttons">
-      <button onClick={() => changePage(currentPage - 1)} disabled={currentPage == INITIAL_PAGE}>&lt;</button>
+      <button onClick={() => changePage(currentPage - 1)} disabled={currentPage === INITIAL_PAGE}>&lt;</button>
       <input type="number" value={currentPage} onChange={(e) => changePage(e.target.value)} />
-      <button onClick={() => changePage(currentPage + 1)}>&gt;</button>
+      <button onClick={() => changePage(currentPage + 1)} disabled={currentPage === numPages}>&gt;</button>
     </div>
   </>
 }
@@ -84,6 +84,7 @@ export default function App() {
   const [currentPage, setCurrentPage] = useState(INITIAL_PAGE);
   const [movieList, setMovieList] = useState([]);
   const [numFilms, setNumFilms] = useState(-1);
+  const [numPages, setNumPages] = useState(-1);
   // Get current url parameters
   const params = new URLSearchParams(window.location.search);
 
@@ -103,7 +104,6 @@ export default function App() {
             throw new Error('No se pudo obtener la lista de peliculas');
           }
           const data = await response.json();
-          // console.log(data);
           setNumFilms(data.length);
         } catch (error) {
           console.error('Error al obtener los peliculas:', error);
@@ -111,12 +111,20 @@ export default function App() {
       }
       try {
         const response = await fetch(url + `limit=${MOVIES_PER_PAGE}&skip=${skip}`, {method: 'GET',credentials: 'include'}); // 
-
+        
         if (!response.ok) {
           throw new Error('No se pudo obtener la lista de peliculas');
         }
         const data = await response.json();
         setMovieList(data);
+
+        const res = await fetch(url + `limit=4000000`); // 
+        if (!res.ok) {
+          throw new Error('No se pudo obtener la lista de peliculas');
+        }
+        const data1 = await res.json();
+        setNumPages(Math.floor(data1.length / MOVIES_PER_PAGE + 1));
+        
       } catch (error) {
         console.error('Error al obtener los peliculas:', error);
       }
@@ -126,6 +134,6 @@ export default function App() {
   }, [currentPage]);
 
   return (
-    <ListPage movieList={movieList} currentPage={currentPage} setCurrentPage={setCurrentPage} numFilms={numFilms} />
+    <ListPage movieList={movieList} currentPage={currentPage} setCurrentPage={setCurrentPage} numFilms={numFilms} maxPages={numPages}/>
   )
 }
