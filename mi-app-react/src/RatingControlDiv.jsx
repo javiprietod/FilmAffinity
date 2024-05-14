@@ -1,7 +1,7 @@
 import React from 'react';
 import RatingStars from './RatingStars';
 import { useState, useEffect } from 'react';
-import { useNavigate, NavLink } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import FixedRating from './FixedRating';
 import RatingTextInput from './RatingTextInput';
 import RatingButtons from './RatingButtons';
@@ -18,6 +18,7 @@ function RatingControlDiv({movie}) {
     // Call the API to patch the review with the new body text
     console.log('Review submitted');
     if (reviewId === -1) {
+      console.log('Review does not exist, posting', reviewScore);
       if (reviewScore !== 0) {
         postReview(movie.id, email, reviewScore, reviewBody);
         setTimeout(async() => {window.location.reload();}, 1000);
@@ -25,7 +26,8 @@ function RatingControlDiv({movie}) {
         console.log('Unable to post review without rating');
       }
     } else {
-      patchReview(reviewId, reviewScore, reviewBody);
+      console.log('Review already exists, patching', movie.id);
+      patchReview(reviewId, movie.id, reviewScore, reviewBody);
     }
   };
   

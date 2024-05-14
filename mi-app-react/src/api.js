@@ -150,15 +150,17 @@ export async function postReview(movieId, userId, reviewScore, reviewBody) {
     });
   }
   
-export function patchReview(reviewId, reviewScore, reviewBody) {
+export function patchReview(reviewId, movieId, reviewScore, reviewBody) {
     let body;
     if (reviewBody !== '') {
       body = JSON.stringify({
+        movie: movieId,
         rating: reviewScore,
         body: reviewBody,
       });
     } else {
       body = JSON.stringify({
+        movie: movieId,
         rating: reviewScore,
       });
     }
