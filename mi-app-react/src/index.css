@@ -2,29 +2,9 @@
 header {
   background-color: #349a65;
   color: #fff;
-  padding: 10px 20px;
   text-align: left; 
+  z-index: 1;
 }
-
-/* nav ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-nav ul li {
-  display: inline; 
-  margin-right: 20px;
-}
-
-nav ul li a {
-  color: #fff;
-  text-decoration: none;
-}
-
-nav ul li a:hover { 
-  color: #ddd;
-  background-color: #777777;
-} */
 
 body {
   font-family: Arial, sans-serif;
@@ -32,8 +12,6 @@ body {
   margin: 0;
   padding: 0;
 }
-
-
 
 header, footer {
   justify-content: center;
@@ -55,21 +33,9 @@ footer {
   bottom: 0;
   width: 100%;
   height: 40px;
-  margin-bottom: 0px;
+  margin-bottom: 0;
 }
 
-#user-login-container {
-  vertical-align: top;
-  float: right;
-  position: relative;
-  width: 250px;
-  z-index: 0;
-  margin-top: -60px;
-  color: #ffffff;
-}
-#user-login-container #login-register .sign-in, #user-login-container #login-register .register{
-  color: #ffffff;
-}
 .error {
   color: darkred;
   border: 2px solid darkred;
@@ -77,28 +43,36 @@ footer {
   padding: 5px;
 }
 
+#logo-container {
+  width: 35%;
+  height: 100%;
+}
+
 #logo {
   float: left;
-  margin: 0px 0px 0 230px;
+  margin: 0px 0px 0px 230px;
   padding-left: -30px;
   height: 44px;
   z-index: 1;
 }
 
-#search-bar {
-  width: 50%;
-  margin: auto;
-  margin-top: -14px;
-  height: 30px;
-  border-radius: 5px;
-  padding-left: 220px;
+#search-bar-container {
+  width: 30%;
+  padding-top: 25px;
 }
 
-#search-bar #search {
-  width: 70%;
-  height: 100%;
+#search-bar {
+  margin: auto;
+  margin-top: -12px;
+  height: 40px;
+  border-radius: 5px;
+}
+
+#search-bar #title {
+  width: 100%;
+  height: 80%;
   border-radius: 6px;
-  border: 0px;
+  border: 0;
   padding-left: 10px;
 }
 
@@ -110,14 +84,44 @@ img {
 }
 
 header nav div {
-  /* border: 1px solid #ddd; */
   padding: 10px;
-  /* display: inline-flex; */
+}
+
+nav > * {
+  float: left;
+}
+
+#user-login-container {
+  vertical-align: top;
+  float: right;
+  position: relative;
+  width: 250px;
+  z-index: 0;
+  margin-top: -5px;
+  color: #fff;
+  cursor: pointer;
+}
+
+#advanced {
+  height: 0;
+  float: right;
+  margin-top: -12px;
+  margin-right: -20px;
+  color: #f9c700;
+  font-weight: bolder;
+  z-index: 1;
+}
+
+#advanced:hover {
+  cursor: pointer;
+}
+
+#user-login-container #login-register .sign-in, #user-login-container #login-register .register{
+  color: #fff;
 }
 
 #user-actions {
   height: 100%;
-  /* width: 100%; */
   font-size: 25px;
   float: right;
   text-align: right;
@@ -131,7 +135,7 @@ header nav div {
   padding: 20px;
   background-color: #fff;
   border-radius: 5px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 8px rgb(0 0 0 / 0.1);
 }
 
 h1 {
@@ -176,7 +180,7 @@ h1 {
 }
 
 h2 {
-  margin-top: 0px;
+  margin-top: 0;
 }
 
 p {
@@ -240,33 +244,48 @@ button[type="submit"]:hover {
 }
 
 .voting-control {
-  /* display: flex;
-  align-items: center;
-  justify-content: center; */
-  /* margin-top: 20px; */
   border: 1px solid #0000;
 }
 
 .modal {
-  display: block; /* Hidden by default */
-  z-index: 100; /* Sit on top*/
+  display: block;
+  z-index: 100;
   position: absolute;
   top: 3px;
   right: 98px;
   width: 250px;
-  /* height: 20%; Full height */
-  overflow: auto; /* Enable scroll if needed */
-  /* background-color: rgba(0,0,0,0.4);  */
+  overflow: auto;
 }
 
 .modal-content {
   background-color: #fefefe;
   margin: 15% auto;
-  /* padding: 20px; */
   border: 1px solid #888;
   border-radius: 5px;
-  width: 80%; /* Could be more or less, depending on screen size */
+  width: 80%;
 }
+
+#advanced-search {
+  width: 40%;
+  left: 33%;
+  top: -5px;
+  margin: 0%;
+  padding: 0%;
+  position: absolute;
+  z-index: 2;
+}
+
+#advanced-search-form > * {
+  width: 98%;
+  margin-bottom: 2px;
+}
+
+#advanced-search-form #search-button{
+  width: 20%;
+  margin-left: 40%;
+  margin-top: 2px;
+}
+
 
 .close {
   color: #aaa;
@@ -295,27 +314,25 @@ button[type="submit"]:hover {
   flex-direction: row;
   width: 90%;
 }
+
 .global-rating, .personal-rating-stars { 
   flex: 1; 
   padding: 10px;
   display: flex;
   flex-direction: column;
-  align-items: center; /* Align content vertically */
+  align-items: center;
 }
+
 .movie-rating-loginlink{
   color: blue;
 }
-/* Star rating styles */
+
 .star-rating {
   font-size: 30px;
+  padding: 0;
+  padding-left: 5%;
 }
-.star {
-  color: gray;
-  cursor: pointer;
-}
-.star.green {
-  color:#349a65;
-}
+
 .star-fixed {
   font-size: 30px;
   color:#349a65;
@@ -351,9 +368,7 @@ button[type="submit"]:hover {
 
 .rating-overlay {
   position: absolute;
-  top: 10;
-  left: 40;
-  background-color: rgba(0, 0, 0, 0.8); /* Change opacity as needed */
+  background-color: rgb(0 0 0 / 0.8); 
   color: white;
   width: 7%;
   height: 7%;
@@ -389,4 +404,18 @@ button[type="submit"]:hover {
 .back {
   color: #349a65;
   text-decoration: none;
+}
+
+.movie-rating-stars {
+  height: 10%;
+  padding: 0;
+}
+
+.star {
+  color: gray;
+  cursor: pointer;
+}
+
+.star.green {
+  color:#349a65;
 }

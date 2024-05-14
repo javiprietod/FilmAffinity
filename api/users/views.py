@@ -1,7 +1,7 @@
 from rest_framework import generics, status
 from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
-from django.db.utils import IntegrityError
+from rest_framework.exceptions import ValidationError
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import (
     Case,
@@ -36,13 +36,23 @@ class RegistroView(generics.ListCreateAPIView):
         return users
 
     def handle_exception(self, exc):
-        if isinstance(exc, IntegrityError):
-            return Response(
-                status=status.HTTP_409_CONFLICT,
-                data={"error": "Email already exists"},
-            )
-        else:
-            return super().handle_exception(exc)
+        if isinstance(exc, ValidationError):
+            if "email" in exc.detail:
+                if exc.detail["email"][0] == "Enter a valid email address.":
+                    return Response(
+                        status=status.HTTP_400_BAD_REQUEST,
+                        data={"error": exc.detail["email"][0]},
+                    )
+                return Response(
+                    status=status.HTTP_409_CONFLICT,
+                    data={"error": "Email already exists"},
+                )
+            elif "password" in exc.detail:
+                return Response(
+                    status=status.HTTP_400_BAD_REQUEST,
+                    data={"error": "Invalid password"},
+                )
+        return super().handle_exception(exc)
 
 
 class LoginView(generics.CreateAPIView):
@@ -52,9 +62,11 @@ class LoginView(generics.CreateAPIView):
         serializer = self.get_serializer(data=request.data)
         if serializer.is_valid():
             user = serializer.validated_data
-            token, created = Token.objects.get_or_create(user=user)
+            token, _ = Token.objects.get_or_create(user=user)
             response = Response(status=status.HTTP_201_CREATED)
-            response.set_cookie(key="session", value=token.key, samesite="lax")
+            response.set_cookie(
+                key="session", value=token.key, samesite="None", secure=True
+            )
             return response
         else:
             return Response(serializer.errors, status=status.HTTP_401_UNAUTHORIZED)
@@ -77,12 +89,22 @@ class UsuarioView(generics.RetrieveUpdateDestroyAPIView):
 
         return user
 
+    def handle_exception(self, exc):
+        if isinstance(exc, Http404):
+            return Response(
+                status=status.HTTP_404_NOT_FOUND,
+                data={"error": "No user found with the provided session token"},
+            )
+        return super().handle_exception(exc)
+
     def get(self, request):
         serializer = self.get_serializer(self.get_object())
         return Response(serializer.data)
 
-    def put(self, request):
-        serializer = self.get_serializer(self.get_object(), data=request.data)
+    def patch(self, request):
+        serializer = self.get_serializer(
+            self.get_object(), data=request.data, partial=True
+        )
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
@@ -109,6 +131,12 @@ class LogoutView(generics.DestroyAPIView):
         response = Response(
             status=status.HTTP_204_NO_CONTENT, data={"status": "success"}
         )
+        token_key = request.COOKIES.get("session")
+        if not token_key:
+            return Response(
+                status=status.HTTP_405_METHOD_NOT_ALLOWED,
+                data={"error": "No session cookie found"},
+            )
         Token.objects.filter(key=request.COOKIES.get("session")).delete()
         response.delete_cookie("session")
         return response
@@ -127,9 +155,24 @@ class MovieList(generics.ListCreateAPIView):
 
     def get_queryset(self):
         queryset = models.Movie.objects.all()
-        title = self.request.query_params.get("title")
+        title = self.request.GET.get("title")
         if title is not None:
             queryset = queryset.filter(title__icontains=title)
+        director = self.request.GET.get("director")
+        if director is not None:
+            queryset = queryset.filter(director__icontains=director)
+        actor = self.request.GET.get("actor")
+        if actor is not None:
+            queryset = queryset.filter(actor__icontains=actor)
+        genre = self.request.GET.get("genre")
+        if genre is not None:
+            queryset = queryset.filter(genre__icontains=genre)
+        year = self.request.GET.get("year")
+        if year is not None:
+            queryset = queryset.filter(year=year)
+        rating = self.request.GET.get("rating")
+        if rating is not None:
+            queryset = queryset.filter(rating__gte=rating)
         return queryset
 
     def post(self, request):
@@ -217,18 +260,18 @@ class MovieDetail(generics.RetrieveUpdateDestroyAPIView):
         except models.Movie.DoesNotExist:
             raise Http404("No movie found with the provided id")
 
-    def get(self, request, id):
+    def get(self, request, **kwargs):
         serializer = self.get_serializer(self.get_object())
         return Response(serializer.data)
 
-    def put(self, request, id):
+    def put(self, request, **kwargs):
         serializer = self.get_serializer(self.get_object(), data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def delete(self, request, id):
+    def delete(self, request, **kwargs):
         self.get_object().delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
@@ -260,10 +303,10 @@ class ReviewList(generics.ListCreateAPIView):
 
     def get_queryset(self):
         queryset = models.Review.objects.all()
-        id = self.request.GET.get("movieid", None)
+        movie_id = self.request.GET.get("movieid", None)
         username = self.request.GET.get("username", None)
-        if id is not None:
-            queryset = queryset.filter(movie__id=id)
+        if movie_id is not None:
+            queryset = queryset.filter(movie__id=movie_id)
         if username is not None:
             queryset = queryset.filter(user__username=username)
         return queryset
@@ -288,11 +331,11 @@ class ReviewDetail(generics.RetrieveUpdateDestroyAPIView):
         except models.Review.DoesNotExist:
             raise Http404("No review found with the provided id")
 
-    def get(self, request, id):
+    def get(self, request, **kwargs):
         serializer = self.get_serializer(self.get_object())
         return Response(serializer.data)
 
-    def put(self, request, id):
+    def put(self, request, **kwargs):
         serializer = self.get_serializer(self.get_object(), data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -301,7 +344,7 @@ class ReviewDetail(generics.RetrieveUpdateDestroyAPIView):
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def patch(self, request, id):
+    def patch(self, request, **kwargs):
         serializer = self.get_serializer(
             self.get_object(), data=request.data, partial=True
         )
@@ -312,7 +355,7 @@ class ReviewDetail(generics.RetrieveUpdateDestroyAPIView):
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def delete(self, request, id):
+    def delete(self, request, **kwargs):
         review = self.get_object()
         movie_id = review.movie.id
         self.get_object().delete()

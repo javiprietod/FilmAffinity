@@ -63,7 +63,12 @@ function ReviewSection({movieid}) {
     let skip = (currentPage - INITIAL_PAGE) * REVIEWS_PER_PAGE;
     const fetchReviews = async () => {
       try {
+<<<<<<< HEAD
         const response = await fetch(`http://localhost:8000/api/reviews/?movieid=${movieid}`); // 
+=======
+        // const response = await fetch(`https://filmaff.onrender.com/api/reviews/?movieid=${movieid}&limit=${REVIEWS_PER_PAGE}&skip=${skip}`); // 
+        const response = await fetch(`http://localhost:8000/api/reviews/?movieid=${movieid}&limit=${REVIEWS_PER_PAGE}&skip=${skip}`); // 
+>>>>>>> 48f6cdf7ba3f443fac084a5d78d8ad4cbc38a388
 
         if (!response.ok) {
           throw new Error('Unable to retrieve the reviews');

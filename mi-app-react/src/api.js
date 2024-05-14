@@ -1,4 +1,5 @@
 export function login (formData) {
+    // fetch('https://filmaff.onrender.com/api/users/login/', {
     fetch('http://localhost:8000/api/users/login/', {
         method: 'POST',
         headers: {
@@ -21,27 +22,25 @@ export function login (formData) {
 }
 
 export async function checkLoggedIn() {
-    try {
-        const response = await fetch('http://localhost:8000/api/users/me/', {
-            method: 'GET',
-            headers: {
-                'Accept': 'application/json',
-            },
-            credentials: 'include',
-        });
+    // const response = await fetch('https://filmaff.onrender.com/api/users/me/', {
+    const response = await fetch('http://localhost:8000/api/users/me/', {
+        method: 'GET',
+        headers: {
+            'Accept': 'application/json',
+        },
+        credentials: 'include',
+    });
 
-        if (response.ok) {
-            const data = await response.json();
-            return { isLoggedIn: true, user: data };
-        } else {
-            return { isLoggedIn: false, user: null };
-        }
-    } catch (error) {
-        return { isLoggedIn: false, user: null };
-    }
+    if (response.ok) {
+        const data = await response.json();
+        return { isLoggedIn: true, user: data };
+    } 
+    return { isLoggedIn: false, user: null };
+    
 }
 
 export function changeProfileInformation (formData) {
+    // fetch('https://filmaff.onrender.com/api/users/me/', {
     fetch('http://localhost:8000/api/users/me/', {
         method: 'PATCH',
         headers: {
@@ -62,6 +61,7 @@ export function changeProfileInformation (formData) {
 }
 
 export function deleteAccount () {
+    // fetch('https://filmaff.onrender.com/api/users/me/', {
     fetch('http://localhost:8000/api/users/me/', {
         method: 'DELETE',
         headers: {
@@ -80,6 +80,7 @@ export function deleteAccount () {
 }
 
 export function logout (setIsLoggedIn, setUserName) {
+    // fetch('https://filmaff.onrender.com/api/users/logout', {
     fetch('http://localhost:8000/api/users/logout', {
         method: 'DELETE',
         headers: {
@@ -100,6 +101,7 @@ export function logout (setIsLoggedIn, setUserName) {
 }
 
 export function register (formData) {
+    // fetch('https://filmaff.onrender.com/api/users/', {
     fetch('http://localhost:8000/api/users/', {
         method: 'POST',
         headers: {
