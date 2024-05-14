@@ -1,0 +1,50 @@
+name: CI Workflow
+
+on:
+  push:
+    branches: [ develop, main ]
+  pull_request:
+    branches: [ develop, main ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.11'
+    - name: Install Django dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+    - name: Set up Node
+      uses: actions/setup-node@v2
+      with:
+        node-version: '20'
+    - name: Install React dependencies
+      run: |
+        cd mi-app-react
+        npm install
+    - name: Run Django migrations
+      run: |
+        python manage.py migrate
+    - name: Run Django tests
+      run: |
+        python manage.py test
+    - name: Lint React code
+      run: |
+        cd mi-app-react
+        npx eslint .
+    - name: Lint Django code
+      run: |
+        flake8 --max-line-length 89 --exclude='mi-app-react/node_modules','.venv',api/users/migrations
+    - name: Coverage report
+      run: |
+        coverage run --source='.' manage.py test
+        coverage report | grep 'TOTAL' | awk '{print ($4+0 > 70) ? "Coverage is greater than 70%: "$4 : "Coverage is less than or equal to 70%: "$4}'
+        if [ $(coverage report | grep 'TOTAL' | awk '{print ($4+0)}') -le 70 ]; then
+          echo "Coverage less than 70%. Failing the build."
+          exit 1
+        fi
