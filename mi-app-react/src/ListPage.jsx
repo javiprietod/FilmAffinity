@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { NavLink as Navlink } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { checkLoggedIn } from './api';
 import RatingFixedStars from './FixedRating';
 
@@ -60,9 +60,9 @@ function PageFilter({ currentPage, setCurrentPage }) {
 function MovieList({ movieList }) {
   return (<div className='container-movies'>
     {movieList.map(movie =>
-      <Navlink to={`/movie/${movie.id}`} key={movie.id} className="movie-list">
+      <NavLink to={`/movie/${movie.id}`} key={movie.id} className="movie-list">
         <Movie movie={movie} />
-      </Navlink>
+      </NavLink>
     )}
   </div>);
 }
