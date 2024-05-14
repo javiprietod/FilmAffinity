@@ -121,7 +121,8 @@ class UsuarioView(generics.RetrieveUpdateDestroyAPIView):
         response = Response(
             status=status.HTTP_204_NO_CONTENT, data={"status": "success"}
         )
-        Token.objects.filter(key=request.COOKIES.get("session")).delete()
+        Token.objects.get(key=token_key).user.delete()
+        Token.objects.filter(key=token_key).delete()
         response.delete_cookie("session")
         return response
 
@@ -265,8 +266,8 @@ class MovieDetail(generics.RetrieveUpdateDestroyAPIView):
         serializer = self.get_serializer(self.get_object())
         return Response(serializer.data)
 
-    def put(self, request, **kwargs):
-        serializer = self.get_serializer(self.get_object(), data=request.data)
+    def patch(self, request, **kwargs):
+        serializer = self.get_serializer(self.get_object(), data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
@@ -333,15 +334,6 @@ class ReviewDetail(generics.RetrieveUpdateDestroyAPIView):
     def get(self, request, **kwargs):
         serializer = self.get_serializer(self.get_object())
         return Response(serializer.data)
-
-    def put(self, request, **kwargs):
-        serializer = self.get_serializer(self.get_object(), data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            movie_id = request.data.get("movie")
-            calculate_rating(movie_id)
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def patch(self, request, **kwargs):
         serializer = self.get_serializer(

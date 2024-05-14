@@ -3,7 +3,7 @@ export function login (formData) {
     fetch('http://localhost:8000/api/users/login/', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
+            'Content-Type': 'application/json',
         },
         body: JSON.stringify(formData),
         credentials: 'include',
@@ -62,21 +62,21 @@ export function changeProfileInformation (formData) {
 
 export function deleteAccount () {
     // fetch('https://filmaff.onrender.com/api/users/me/', {
-    fetch('http://localhost:8000/api/users/me/', {
-        method: 'DELETE',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        credentials: 'include',
-    }).then((res) => {
-        if (confirm('Are you sure you want to delete your account?')) {
+    if (confirm('Are you sure you want to delete your account?')) {
+        fetch('http://localhost:8000/api/users/me/', {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            credentials: 'include',
+        }).then((res) => {
             if (res.ok) {
                 location.href = '/';
             }
-        }
-    }).catch((error) => {
-        console.log(error.message, 'error');
-    });
+        }).catch((error) => {
+            console.log(error.message, 'error');
+        });
+    }
 }
 
 export function logout (setIsLoggedIn, setUserName) {
@@ -105,7 +105,7 @@ export function register (formData) {
     fetch('http://localhost:8000/api/users/', {
         method: 'POST',
         headers: {
-        'Content-Type': 'application/json',
+            'Content-Type': 'application/json',
         },
         body: JSON.stringify(formData),
     }).then((res) => {
@@ -125,7 +125,7 @@ export async function postReview(movieId, userId, reviewScore, reviewBody) {
     fetch('http://localhost:8000/api/reviews/', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
+          'Content-Type': 'application/json',
       },
       body: JSON.stringify({
         rating: reviewScore,
@@ -134,74 +134,65 @@ export async function postReview(movieId, userId, reviewScore, reviewBody) {
         user: userId,
       }),
       credentials: 'include',
-    })
-    .then((res) => {
-      if (res.ok) {
-        return res.json();
-      } else {
-        throw new Error('Failed to post review');
-      }
-    })
-    .then((data) => {
-      console.log('Review posted successfully:', data);
-    })
-    .catch((error) => {
-      console.error('Error posting review:', error);
+    }).then((res) => {
+        if (res.ok) {
+            return res.json();
+        } else {
+            throw new Error('Failed to post review');
+        }
+    }).catch((error) => {
+        console.error('Error posting review:', error);
     });
   }
   
 export function patchReview(reviewId, movieId, reviewScore, reviewBody) {
     let body;
     if (reviewBody !== '') {
-      body = JSON.stringify({
-        movie: movieId,
-        rating: reviewScore,
-        body: reviewBody,
-      });
+        body = JSON.stringify({
+            movie: movieId,
+            rating: reviewScore,
+            body: reviewBody,
+        });
     } else {
-      body = JSON.stringify({
-        movie: movieId,
-        rating: reviewScore,
-      });
+        body = JSON.stringify({
+            movie: movieId,
+            rating: reviewScore,
+        });
     }
   
     fetch(`http://localhost:8000/api/reviews/${reviewId}/`, {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: body,
-    })
-      .then((res) => {
+        method: 'PATCH',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: body,
+    }).then((res) => {
         if (res.ok) {
             console.log('Review updated successfully');
         } else {
-          throw new Error('Failed to update review');
+            throw new Error('Failed to update review');
         }
-      })
-      .catch((error) => {
-        console.error('Error updating review:', error);
-      });
+    }).catch((error) => {
+          console.error('Error updating review:', error);
+    });
   }
 
 export function deleteReview(reviewId) {
     fetch(`http://localhost:8000/api/reviews/${reviewId}/`, {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-      .then((res) => {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    }).then((res) => {
         if (res.ok) {
-          console.log('Review deleted successfully');
+            console.log('Review deleted successfully');
         } else {
-          throw new Error('Failed to delete review');
+            throw new Error('Failed to delete review');
         }
-      })
-      .catch((error) => {
-        console.error('Error deleting review:', error);
-        console.log('Review ID:', reviewId);
-      });
+    }).catch((error) => {
+          console.error('Error deleting review:', error);
+          console.log('Review ID:', reviewId);
+    });
   }
 
   export async function getReviewFromMovieUser(movieId, user) {
