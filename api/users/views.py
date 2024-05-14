@@ -182,10 +182,11 @@ class MovieList(generics.ListCreateAPIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def list(self, request, *args, **kwargs):
+    def list(self, request, **kwargs):
         queryset = self.get_queryset()
 
         token_key = request.COOKIES.get("session")
+        
         if token_key:
             try:
                 user = Token.objects.get(key=token_key).user
