@@ -1,20 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import './index.css';
-import { postReview, patchReview} from './api';
 
-const RatingStars = ({movie, user, reviewScore, reviewId, setPrueba}) => {
+const RatingStars = ({reviewScore, setreviewScore, submitHandler}) => {
   const [rating, setRating] = useState(0);
-  const [confirmedRating, setConfirmedRating] = useState(0);
-  const [hasReviewed, setHasReviewed] = useState(false);
-  
+
   useEffect(() => {
-    if (reviewScore === 0) {
-      setHasReviewed(false);
-    } else {
-      setHasReviewed(true);
-      setConfirmedRating(reviewScore);
-      setRating(reviewScore);
-    }
+    setRating(reviewScore);
   }, [reviewScore]);
   
   const handleMouseOver = (index) => {
@@ -22,19 +13,13 @@ const RatingStars = ({movie, user, reviewScore, reviewId, setPrueba}) => {
   };
 
   const handleMouseLeave = () => {
-    setRating(confirmedRating);
+    setRating(reviewScore);
   };
 
   const handleClick = (index) => {
     setRating(index + 1);
-    setConfirmedRating(rating);
-    setPrueba(rating);
-    if (hasReviewed) {
-      patchReview(reviewId, rating, movie, null);
-    }
-    else{
-      postReview(movie, user, rating);
-    }
+    setreviewScore(rating);
+    submitHandler();
   };
 
   return (

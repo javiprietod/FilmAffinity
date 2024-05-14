@@ -5,17 +5,18 @@ import { useNavigate, NavLink } from "react-router-dom";
 import FixedRating from './FixedRating';
 import RatingTextInput from './RatingTextInput';
 import RatingButtons from './RatingButtons';
+import { postReview, patchReview} from './api';
 
 function RatingControlDiv({movie}) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [email, setEmail] = useState('');
   const [reviewId, setReviewId] = useState(0);
   const [reviewScore, setReviewScore] = useState(0);
-  const [prueba, setPrueba] = useState(0);
+  const [reviewBody, setReviewBody] = useState('');
   
   const handleSubmit = () => {
     // Call the API to patch the review with the new body text
-    console.log('Input value:', prueba);
+    console.log('Input value:', reviewScore);
   };
 
   const handleDelete = () => {
@@ -92,7 +93,7 @@ function RatingControlDiv({movie}) {
           {isLoggedIn ? ( 
             <div>
               <div><span>Your rating: </span></div>
-              <RatingStars movie={movie.id} user={email} reviewScore={reviewScore} reviewId = {reviewId} prueba = {prueba} setPrueba ={setPrueba}>  </RatingStars>
+              <RatingStars reviewScore={reviewScore}  setReviewScore={setReviewScore} submitHandler={handleSubmit}> </RatingStars>
             </div>
           ) : (
               <div>
@@ -107,7 +108,7 @@ function RatingControlDiv({movie}) {
       <div>
         {isLoggedIn ? (
           <div>
-            <RatingTextInput movie={movie.id} user={email} reviewId = {reviewId} prueba={prueba}>  </RatingTextInput>
+            <RatingTextInput reviewScore={reviewScore} reviewBody={reviewBody} setReviewBody={setReviewBody}>  </RatingTextInput>
             <RatingButtons submitHandler={handleSubmit} deleteHandler={handleDelete}> </RatingButtons>
           </div>
         ) : null}

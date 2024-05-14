@@ -1,24 +1,22 @@
 import React, { useState } from 'react';
 
-const RatingTextInput = ({ movie, user, reviewId, prueba}) => {
-  const [inputValue, setInputValue] = useState('');
+const RatingTextInput = ({reviewScore, reviewBody, setReviewBody}) => {
 
   const handleChange = (event) => {
-    setInputValue(event.target.value);
+    setReviewBody(event.target.value);
   };
   return (
     <div>
-      <textarea  className='personal-rating-text'
-        value={inputValue}
+      <textarea id='review-text' className='personal-rating-text'
+        value={reviewBody}
         onChange={handleChange}
-        placeholder={(prueba !== 0) ? "Write your review here" : "You must rate the movie first to write a review about it"}
+        placeholder={(reviewScore !== 0) ? "Write your review here" : "You must rate the movie first to write a review about it"}
         spellCheck="false"
-        disabled={(prueba === 0)}
+        disabled={(reviewScore === 0)}
         style={{ resize: 'none' }}
         maxLength={300}
       />
     </div>
   );
 };
-
 export default RatingTextInput;
