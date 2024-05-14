@@ -1,7 +1,7 @@
 from rest_framework import generics, status
 from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
-from django.db.utils import IntegrityError
+from rest_framework.exceptions import ValidationError
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import (
     Case,
@@ -36,13 +36,23 @@ class RegistroView(generics.ListCreateAPIView):
         return users
 
     def handle_exception(self, exc):
-        if isinstance(exc, IntegrityError):
-            return Response(
-                status=status.HTTP_409_CONFLICT,
-                data={"error": "Email already exists"},
-            )
-        else:
-            return super().handle_exception(exc)
+        if isinstance(exc, ValidationError):
+            if "email" in exc.detail:
+                if exc.detail["email"][0] == "Enter a valid email address.":
+                    return Response(
+                        status=status.HTTP_400_BAD_REQUEST,
+                        data={"error": exc.detail["email"][0]},
+                    )
+                return Response(
+                    status=status.HTTP_409_CONFLICT,
+                    data={"error": "Email already exists"},
+                )
+            elif "password" in exc.detail:
+                return Response(
+                    status=status.HTTP_400_BAD_REQUEST,
+                    data={"error": "Invalid password"},
+                )
+        return super().handle_exception(exc)
 
 
 class LoginView(generics.CreateAPIView):
@@ -59,9 +69,7 @@ class LoginView(generics.CreateAPIView):
             )
             return response
         else:
-            return Response(
-                serializer.errors, status=status.HTTP_401_UNAUTHORIZED
-            )
+            return Response(serializer.errors, status=status.HTTP_401_UNAUTHORIZED)
 
 
 class UsuarioView(generics.RetrieveUpdateDestroyAPIView):
@@ -81,12 +89,29 @@ class UsuarioView(generics.RetrieveUpdateDestroyAPIView):
 
         return user
 
+    def handle_exception(self, exc):
+        if isinstance(exc, Http404):
+            return Response(
+                status=status.HTTP_404_NOT_FOUND,
+                data={"error": "No user found with the provided session token"},
+            )
+        return super().handle_exception(exc)
+
     def get(self, request):
         serializer = self.get_serializer(self.get_object())
         return Response(serializer.data)
 
     def put(self, request):
         serializer = self.get_serializer(self.get_object(), data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def patch(self, request):
+        serializer = self.get_serializer(
+            self.get_object(), data=request.data, partial=True
+        )
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
@@ -113,6 +138,12 @@ class LogoutView(generics.DestroyAPIView):
         response = Response(
             status=status.HTTP_204_NO_CONTENT, data={"status": "success"}
         )
+        token_key = request.COOKIES.get("session")
+        if not token_key:
+            return Response(
+                status=status.HTTP_405_METHOD_NOT_ALLOWED,
+                data={"error": "No session cookie found"},
+            )
         Token.objects.filter(key=request.COOKIES.get("session")).delete()
         response.delete_cookie("session")
         return response
@@ -167,9 +198,7 @@ class MovieList(generics.ListCreateAPIView):
                 user = Token.objects.get(key=token_key).user
             except Token.DoesNotExist:
                 raise Http404("No user found with the provided session token")
-            user_reviews = models.Review.objects.filter(
-                user__username=user.username
-            )
+            user_reviews = models.Review.objects.filter(user__username=user.username)
             # If the user has no reviews, return the top rated movies
             if len(user_reviews) == 0:
                 queryset = queryset.order_by("-rating")
@@ -181,9 +210,7 @@ class MovieList(generics.ListCreateAPIView):
                     if review.rating > max_rating:
                         max_rating = review.rating
                         genres = (
-                            review.movie.genre.split(",")
-                            if review.rating >= 3
-                            else []
+                            review.movie.genre.split(",") if review.rating >= 3 else []
                         )
                         user_genres = [
                             genre.strip()
@@ -192,9 +219,7 @@ class MovieList(generics.ListCreateAPIView):
                         ]
 
                 # Find movies with similar genres that the user likes
-                q_objects = [
-                    Q(genre__icontains=genre.strip()) for genre in user_genres
-                ]
+                q_objects = [Q(genre__icontains=genre.strip()) for genre in user_genres]
                 q = q_objects.pop()
                 for obj in q_objects:
                     q |= obj
@@ -214,9 +239,7 @@ class MovieList(generics.ListCreateAPIView):
                     )
                 )
 
-                queryset = recommended_movies.order_by(
-                    "-similarity_score", "-rating"
-                )
+                queryset = recommended_movies.order_by("-similarity_score", "-rating")
 
         limit = request.query_params.get("limit", 9)
         skip = request.query_params.get("skip", 0)
@@ -261,9 +284,7 @@ class MovieDetail(generics.RetrieveUpdateDestroyAPIView):
 
     def handle_exception(self, exc):
         if isinstance(exc, Http404):
-            return Response(
-                status=status.HTTP_404_NOT_FOUND, data={"error": str(exc)}
-            )
+            return Response(status=status.HTTP_404_NOT_FOUND, data={"error": str(exc)})
         return super().handle_exception(exc)
 
 
@@ -350,7 +371,5 @@ class ReviewDetail(generics.RetrieveUpdateDestroyAPIView):
 
     def handle_exception(self, exc):
         if isinstance(exc, Http404):
-            return Response(
-                status=status.HTTP_404_NOT_FOUND, data={"error": str(exc)}
-            )
+            return Response(status=status.HTTP_404_NOT_FOUND, data={"error": str(exc)})
         return super().handle_exception(exc)

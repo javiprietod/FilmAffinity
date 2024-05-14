@@ -42,6 +42,30 @@ class TestRegistroView(TestCase):
         self.assertEqual(usuario.tel, data["tel"])
         self.assertEqual(usuario.email, data["email"])
 
+    def test_funcionalidad_registro_usuario_existente(self):
+        data = {
+            "nombre": "Juan",
+            "tel": "1234567890",
+            "email": "hola@gmail.com",
+            "password": "Aa123456",
+        }
+
+        response = self.client.post("/api/users/", data)
+        self.assertEqual(response.status_code, 201)
+
+        response = self.client.post("/api/users/", data)
+        self.assertEqual(response.status_code, 409)
+
+    def test_funcionalidad_registro_contrasena_invalida(self):
+        data = {
+            "nombre": "Juan",
+            "tel": "1234567890",
+            "email": "hola@gmail.com",
+            "password": "AaBbCcDd",
+        }
+        response = self.client.post("/api/users/", data)
+        self.assertEqual(response.status_code, 400)
+
 
 class TestLoginView(TestCase):
     def setUp(self):
@@ -246,7 +270,7 @@ class TestLogoutView(TestCase):
         self.assertEqual(response.status_code, 404)
 
     def test_funcionalidad_logout_sin_sesion(self):
-        response = self.client.post("/api/users/logout/")
+        response = self.client.delete("/api/users/logout/")
         self.assertEqual(response.status_code, 405)
 
 
