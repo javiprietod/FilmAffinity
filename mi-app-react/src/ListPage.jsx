@@ -33,7 +33,7 @@ function ListPage({ movieList, currentPage, setCurrentPage, numFilms=-1 }) {
                   "Our recommendations for you, " + name 
                   : 'Our movies'
                 )
-                : 'Películas encontradas: ' + numFilms
+                : 'Movies found: ' + numFilms
               }
             </h2>
             <PageFilter currentPage={currentPage} setCurrentPage={setCurrentPage} />
