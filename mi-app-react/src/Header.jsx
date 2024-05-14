@@ -91,7 +91,7 @@ export default function Header() {
                                 <label for="rating" style={{'color': 'black'}}>Rating:</label>
                                 <input type="hidden" name="rating" id="rating" placeholder="rating" value={ratingFilter} />
                                 <div className='movie-rating-stars'>
-                                    <RatingStars reviewScore={ratingFilter} changeReviewScore={setRatingFilter}>  </RatingStars>
+                                    <RatingStars reviewScore={ratingFilter} setReviewScore={setRatingFilter}>  </RatingStars>
                                 </div>
                                 <hr />
                                 <input type="submit" id='search-button' value="Search" />
