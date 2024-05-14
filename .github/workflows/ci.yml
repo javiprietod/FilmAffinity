@@ -42,11 +42,13 @@ jobs:
         flake8 --max-line-length 89 --exclude='mi-app-react/node_modules','.venv',api/users/migrations
     - name: Coverage report
       run: |
-        coverage run --source='.' manage.py test
+        export DJANGO_SETTINGS_MODULE=api.settings
+        pytest --cov=. --cov-report=xml api/users
         export CODACY_PROJECT_TOKEN=5cf46e32aeae42b58960bc62c0b53187
-        bash <(curl -Ls https://coverage.codacy.com/get.sh)
-        coverage report | grep 'TOTAL' | awk '{print ($4+0 > 70) ? "Coverage is greater than 70%: "$4 : "Coverage is less than or equal to 70%: "$4}'
-        if [ $(coverage report | grep 'TOTAL' | awk '{print ($4+0)}') -le 70 ]; then
-          echo "Coverage less than 70%. Failing the build."
-          exit 1
-        fi
+        bash <(curl -Ls https://coverage.codacy.com/get.sh) report -r coverage.xml
+        if [ $(xmllint --xpath 'string(/coverage/@line-rate)' path_to_your_file.xml | awk '{print ($1 > 0.7) ? 0 : 1}') -eq 1 ]; then
+            echo "Coverage insufficient. Required minimum is 70%"
+            exit 1
+          else
+            echo "Coverage sufficient."
+          fi

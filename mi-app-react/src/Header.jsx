@@ -103,7 +103,7 @@ export default function Header() {
                     <div id="login-register">
                         {isLoggedIn ? ( 
                             <div>
-                                <span id='profile-actions' onClick={() => setIsOpen(!isOpen)} style={{'z-index': '1'}}>
+                                <span id='profile-actions' onClick={() => setIsOpen(!isOpen)} style={{'zIndex': '1'}}>
                                     Welcome, <strong id='name-bold' style={{'textDecoration': 'underline'}}>{userName}</strong>
                                 </span>
                                 {isOpen ?  (
