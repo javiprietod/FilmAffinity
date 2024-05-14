@@ -27,7 +27,8 @@ const RatingStars = ({reviewScore,reviewId=null,movie=null,user=null,changeRevie
   const handleClick = (index) => {
     setRating(index + 1);
     setConfirmedRating(rating);
-    if (reviewId && movie && user) {
+    if (reviewId!==null && movie!==null && user!==null) {
+      console.log('Trying to change review')
       if (hasReviewed) {
         patchReview(reviewId, rating, movie);
       }
@@ -35,6 +36,9 @@ const RatingStars = ({reviewScore,reviewId=null,movie=null,user=null,changeRevie
         postReview(movie, user, rating);
       }
     } else {
+      console.log(movie);
+      console.log(user);
+      console.log(reviewId);
       changeReviewScore(rating);
     }
     /* Añadir la llamada a la patch de posible review anterior y llamada a la creación de una nueva (solo si es desigual?) */
