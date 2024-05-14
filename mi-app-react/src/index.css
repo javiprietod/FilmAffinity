@@ -295,7 +295,7 @@ button[type="submit"]:hover {
   flex-direction: row;
   width: 90%;
 }
-.global-rating, .personal-rating { 
+.global-rating, .personal-rating-stars { 
   flex: 1; 
   padding: 10px;
   display: flex;
@@ -319,6 +319,15 @@ button[type="submit"]:hover {
 .star-fixed {
   font-size: 30px;
   color:#349a65;
+}
+
+.personal-rating-text {
+  font-size: 16px;
+  padding: 10px;
+  margin-left: 90px;
+  width: 600px;
+  height: 150px;
+  font: 16px Arial, sans-serif;
 }
 
 .rating-overlay {

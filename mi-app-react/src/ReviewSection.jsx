@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import FixedRating from './FixedRating';
 import FixedStars from './FixedStars';
 
 const INITIAL_PAGE = 1;
@@ -10,7 +9,6 @@ function ListPage({ reviewList, currentPage, setCurrentPage }) {
     <h2>Reviews</h2>
     <PageFilter currentPage={currentPage} setCurrentPage={setCurrentPage} />
     <ReviewList reviewList={reviewList} />
-    <PageFilter currentPage={currentPage} setCurrentPage={setCurrentPage} />
   </div>
 }
 

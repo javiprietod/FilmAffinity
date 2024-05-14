@@ -3,12 +3,14 @@ import RatingStars from './RatingStars';
 import { useState, useEffect } from 'react';
 import { useNavigate, NavLink } from "react-router-dom";
 import FixedRating from './FixedRating';
+import RatingTextInput from './RatingTextInput';
 
 function RatingControlDiv({movie}) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [email, setEmail] = useState('');
   const [reviewId, setReviewId] = useState(0);
   const [reviewScore, setReviewScore] = useState(0);
+  const [prueba, setPrueba] = useState(0);
   
   useEffect(() => {
     const fetchData = async () => {
@@ -75,11 +77,11 @@ function RatingControlDiv({movie}) {
           </div>
           <FixedRating rating={movie.rating}></FixedRating>
         </div>
-        <div className='personal-rating'>
+        <div className='personal-rating-stars'>
           {isLoggedIn ? ( 
             <div>
               <div><span>Your rating: </span></div>
-              <RatingStars movie={movie.id} user={email} reviewScore={reviewScore} reviewId = {reviewId}>  </RatingStars>
+              <RatingStars movie={movie.id} user={email} reviewScore={reviewScore} reviewId = {reviewId} prueba = {prueba} setPrueba ={setPrueba}>  </RatingStars>
             </div>
           ) : (
               <div>
@@ -93,17 +95,10 @@ function RatingControlDiv({movie}) {
       </div>
       <div>
         {isLoggedIn ? (
-          <div>
-            {/* add the form and button inside this div */}
-          </div>
-        ) : (
-          <div>
-            {/* add nothing here */}
-          </div>
-        )}
+          <RatingTextInput movie={movie.id} user={email} reviewId = {reviewId} prueba={prueba}>  </RatingTextInput>
+        ) : null}
       </div>
     </div>
-    
   );
 }
 export default RatingControlDiv;

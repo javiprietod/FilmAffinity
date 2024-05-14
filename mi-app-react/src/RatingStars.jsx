@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import './index.css';
 import { postReview, patchReview } from './api';
 
-const RatingStars = ({movie,user,reviewScore,reviewId}) => {
+const RatingStars = ({movie,user,reviewScore,reviewId,setPrueba}) => {
   const [rating, setRating] = useState(0);
   const [confirmedRating, setConfirmedRating] = useState(0);
   const [hasReviewed, setHasReviewed] = useState(false);
@@ -28,6 +28,7 @@ const RatingStars = ({movie,user,reviewScore,reviewId}) => {
   const handleClick = (index) => {
     setRating(index + 1);
     setConfirmedRating(rating);
+    setPrueba(rating);
     if (hasReviewed) {
       patchReview(reviewId, rating, movie);
     }
