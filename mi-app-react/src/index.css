@@ -33,7 +33,7 @@ footer {
   bottom: 0;
   width: 100%;
   height: 40px;
-  margin-bottom: 0px;
+  margin-bottom: 0;
 }
 
 .error {
@@ -50,7 +50,7 @@ footer {
 
 #logo {
   float: left;
-  margin: 0px 0px 0 230px;
+  margin: 0px 0px 0px 230px;
   padding-left: -30px;
   height: 44px;
   z-index: 1;
@@ -72,7 +72,7 @@ footer {
   width: 100%;
   height: 80%;
   border-radius: 6px;
-  border: 0px;
+  border: 0;
   padding-left: 10px;
 }
 
@@ -98,12 +98,12 @@ nav > * {
   width: 250px;
   z-index: 0;
   margin-top: -5px;
-  color: #ffffff;
+  color: #fff;
   cursor: pointer;
 }
 
 #advanced {
-  height: 0px;
+  height: 0;
   float: right;
   margin-top: -12px;
   margin-right: -20px;
@@ -117,12 +117,11 @@ nav > * {
 }
 
 #user-login-container #login-register .sign-in, #user-login-container #login-register .register{
-  color: #ffffff;
+  color: #fff;
 }
 
 #user-actions {
   height: 100%;
-  /* width: 100%; */
   font-size: 25px;
   float: right;
   text-align: right;
@@ -136,7 +135,7 @@ nav > * {
   padding: 20px;
   background-color: #fff;
   border-radius: 5px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 8px rgb(0 0 0 / 0.1);
 }
 
 h1 {
@@ -181,7 +180,7 @@ h1 {
 }
 
 h2 {
-  margin-top: 0px;
+  margin-top: 0;
 }
 
 p {
@@ -245,32 +244,25 @@ button[type="submit"]:hover {
 }
 
 .voting-control {
-  /* display: flex;
-  align-items: center;
-  justify-content: center; */
-  /* margin-top: 20px; */
   border: 1px solid #0000;
 }
 
 .modal {
-  display: block; /* Hidden by default */
-  z-index: 100; /* Sit on top*/
+  display: block;
+  z-index: 100;
   position: absolute;
   top: 3px;
   right: 98px;
   width: 250px;
-  /* height: 20%; Full height */
-  overflow: auto; /* Enable scroll if needed */
-  /* background-color: rgba(0,0,0,0.4);  */
+  overflow: auto;
 }
 
 .modal-content {
   background-color: #fefefe;
   margin: 15% auto;
-  /* padding: 20px; */
   border: 1px solid #888;
   border-radius: 5px;
-  width: 80%; /* Could be more or less, depending on screen size */
+  width: 80%;
 }
 
 #advanced-search {
@@ -280,7 +272,7 @@ button[type="submit"]:hover {
   margin: 0%;
   padding: 0%;
   position: absolute;
-  z-index: 2;          /* Mayor z-index para que se muestre por encima */
+  z-index: 2;
 }
 
 #advanced-search-form > * {
@@ -328,17 +320,16 @@ button[type="submit"]:hover {
   padding: 10px;
   display: flex;
   flex-direction: column;
-  align-items: center; /* Align content vertically */
+  align-items: center;
 }
 
 .movie-rating-loginlink{
   color: blue;
 }
 
-/* Star rating styles */
 .star-rating {
   font-size: 30px;
-  padding: 0px;
+  padding: 0;
   padding-left: 5%;
 }
 
@@ -349,7 +340,7 @@ button[type="submit"]:hover {
 
 .rating-overlay {
   position: absolute;
-  background-color: rgba(0, 0, 0, 0.8); 
+  background-color: rgb(0 0 0 / 0.8); 
   color: white;
   width: 7%;
   height: 7%;
@@ -387,7 +378,7 @@ button[type="submit"]:hover {
 
 .movie-rating-stars {
   height: 10%;
-  padding: 0px;
+  padding: 0;
 }
 
 .star {
