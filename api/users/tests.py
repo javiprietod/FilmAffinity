@@ -67,7 +67,6 @@ class TestRegistroView(TestCase):
         self.assertEqual(response.status_code, 400)
 
 
-
 class TestLoginView(TestCase):
     def setUp(self):
         data = {
