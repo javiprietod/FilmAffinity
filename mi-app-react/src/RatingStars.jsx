@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './index.css';
 
-const RatingStars = ({reviewScore, setreviewScore, submitHandler}) => {
+const RatingStars = ({reviewScore, setReviewScore}) => {
   const [rating, setRating] = useState(0);
 
   useEffect(() => {
@@ -16,10 +16,8 @@ const RatingStars = ({reviewScore, setreviewScore, submitHandler}) => {
     setRating(reviewScore);
   };
 
-  const handleClick = (index) => {
-    setRating(index + 1);
-    setreviewScore(rating);
-    submitHandler();
+  const handleClick = async () => {
+    await setReviewScore(rating);
   };
 
   return (
@@ -30,7 +28,7 @@ const RatingStars = ({reviewScore, setreviewScore, submitHandler}) => {
           className={index < rating ? "star green" : "star"}
           onMouseOver={() => handleMouseOver(index)}
           onMouseLeave={handleMouseLeave}
-          onClick={() => handleClick(index)}
+          onClick={() => handleClick()}
         >
           &#9733;
         </span>
