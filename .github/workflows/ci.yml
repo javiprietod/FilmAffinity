@@ -40,3 +40,11 @@ jobs:
     - name: Lint Django code
       run: |
         flake8 --max-line-length 89 --exclude='mi-app-react/node_modules','.venv',api/users/migrations
+    - name: Coverage report
+      run: |
+        coverage run --source='.' manage.py test
+        coverage report | grep 'TOTAL' | awk '{print ($4+0 > 70) ? "Coverage is greater than 70%: "$4 : "Coverage is less than or equal to 70%: "$4}'
+        if [ $(coverage report | grep 'TOTAL' | awk '{print ($4+0)}') -le 70 ]; then
+          echo "Coverage less than 70%. Failing the build."
+          exit 1
+        fi

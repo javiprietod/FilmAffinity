@@ -101,13 +101,6 @@ class UsuarioView(generics.RetrieveUpdateDestroyAPIView):
         serializer = self.get_serializer(self.get_object())
         return Response(serializer.data)
 
-    def put(self, request):
-        serializer = self.get_serializer(self.get_object(), data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
     def patch(self, request):
         serializer = self.get_serializer(
             self.get_object(), data=request.data, partial=True
