@@ -60,7 +60,7 @@ const RatingStars = ({reviewScore,reviewId=null,movie=null,user=null,changeRevie
 export default RatingStars;
 
 function postReview(movieId, userId, ratingScore) {
-  fetch('http://localhost:8000/api/reviews/', {
+  fetch('https://filmaff.onrender.com/api/reviews/', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -89,7 +89,7 @@ function postReview(movieId, userId, ratingScore) {
 }
 
 function patchReview(reviewId, ratingScore, movieId) {
-  fetch(`http://localhost:8000/api/reviews/${reviewId}/`, {
+  fetch(`https://filmaff.onrender.com/api/reviews/${reviewId}/`, {
     method: 'PATCH',
     headers: {
       'Content-Type': 'application/json',

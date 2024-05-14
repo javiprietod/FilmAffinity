@@ -84,7 +84,7 @@ export default function App() {
   useEffect(() => {
     let skip = (currentPage - INITIAL_PAGE) * MOVIES_PER_PAGE;
     const fetchMovies = async () => {
-      let url = 'http://localhost:8000/api/movies?'
+      let url = 'https://filmaff.onrender.com/api/movies?'
       for (const elem of ['title', 'director', 'genre', 'year', 'rating']) {
         if (params.get(elem)) {
           url += `${elem}=${params.get(elem)}&`;
