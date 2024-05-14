@@ -153,6 +153,24 @@ paths:
                   error:
                     type: string
                     example: 'No user found with the provided session token'
+    delete:
+      summary: Delete current user's profile
+      operationId: deleteCurrentUser
+      tags:
+        - Users
+      responses:
+        '204':
+          description: User profile deleted successfully
+        '404':
+          description: No session cookie found or session is invalid
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: 'No session cookie found'
   /users/logout/:
     delete:
       summary: Log out the current user
@@ -178,6 +196,396 @@ paths:
                   error:
                     type: string
                     example: 'No session cookie found'
+  /movies/:
+    get:
+      summary: List all movies or search by title
+      operationId: listMovies
+      tags:
+        - Movies
+      parameters:
+        - in: query
+          name: title
+          schema:
+            type: string
+            example: Movie Title
+          description: Optional title to filter the list of movies
+        - in: query
+          name: director
+          schema:
+            type: string
+            example: Alvaro Ruiz
+          description: Optional director to filter the list of movies
+        - in: query
+          name: genre
+          schema:
+            type: string
+            example: Drama
+          description: Optional genre to filter the list of movies
+        - in: query
+          name: year
+          schema:
+            type: integer
+            example: 1970
+          description: Optional year to filter the list of movies
+        - in: query
+          name: rating
+          schema:
+            type: integer
+            example: 5
+          description: Optional rating to filter the list of movies
+        - in: query
+          name: limit
+          schema:
+            type: integer
+            default: 9
+          description: Limit the number of movies returned
+        - in: query
+          name: skip
+          schema:
+            type: integer
+            default: 0
+          description: Number of movies to skip before starting to return results
+      responses:
+        '200':
+          description: An array of movies
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Movie'
+    post:
+      summary: Create a new movie
+      operationId: createMovie
+      tags:
+        - Movies
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Movie'
+      responses:
+        '201':
+          description: New movie created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Movie'
+        '400':
+          description: Invalid input, object invalid
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: 'Invalid data provided'
+  /movies/{id}/:
+    get:
+      summary: Retrieve a specific movie
+      operationId: getMovie
+      tags:
+        - Movies
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            example: 1
+          description: Unique identifier of the movie
+      responses:
+        '200':
+          description: Detailed information about a movie
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Movie'
+        '404':
+          description: Movie not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: 'No movie found with the provided id'
+    put:
+      summary: Update a movie
+      operationId: updateMovie
+      tags:
+        - Movies
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Movie'
+      responses:
+        '200':
+          description: Movie updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Movie'
+        '400':
+          description: Invalid input, object invalid
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: 'Invalid data provided'
+        '404':
+          description: Movie not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: 'No movie found with the provided id'
+    delete:
+      summary: Delete a movie
+      operationId: deleteMovie
+      tags:
+        - Movies
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Movie deleted successfully
+        '404':
+          description: Movie not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: 'No movie found with the provided id'
+  /movies/bulk/:
+    post:
+      summary: Bulk create movies
+      operationId: bulkCreateMovies
+      tags:
+        - Movies
+      requestBody:
+        required: true
+        description: Array of movies to be created
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/Movie'
+      responses:
+        '201':
+          description: Bulk movie creation successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Movie'
+        '400':
+          description: Invalid input, object invalid
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: 'Request body must be a list'
+        '405':
+          description: Method Not Allowed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: 'HTTP method not allowed'
+  /reviews/:
+    get:
+      summary: List all reviews
+      operationId: listReviews
+      tags:
+        - Reviews
+      parameters:
+        - in: query
+          name: movieid
+          schema:
+            type: integer
+            example: 10
+          description: Optional movieid to filter the list of reviews
+        - in: query
+          name: limit
+          schema:
+            type: integer
+            default: 9
+          description: Limit the number of reviews returned
+        - in: query
+          name: skip
+          schema:
+            type: integer
+            default: 0
+          description: Number of reviews to skip before starting to return results
+      responses:
+        '200':
+          description: An array of reviews
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Review'
+    post:
+      summary: Create a new review
+      operationId: createReview
+      tags:
+        - Reviews
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Review'
+      responses:
+        '201':
+          description: New review created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Review'
+        '400':
+          description: Invalid input, object invalid
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: 'Invalid data provided'
+  /reviews/{id}/:
+    get:
+      summary: Retrieve a specific review
+      operationId: getReview
+      tags:
+        - Reviews
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            example: 1
+          description: Unique identifier of the review
+      responses:
+        '200':
+          description: Detailed information about a review
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Review'
+        '404':
+          description: Review not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: 'No review found with the provided id'
+    patch:
+      summary: Update a review
+      operationId: updateReview
+      tags:
+        - Reviews
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Review'
+      responses:
+        '200':
+          description: Review updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Review'
+        '400':
+          description: Invalid input, object invalid
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: 'Invalid data provided'
+        '404':
+          description: Review not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: 'No review found with the provided id'
+    delete:
+      summary: Delete a review
+      operationId: deleteReview
+      tags:
+        - Reviews
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Review deleted successfully
+        '404':
+          description: Review not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: 'No review found with the provided id'
 components:
   schemas:
     User:
@@ -188,7 +596,7 @@ components:
           example: Name
         tel:
           type: integer
-          example: 123456789
+          example: 623456789
         email:
           type: string
           example: example@gmail.com
@@ -203,7 +611,7 @@ components:
           example: Name
         tel:
           type: integer
-          example: 123456789
+          example: 623456789
         email:
           type: string
           example: example@gmail.com
@@ -214,3 +622,51 @@ components:
           type: string
         password:
           type: string
+    Movie:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        title:
+          type: string
+          example: Movie Title
+        year:
+          type: integer
+          example: 1970
+        duration:
+          type: integer
+          example: 120
+        rating:
+          type: integer
+          example: 5
+        genre:
+          type: string
+          example: Drama
+        summary:
+          type: string
+          example: The amazing movie about the api movie creation
+        director: 
+          type: string
+          example: Alvaro Ruiz
+        thumbnail:
+          type: string
+          example: link.url
+    Review:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        rating:
+          type: number
+          example: 5.0
+        body:
+          type: string
+          example: The movie is great
+        movie:
+          type: integer
+          example: 1
+        user:
+          type: string
+          example: example@gmail.com

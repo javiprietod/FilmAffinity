@@ -43,6 +43,8 @@ jobs:
     - name: Coverage report
       run: |
         coverage run --source='.' manage.py test
+        export CODACY_PROJECT_TOKEN=5cf46e32aeae42b58960bc62c0b53187
+        bash <(curl -Ls https://coverage.codacy.com/get.sh)
         coverage report | grep 'TOTAL' | awk '{print ($4+0 > 70) ? "Coverage is greater than 70%: "$4 : "Coverage is less than or equal to 70%: "$4}'
         if [ $(coverage report | grep 'TOTAL' | awk '{print ($4+0)}') -le 70 ]; then
           echo "Coverage less than 70%. Failing the build."

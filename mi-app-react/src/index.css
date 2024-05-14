@@ -50,7 +50,7 @@ footer {
 
 #logo {
   float: left;
-  margin: 0px 0px 0px 230px;
+  margin: 0 0 0 230px;
   padding-left: -30px;
   height: 44px;
   z-index: 1;
@@ -131,11 +131,11 @@ nav > * {
 .container {
   max-width: 800px;
   margin: 20px auto;
-  margin-bottom:0px;
+  margin-bottom: 0;
   padding: 20px;
   background-color: #fff;
   border-radius: 5px;
-  box-shadow: 0 4px 8px rgb(0 0 0 / 0.1);
+  box-shadow: 0 4px 8px rgb(0 0 0 / 10%);
 }
 
 h1 {
@@ -348,12 +348,14 @@ button[type="submit"]:hover {
   height: 150px;
   font: 16px Arial, sans-serif;
 }
+
 .personal-rating-buttons {
   display: flex;
   justify-content: center;
   align-items: center;
   margin-top: 10px;
 }
+
 .personal-rating-button{
   margin: 0 10px;
   padding: 10px;
@@ -362,13 +364,14 @@ button[type="submit"]:hover {
   cursor: pointer;
   background-color: #349a65;
 }
+
 .personal-rating-button:hover{
   background-color: #54db68;
 }
 
 .rating-overlay {
   position: absolute;
-  background-color: rgb(0 0 0 / 0.8); 
+  background-color: rgb(0 0 0 / 80%); 
   color: white;
   width: 7%;
   height: 7%;
