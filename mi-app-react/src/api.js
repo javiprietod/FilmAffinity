@@ -116,6 +116,15 @@ export function register (formData) {
             document.getElementById('aviso').innerHTML = '✖︎ This email is already registered';
             document.getElementById('aviso').className = 'error';
         }
+        else if (res.status === 406) {
+            document.getElementById('aviso').innerHTML = '✖︎ The password must have at least a lowercase letter, a capital letter and a number';
+            document.getElementById('aviso').className = 'error';
+        }
+        else if (res.status === 400) {
+            console.log(res);
+            document.getElementById('aviso').innerHTML = '✖︎ The phone number introduced is not valid';
+            document.getElementById('aviso').className = 'error';
+        }
     }).catch((error) => {
         console.log(error.message, 'error');
     });

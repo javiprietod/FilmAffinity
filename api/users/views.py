@@ -47,9 +47,14 @@ class RegistroView(generics.ListCreateAPIView):
                     status=status.HTTP_409_CONFLICT,
                     data={"error": "Email already exists"},
                 )
-            elif "password" in exc.detail:
+            elif "tel" in exc.detail:
                 return Response(
                     status=status.HTTP_400_BAD_REQUEST,
+                    data={"error": "Invalid phone number"},
+                )
+            elif "password" in exc.detail:
+                return Response(
+                    status=status.HTTP_406_NOT_ACCEPTABLE,
                     data={"error": "Invalid password"},
                 )
         return super().handle_exception(exc)

@@ -32,7 +32,6 @@ export default function Register() {
         else {
             val.current = '✖︎ The passwords do not match';
         };
-        return correcto;
       }
 
     return (<div className="container">
@@ -46,10 +45,10 @@ export default function Register() {
             <label for="email">Email:</label>
             <input type="email" placeholder="your_email@gmail.com" id="email" name="email" size="30" value={email} onChange={e => setEmail(e.target.value)} required />  
             <label for="pass">Password:</label>
-            <input type="password" placeholder="Your password" id="pass" name="password" pattern="^(?=.*[0-9])(?=.*[A-Z])(?=.*[a-z]).*$" minLength="8" value={pass} onChange={e => setPass(e.target.value)} required/>
+            <input type="password" placeholder="Your password" id="pass" name="password" minLength="8" value={pass} onChange={e => setPass(e.target.value)} required/>
             <label for="pass">Repeat Password:</label>
             <input type="password" placeholder="Repeat password" id="passRep" onKeyUp={compruebaPass()}
-                    name="password" pattern="^(?=.*[0-9])(?=.*[A-Z])(?=.*[a-z]).*$" minLength="8" value={passRep} onChange={e => setPassRep(e.target.value)} required/>
+                    name="password" minLength="8" value={passRep} onChange={e => setPassRep(e.target.value)} required/>
 
             {val.current ? <p id="aviso" className='error'>{val.current}</p> : <p id="aviso"></p>}
             <hr />
