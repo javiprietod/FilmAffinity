@@ -30,9 +30,9 @@ class UsuarioSerializer(serializers.ModelSerializer):
                 )
         else:
             raise exceptions.ValidationError("Password too short")
-        
+
     def validate_tel(self, value):
-        pattern = r'^(\+34( )?)?[6789]\d{8}$'
+        pattern = r"^(\+34( )?)?[6789]\d{8}$"
 
         if re.match(pattern, value):
             return value
