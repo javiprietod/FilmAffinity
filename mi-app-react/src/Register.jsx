@@ -39,8 +39,8 @@ export default function Register() {
     <h2>Register</h2>
     
         <form className="form-control" onSubmit={handleSubmit}>
-            <label for="nombre">Name:</label>
-            <input type="text" placeholder="Your name" name="nombre" id="nombre" value={nombre} onChange={e => setNombre(e.target.value)} required />
+            <label for="nombre">Username:</label>
+            <input type="text" name="nombre" id="nombre" value={nombre} onChange={e => setNombre(e.target.value)} required />
             <label for="tel">Phone Number:</label>
             <input type="tel" placeholder="612345678, +34612345678, +34 612345678" name="tel" id="tel" value={tel} onChange={e => setTel(e.target.value)} required />
             <label for="email">Email:</label>
