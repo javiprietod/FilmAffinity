@@ -203,23 +203,18 @@ export function deleteReview(reviewId) {
   }
 
   export async function getReviewFromMovieUser(movieId, user) {
-    try {
-        const response = await fetch(`http://localhost:8000/api/reviews/?movieid=${movieId}&username=${user}`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        });
-        
-        if (response.ok) {
-            const data = await response.json();
-            console.log('I`ve found this in the API', data);
-            return data;
-        } else {
-            throw new Error('Failed to get review');
-        }
-    } catch (error) {
-        console.error('Error getting review:', error);
-        return null;
-    }
-}
+      const response = await fetch(`http://localhost:8000/api/reviews/?movieid=${movieId}&username=${user}`, {
+          method: 'GET',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+      });
+      
+      if (response.ok) {
+          const data = await response.json();
+          console.log('I`ve found this in the API', data);
+          return data;
+      } else {
+          throw new Error('Failed to get review');
+      }
+  }

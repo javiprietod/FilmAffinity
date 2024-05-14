@@ -23,12 +23,15 @@ function ListPage({ movieList, currentPage, setCurrentPage, numFilms=-1 }) {
   return <div className="container">
     <h2>
       {numFilms===-1 ? 
+      
         (loggedIn ? 
           "Our recommendations for you, " + name 
           : 'Our movies'
         )
         : 'Películas encontradas: ' + numFilms
+        
       }
+      {console.log(numFilms)}
     </h2>
     <PageFilter currentPage={currentPage} setCurrentPage={setCurrentPage} />
     <MovieList movieList={movieList} />
