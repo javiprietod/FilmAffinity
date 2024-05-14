@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './index.css';
 
-const RatingStars = ({movie,user,reviewScore,reviewId}) => {
+const RatingStars = ({reviewScore,reviewId=null,movie=null,user=null,changeReviewScore=null}) => {
   const [rating, setRating] = useState(0);
   const [confirmedRating, setConfirmedRating] = useState(0);
   const [hasReviewed, setHasReviewed] = useState(false);
@@ -27,11 +27,19 @@ const RatingStars = ({movie,user,reviewScore,reviewId}) => {
   const handleClick = (index) => {
     setRating(index + 1);
     setConfirmedRating(rating);
-    if (hasReviewed) {
-      patchReview(reviewId, rating, movie);
-    }
-    else{
-      postReview(movie, user, rating);
+    if (reviewId!==null && movie!==null && user!==null) {
+      console.log('Trying to change review')
+      if (hasReviewed) {
+        patchReview(reviewId, rating, movie);
+      }
+      else{
+        postReview(movie, user, rating);
+      }
+    } else {
+      console.log(movie);
+      console.log(user);
+      console.log(reviewId);
+      changeReviewScore(rating);
     }
     /* Añadir la llamada a la patch de posible review anterior y llamada a la creación de una nueva (solo si es desigual?) */
   };
@@ -52,10 +60,11 @@ const RatingStars = ({movie,user,reviewScore,reviewId}) => {
     </div>
   );
 };
+
 export default RatingStars;
 
 function postReview(movieId, userId, ratingScore) {
-  fetch('https://filmaff.onrender.com/api/reviews/', {
+  fetch('http://localhost:8000/api/reviews/', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -84,7 +93,7 @@ function postReview(movieId, userId, ratingScore) {
 }
 
 function patchReview(reviewId, ratingScore, movieId) {
-  fetch(`https://filmaff.onrender.com/api/reviews/${reviewId}/`, {
+  fetch(`http://localhost:8000/api/reviews/${reviewId}/`, {
     method: 'PATCH',
     headers: {
       'Content-Type': 'application/json',
@@ -97,6 +106,7 @@ function patchReview(reviewId, ratingScore, movieId) {
   })
     .then((res) => {
       if (res.ok) {
+        console.log('Review updated successfully');
       } else {
         throw new Error('Failed to update review');
       }

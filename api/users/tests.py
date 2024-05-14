@@ -20,12 +20,39 @@ class TestUsuarioSerializer(SimpleTestCase):
             password_erronea,
         )
 
+    def test_funcionalidad_validar_telefono(self):
+        # Caso 1: Teléfono válido 1
+        tel = "623456789"
+        self.assertEqual(
+            serializers.UsuarioSerializer().validate_tel(tel),
+            tel,
+        )
+        # Caso 2: Teléfono válido 2
+        tel = "+34623456789"
+        self.assertEqual(
+            serializers.UsuarioSerializer().validate_tel(tel),
+            tel,
+        )
+        # Caso 3: Teléfono válido 3
+        tel = "+34 623456789"
+        self.assertEqual(
+            serializers.UsuarioSerializer().validate_tel(tel),
+            tel,
+        )
+        # Caso 4: Teléfono erróneo
+        tel_erroneo = "123456789"
+        self.assertRaises(
+            ValidationError,
+            serializers.UsuarioSerializer().validate_tel,
+            tel_erroneo,
+        )
+
 
 class TestRegistroView(TestCase):
     def test_funcionalidad_registro(self):
         data = {
             "nombre": "Juan",
-            "tel": "1234567890",
+            "tel": "623456789",
             "email": "hola@gmail.com",
             "password": "Aa123456",
         }
@@ -45,7 +72,7 @@ class TestRegistroView(TestCase):
     def test_funcionalidad_registro_usuario_existente(self):
         data = {
             "nombre": "Juan",
-            "tel": "1234567890",
+            "tel": "623456789",
             "email": "hola@gmail.com",
             "password": "Aa123456",
         }
@@ -59,20 +86,29 @@ class TestRegistroView(TestCase):
     def test_funcionalidad_registro_contrasena_invalida(self):
         data = {
             "nombre": "Juan",
-            "tel": "1234567890",
+            "tel": "623456789",
             "email": "hola@gmail.com",
             "password": "AaBbCcDd",
         }
         response = self.client.post("/api/users/", data)
         self.assertEqual(response.status_code, 400)
 
+    def test_funcionalidad_registro_telefono_invalido(self):
+        data = {
+            "nombre": "Juan",
+            "tel": "123456789",
+            "email": "hola@gmail.com",
+            "password": "Aa123456",
+        }
+        response = self.client.post("/api/users/", data)
+        self.assertEqual(response.status_code, 400)
 
 
 class TestLoginView(TestCase):
     def setUp(self):
         data = {
             "nombre": "Juan",
-            "tel": "1234567890",
+            "tel": "623456789",
             "email": "hola@gmail.com",
             "password": "Aa123456",
         }
@@ -125,7 +161,7 @@ class TestUsuarioView(TestCase):
     def setUp(self):
         self.data = {
             "nombre": "Juan",
-            "tel": "1234567890",
+            "tel": "623456789",
             "email": "hola@gmail.com",
             "password": "Aa123456",
         }
@@ -166,7 +202,7 @@ class TestUsuarioView(TestCase):
 
         data = {
             "nombre": "Juanito",
-            "tel": "1234567890",
+            "tel": "623456789",
         }
         response = self.client.patch(
             "/api/users/me/", data, content_type="application/json"
@@ -181,7 +217,7 @@ class TestUsuarioView(TestCase):
     def test_funcionalidad_actualizar_usuario_sin_sesion(self):
         data = {
             "nombre": "Juanito",
-            "tel": "1234567890",
+            "tel": "623456789",
         }
         response = self.client.patch(
             "/api/users/me/", data, content_type="application/json"
@@ -199,7 +235,7 @@ class TestUsuarioView(TestCase):
 
         data = {
             "nombre": "Juanito",
-            "tel": "1234567890",
+            "tel": "623456789",
             "password": "Aa1234567",
         }
         response = self.client.patch(
@@ -244,7 +280,7 @@ class TestLogoutView(TestCase):
     def setUp(self):
         self.data = {
             "nombre": "Juan",
-            "tel": "1234567890",
+            "tel": "623456789",
             "email": "hola@gmail.com",
             "password": "Aa123456",
         }
@@ -391,7 +427,7 @@ class TestReview(TestCase):
     def setUp(self):
         data = {
             "nombre": "Juan",
-            "tel": "1234567890",
+            "tel": "623456789",
             "email": "prueba@prueba.com",
             "password": "PRUEBAprueba1",
         }
