@@ -453,7 +453,9 @@ class TestBulkMovie(TestCase):
             },
         ]
 
-        response = self.client.post("/api/movies/bulk/", data, content_type="application/json")
+        response = self.client.post(
+            "/api/movies/bulk/", data, content_type="application/json"
+        )
         self.assertEqual(response.status_code, 201)
 
         self.assertEqual(response.data[0]["title"], data[0]["title"])
@@ -477,26 +479,30 @@ class TestBulkMovie(TestCase):
 
     def test_funcionalidad_bulk_create_con_error(self):
         data = {
-                "title": "Pelicula 1",
-                "summary": "Descripcion 1",
-                "year": 2022,
-                "duration": 130,
-                "director": "Director 1",
-                "genre": "Genero 1",
-            }
+            "title": "Pelicula 1",
+            "summary": "Descripcion 1",
+            "year": 2022,
+            "duration": 130,
+            "director": "Director 1",
+            "genre": "Genero 1",
+        }
 
-        response = self.client.post("/api/movies/bulk/", data, content_type="application/json")
+        response = self.client.post(
+            "/api/movies/bulk/", data, content_type="application/json"
+        )
         self.assertEqual(response.status_code, 400)
         data = {
-                "title": "Pelicula 1",
-                "summary": "Descripcion 1",
-                "year": "error",
-                "duration": 130,
-                "director": "Director 1",
-                "genre": "Genero 1",
-            }
+            "title": "Pelicula 1",
+            "summary": "Descripcion 1",
+            "year": "error",
+            "duration": 130,
+            "director": "Director 1",
+            "genre": "Genero 1",
+        }
 
-        response = self.client.post("/api/movies/bulk/", data, content_type="application/json")
+        response = self.client.post(
+            "/api/movies/bulk/", data, content_type="application/json"
+        )
         self.assertEqual(response.status_code, 400)
 
 
@@ -531,7 +537,7 @@ class TestSortMovies(TestCase):
                 "duration": 130,
                 "director": "Director 1",
                 "genre": "Genero 1",
-                "rating": 5
+                "rating": 5,
             },
             {
                 "title": "Pelicula 2",
@@ -540,7 +546,7 @@ class TestSortMovies(TestCase):
                 "duration": 140,
                 "director": "Director 2",
                 "genre": "Genero 2",
-                "rating": 2
+                "rating": 2,
             },
             {
                 "title": "Pelicula 3",
@@ -549,12 +555,13 @@ class TestSortMovies(TestCase):
                 "duration": 150,
                 "director": "Director 3",
                 "genre": "Genero 3",
-                "rating": 3
+                "rating": 3,
             },
         ]
-        response = self.client.post("/api/movies/bulk/", self.data, content_type="application/json")
+        response = self.client.post(
+            "/api/movies/bulk/", self.data, content_type="application/json"
+        )
         self.assertEqual(response.status_code, 201)
-
 
         movie = models.Movie.objects.get(title=self.data[1]["title"])
 
@@ -567,17 +574,15 @@ class TestSortMovies(TestCase):
 
         response = self.client.post("/api/reviews/", data)
         self.assertEqual(response.status_code, 201)
-            
-
 
     def test_funcionalidad_sort_movies(self):
-
         response = self.client.get("/api/movies/")
         self.assertEqual(response.status_code, 200)
 
         self.assertEqual(response.data[0]["title"], self.data[1]["title"])
         self.assertEqual(response.data[1]["title"], self.data[0]["title"])
         self.assertEqual(response.data[2]["title"], self.data[2]["title"])
+
 
 class TestReview(TestCase):
     def setUp(self):

@@ -267,7 +267,9 @@ class MovieDetail(generics.RetrieveUpdateDestroyAPIView):
         return Response(serializer.data)
 
     def patch(self, request, **kwargs):
-        serializer = self.get_serializer(self.get_object(), data=request.data, partial=True)
+        serializer = self.get_serializer(
+            self.get_object(), data=request.data, partial=True
+        )
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
