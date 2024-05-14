@@ -452,13 +452,13 @@ paths:
           description: Number of reviews to skip before starting to return results
       responses:
         '200':
-          description: An array of movies
+          description: An array of reviews
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Movie'
+                  $ref: '#/components/schemas/Review'
     post:
       summary: Create a new review
       operationId: createReview
