@@ -8,7 +8,7 @@ const RatingTextInput = ({ movie, user, reviewId, prueba}) => {
   };
 
   const handleSubmit = () => {
-    // You can perform any action with the input value here, for example, send it to a server.
+    // Call the API to patch the review with the new body text
     console.log('Input value:', inputValue);
   };
 
@@ -28,11 +28,6 @@ const RatingTextInput = ({ movie, user, reviewId, prueba}) => {
         style={{ resize: 'none' }}
         maxLength={300}
       />
-      <div>
-        <span> {prueba} </span>
-        <button onClick={handleSubmit}>Submit</button>
-        <button onClick={handleDelete}>Delete Review</button>
-    </div>
     </div>
   );
 };

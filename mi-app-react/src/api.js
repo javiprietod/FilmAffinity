@@ -119,7 +119,7 @@ export function register (formData) {
     });
 }
 
-export function postReview(movieId, userId, ratingScore) {
+export function postReview(movieId, userId, ratingScore,body) {
     fetch('http://localhost:8000/api/reviews/', {
       method: 'POST',
       headers: {
@@ -127,7 +127,7 @@ export function postReview(movieId, userId, ratingScore) {
       },
       body: JSON.stringify({
         rating: ratingScore,
-        body: "",
+        body: body,
         movie: movieId,
         user: userId,
       }),
@@ -148,20 +148,31 @@ export function postReview(movieId, userId, ratingScore) {
     });
   }
   
-export function patchReview(reviewId, ratingScore, movieId) {
+  export function patchReview(reviewId, ratingScore, movieId, bodyText) {
+    let body;
+    if (bodyText !== null) {
+      body = JSON.stringify({
+        movie: movieId,
+        rating: ratingScore,
+        body: bodyText,
+      });
+    } else {
+      body = JSON.stringify({
+        movie: movieId,
+        rating: ratingScore,
+      });
+    }
+  
     fetch(`http://localhost:8000/api/reviews/${reviewId}/`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
-        movie: movieId,
-        rating: ratingScore
-      }),
-      credentials: 'include',
+      body: body,
     })
       .then((res) => {
         if (res.ok) {
+          // Review updated successfully
         } else {
           throw new Error('Failed to update review');
         }

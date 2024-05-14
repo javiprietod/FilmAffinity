@@ -322,14 +322,21 @@ button[type="submit"]:hover {
 }
 
 .personal-rating-text {
+  position: relative;
+  left: 50%;
+  transform: translate(-50%, 0);
   font-size: 16px;
   padding: 10px;
-  margin-left: 90px;
   width: 600px;
   height: 150px;
   font: 16px Arial, sans-serif;
 }
-
+.personal-rating-buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10px;
+}
 .rating-overlay {
   position: absolute;
   top: 10;

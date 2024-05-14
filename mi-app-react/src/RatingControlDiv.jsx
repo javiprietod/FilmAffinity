@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate, NavLink } from "react-router-dom";
 import FixedRating from './FixedRating';
 import RatingTextInput from './RatingTextInput';
+import RatingButtons from './RatingButtons';
 
 function RatingControlDiv({movie}) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -95,7 +96,10 @@ function RatingControlDiv({movie}) {
       </div>
       <div>
         {isLoggedIn ? (
-          <RatingTextInput movie={movie.id} user={email} reviewId = {reviewId} prueba={prueba}>  </RatingTextInput>
+          <div>
+            <RatingTextInput movie={movie.id} user={email} reviewId = {reviewId} prueba={prueba}>  </RatingTextInput>
+            <RatingButtons movie={movie.id} user={email} reviewId = {reviewId} prueba={prueba}>  </RatingButtons>
+          </div>
         ) : null}
       </div>
     </div>

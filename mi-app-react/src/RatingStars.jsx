@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import './index.css';
-import { postReview, patchReview } from './api';
+import { postReview, patchReview} from './api';
 
-const RatingStars = ({movie,user,reviewScore,reviewId,setPrueba}) => {
+const RatingStars = ({movie, user, reviewScore, reviewId, setPrueba}) => {
   const [rating, setRating] = useState(0);
   const [confirmedRating, setConfirmedRating] = useState(0);
   const [hasReviewed, setHasReviewed] = useState(false);
@@ -30,12 +30,11 @@ const RatingStars = ({movie,user,reviewScore,reviewId,setPrueba}) => {
     setConfirmedRating(rating);
     setPrueba(rating);
     if (hasReviewed) {
-      patchReview(reviewId, rating, movie);
+      patchReview(reviewId, rating, movie, null);
     }
     else{
       postReview(movie, user, rating);
     }
-    /* Añadir la llamada a la patch de posible review anterior y llamada a la creación de una nueva (solo si es desigual?) */
   };
 
   return (
