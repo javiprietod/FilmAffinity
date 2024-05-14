@@ -1,7 +1,7 @@
 from rest_framework import generics, status
 from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
-from rest_framework.exceptions import ValidationError, AuthenticationFailed
+from rest_framework.exceptions import ValidationError
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import (
     Case,
@@ -16,7 +16,6 @@ from api.users import models
 from django.http import Http404
 from django.core.paginator import Paginator
 from rest_framework.decorators import api_view
-from drf_spectacular.utils import extend_schema, OpenApiResponse
 
 
 def calculate_rating(movie_id):
