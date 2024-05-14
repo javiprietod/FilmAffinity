@@ -20,19 +20,25 @@ function ListPage({ movieList, currentPage, setCurrentPage, numFilms=-1 }) {
       }
     });
   }, []);
-  return <div className="container">
-    <h2>
-      {numFilms===-1 ? 
-        (loggedIn ? 
-          "Our recommendations for you, " + name 
-          : 'Our movies'
-        )
-        : 'Películas encontradas: ' + numFilms
-      }
-    </h2>
-    <PageFilter currentPage={currentPage} setCurrentPage={setCurrentPage} />
-    <MovieList movieList={movieList} />
-  </div>
+  return  <div className="container">
+            {
+              numFilms !== -1 ?
+              <div className="back-button">
+                <a href="/" className="back"><strong>← Back</strong></a>
+              </div> : null
+            }
+            <h2>
+              {numFilms===-1 ? 
+                (loggedIn ? 
+                  "Our recommendations for you, " + name 
+                  : 'Our movies'
+                )
+                : 'Películas encontradas: ' + numFilms
+              }
+            </h2>
+            <PageFilter currentPage={currentPage} setCurrentPage={setCurrentPage} />
+            <MovieList movieList={movieList} />
+          </div>
 }
 
 function PageFilter({ currentPage, setCurrentPage }) {
@@ -90,17 +96,19 @@ export default function App() {
           url += `${elem}=${params.get(elem)}&`;
         }
       }
-      try {
-        const response = await fetch(url + `limit=4000000`); // 
-
-        if (!response.ok) {
-          throw new Error('No se pudo obtener la lista de peliculas');
+      if (url !== 'http://localhost:8000/api/movies?') {
+        try {
+          const response = await fetch(url + `limit=4000000`); // 
+          console.log(url);
+          if (!response.ok) {
+            throw new Error('No se pudo obtener la lista de peliculas');
+          }
+          const data = await response.json();
+          // console.log(data);
+          setNumFilms(data.length);
+        } catch (error) {
+          console.error('Error al obtener los peliculas:', error);
         }
-        const data = await response.json();
-        // console.log(data);
-        setNumFilms(data.length);
-      } catch (error) {
-        console.error('Error al obtener los peliculas:', error);
       }
       try {
         const response = await fetch(url + `limit=${MOVIES_PER_PAGE}&skip=${skip}`); // 
