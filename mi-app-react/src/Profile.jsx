@@ -45,15 +45,16 @@ export default function profile() {
             <input type="text" name="name" id="name" value={name} onChange={e => setName(e.target.value)} required />
             <label htmlFor="tel">Phone Number:</label>
             <input type="tel" name="tel" id="tel" value={tel} onChange={e => setTel(e.target.value)} required />
-            <hr />
             <p id="alert"></p>
-            <input type="submit" value="Update profile information" />
+            <input type="submit" value="Update profile information" className='profile-button form-button'/>
         </form> 
-            <NavLink to="/password">
-                <button>Change password</button>
-            </NavLink>
         <hr />
-        <button onClick={handleDeletion}>Delete account</button>
+        <div className='personal-rating-buttons profile-buttons'>
+            <NavLink to="/password" className='profile-button navlink '>
+                <button className='profile-button'>Change password</button>
+            </NavLink>
+            <button onClick={handleDeletion} className='profile-button'>Delete account</button>
+        </div>
   </div>
   )
 };

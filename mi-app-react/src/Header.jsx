@@ -53,6 +53,18 @@ export default function Header() {
         };
     }, [advancedSearch, isOpen]);
 
+    const dataList = [
+        { id: 1, name: "Romance" },
+        { id: 2, name: "Drama" },
+        { id: 3, name: "Crime" },
+        { id: 4, name: "Action" },
+        { id: 5, name: "Thriller" },
+        { id: 6, name: "Sci-Fi" },
+        { id: 7, name: "Adventure" },
+        { id: 8, name: "War" },
+        { id: 9, name: "Bibliography" }
+    ];    
+
     return (
         <header>
             <nav>
@@ -78,7 +90,12 @@ export default function Header() {
                                 <label htmlFor="director" style={{'color': 'black'}}>Director:</label>
                                 <input type="text" name="director" id="director" placeholder="Director" />
                                 <label htmlFor="genre" style={{'color': 'black'}}>Genre:</label>
-                                <input type="text" name="genre" id="genre" placeholder="Genre" />
+                                <input type="text" name="genre" id="genre" placeholder="Genre" list="options" />
+                                <datalist id="options">
+                                    {dataList.map((option) => (
+                                        <option key={option.id} value={option.name} />
+                                    ))}
+                                </datalist>
                                 <label htmlFor="year" style={{'color': 'black'}}>Year:</label>
                                 <input type="text" name="year" id="year" placeholder="Year" />
                                 <label htmlFor="rating" style={{'color': 'black'}}>Rating:</label>

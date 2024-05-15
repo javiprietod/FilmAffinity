@@ -57,9 +57,10 @@ footer {
 
 #logo {
   float: left;
-  margin: 0 0 0 230px;
+  margin: 0 0 0 333px;
   padding-left: -30px;
-  height: 44px;
+  height: 60px;
+  width: 160px;
   z-index: 1;
 }
 
@@ -105,6 +106,7 @@ nav > * {
   width: 250px;
   z-index: 0;
   margin-top: -5px;
+  margin-right: 160px;
   color: #fff;
   cursor: pointer;
 }
@@ -293,7 +295,6 @@ button[type="submit"]:hover {
   margin-top: 2px;
 }
 
-
 .close {
   color: #aaa;
   float: right;
@@ -307,7 +308,6 @@ button[type="submit"]:hover {
   text-decoration: none;
   cursor: pointer;
 }
-
 
 .modal-content p, .modal-content a {
   color : #447CAD;
@@ -354,6 +354,7 @@ button[type="submit"]:hover {
   width: 600px;
   height: 150px;
   font: 16px Arial, sans-serif;
+  border: 1px solid #ccc;
 }
 
 .personal-rating-buttons {
@@ -431,6 +432,40 @@ button[type="submit"]:hover {
   text-decoration: none;
 }
 
+.profile-button {
+  background-color: #349a65;
+  color: #fff;
+  padding: 8px 8px;
+  font-size: medium;
+  border: none;
+  border-radius: 3px;
+  transition: background-color 0.2s ease;
+  width: 200px;
+  margin: 0 auto;
+  display: block;
+  text-decoration: none;
+  cursor: pointer;
+  /* margin-bottom: 10px; */
+}
+
+.form-button {
+  margin-top: 15px;
+}
+
+.navlink {
+  text-decoration: none;
+  padding: 0 0;
+}
+
+.profile-button:hover {
+  background-color: darkgreen;
+  text-decoration: none;
+}
+
+.profile-buttons {
+ margin: 0 100px;
+}
+
 .movie-rating-stars {
   height: 10%;
   padding: 0;
@@ -446,5 +481,5 @@ button[type="submit"]:hover {
 }
 
 .container {
-  margin-bottom: 50px;
+  margin-bottom: 10px;
 }
