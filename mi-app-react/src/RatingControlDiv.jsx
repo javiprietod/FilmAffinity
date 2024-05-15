@@ -14,6 +14,7 @@ function RatingControlDiv({ movie }) {
   const [reviewScore, setReviewScore] = useState(0);
   const [reviewBody, setReviewBody] = useState('');
   const [triggerRender, setTriggerRender] = useState(false);
+  const [buttonClicked, setButtonClicked] = useState(false);
   const navigate = useNavigate();
   
   useEffect(() => {
@@ -37,7 +38,7 @@ function RatingControlDiv({ movie }) {
   }, [email]);
 
   const handleSubmit = () => {
-    getReviewFromMovieUser(movie.id, data.user.email).then((data) => {
+    getReviewFromMovieUser(movie.id, email).then((data) => {
       if (data !== null && data.length > 0) {
         data = data[0];
         setReviewId(data.id);
@@ -47,21 +48,35 @@ function RatingControlDiv({ movie }) {
   };
   
   useEffect(() => {
-    if (reviewId === -1) {
-      postReview(movie.id, email, reviewScore, reviewBody)
-    } else {
-      patchReview(reviewId, movie.id, reviewScore, reviewBody)
+    if (reviewScore !== 0) {
+      if (reviewId === -1) {
+        postReview(movie.id, email, reviewScore, reviewBody)
+        .then(() => {setButtonClicked(true);});
+      } else {
+        patchReview(reviewId, movie.id, reviewScore, reviewBody)
+        .then(() => {setButtonClicked(true);});
+      }
     }
   }, [triggerRender]);
   
   const handleDelete = () => {
-    if (reviewId !== -1){
-      deleteReview(reviewId)
-    }
     setReviewScore(0);
     setReviewBody('');
     setReviewId(-1);
+    if (reviewId !== -1){
+      deleteReview(reviewId)
+      .then(() => {setButtonClicked(true);});
+    }
   };
+
+  useEffect(() => {
+    if (buttonClicked) {
+      location.href = '/movie/' + movie.id;
+    } else {
+      setButtonClicked(false);
+      // return;
+    }
+  }, [buttonClicked]);
 
   return (
     <div>
@@ -92,7 +107,7 @@ function RatingControlDiv({ movie }) {
         {loggedIn ? (
           <div>
             <RatingTextInput reviewScore={reviewScore} reviewBody={reviewBody} setReviewBody={setReviewBody}>  </RatingTextInput>
-            <RatingButtons submitHandler={handleSubmit} deleteHandler={handleDelete} movieId={movie.id}> </RatingButtons>
+            <RatingButtons submitHandler={handleSubmit} deleteHandler={handleDelete}> </RatingButtons>
           </div>
         ) : null}
       </div>

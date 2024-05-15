@@ -1,14 +1,12 @@
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 
-const RatingButtons = ({submitHandler, deleteHandler, movieId}) => {
+const RatingButtons = ({submitHandler, deleteHandler}) => {
 
   return (
     <div className='personal-rating-buttons'>
-      <NavLink to={`/movie/${movieId}`}>
-        <button className='personal-rating-button' onClick={submitHandler}>Submit Review</button>
-        <button className='personal-rating-button' onClick={deleteHandler}>Delete Review</button>
-      </NavLink>
+      <button className='personal-rating-button' onClick={submitHandler}>Submit Review</button>
+      <button className='personal-rating-button' onClick={deleteHandler}>Delete Review</button>
     </div>
   );
 };
