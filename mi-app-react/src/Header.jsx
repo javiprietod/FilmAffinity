@@ -57,7 +57,7 @@ export default function Header() {
         event.preventDefault();
         const form = event.target;
         const queryParams = new URLSearchParams(new FormData(form)).toString();
-        navigate(`/?${queryParams}`); // Navigate to the main page with query parameters
+        location.href = `/?${queryParams}`; // Navigate to the main page with query parameters
       };
 
     return (
