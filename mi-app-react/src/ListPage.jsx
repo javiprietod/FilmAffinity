@@ -7,7 +7,7 @@ import RatingFixedStars from './FixedRating';
 const INITIAL_PAGE = 1;
 const MOVIES_PER_PAGE = 9;
 
-function ListPage({ movieList, currentPage, setCurrentPage, numFilms=-1, maxPages=-1 }) {
+function ListPage({ movieList, currentPage, setCurrentPage, numFilms=-1, numPages=-1 }) {
   const [loggedIn, setLoggedIn] = useState(false);
   const [name, setName] = useState('');
   useEffect(() => {
@@ -27,7 +27,7 @@ function ListPage({ movieList, currentPage, setCurrentPage, numFilms=-1, maxPage
                 <a href="/" className="back"><strong>← Back</strong></a>
               </div> : null
             }
-            <h2>
+            <h2 id="main-text">
               {numFilms===-1 ? 
                 (loggedIn ? 
                   "Our recommendations for you, " + name 
@@ -36,7 +36,7 @@ function ListPage({ movieList, currentPage, setCurrentPage, numFilms=-1, maxPage
                 : 'Movies found: ' + numFilms
               }
             </h2>
-            <PageFilter currentPage={currentPage} setCurrentPage={setCurrentPage} numPages={maxPages}/>
+            <PageFilter currentPage={currentPage} setCurrentPage={setCurrentPage} numPages={numPages}/>
             <MovieList movieList={movieList} />
           </div>
 }
@@ -51,7 +51,7 @@ function PageFilter({ currentPage, setCurrentPage, numPages }) {
   return <>
     <div className="buttons">
       <button onClick={() => changePage(currentPage - 1)} disabled={currentPage === INITIAL_PAGE}>&lt;</button>
-      <input type="number" value={currentPage} onChange={(e) => changePage(e.target.value)} />
+      <input type="number" value={currentPage} onChange={(e) => changePage(e.target.value)} min={INITIAL_PAGE} max={numPages} />
       <button onClick={() => changePage(currentPage + 1)} disabled={currentPage === numPages}>&gt;</button>
     </div>
   </>
@@ -123,8 +123,12 @@ export default function App() {
           throw new Error('No se pudo obtener la lista de peliculas');
         }
         const data1 = await res.json();
-        setNumPages(Math.ceil(data1.length / MOVIES_PER_PAGE));
-        
+        console.log(data1.length / MOVIES_PER_PAGE);
+        if (Math.ceil(data1.length / MOVIES_PER_PAGE) !== 0) {
+          setNumPages(Math.ceil(data1.length / MOVIES_PER_PAGE));
+        } else {
+          setNumPages(1);
+        }
       } catch (error) {
         console.error('Error al obtener los peliculas:', error);
       }
@@ -134,6 +138,6 @@ export default function App() {
   }, [currentPage]);
 
   return (
-    <ListPage movieList={movieList} currentPage={currentPage} setCurrentPage={setCurrentPage} numFilms={numFilms} maxPages={numPages}/>
+    <ListPage movieList={movieList} currentPage={currentPage} setCurrentPage={setCurrentPage} numFilms={numFilms} numPages={numPages}/>
   )
 }

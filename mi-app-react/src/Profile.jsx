@@ -24,7 +24,7 @@ export default function profile() {
             nombre: nombre,
             tel: tel,
         };
-        changeProfileInformation(formData);
+        changeProfileInformation(formData, 'profile');
     };
 
 
@@ -38,11 +38,12 @@ export default function profile() {
     <h2>Update profile</h2>
     
         <form className="form-control" onSubmit={handleSubmit}>
-            <label for="nombre">Name:</label>
+            <label htmlFor="nombre">Name:</label>
             <input type="text" name="nombre" id="nombre" value={nombre} onChange={e => setNombre(e.target.value)} required />
-            <label for="tel">Phone Number:</label>
+            <label htmlFor="tel">Phone Number:</label>
             <input type="tel" name="tel" id="tel" value={tel} onChange={e => setTel(e.target.value)} required />
             <hr />
+            <p id="aviso"></p>
             <input type="submit" value="Update profile information" />
         </form> 
         <button onClick={() => location.href = '/password'}>Change Password</button>

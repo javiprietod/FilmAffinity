@@ -22,7 +22,7 @@ function PageFilter({ currentPage, setCurrentPage, numPages }) {
   return <>
     <div className="buttons">
       <button onClick={() => changePage(currentPage - 1)} disabled={currentPage == INITIAL_PAGE}>&lt;</button>
-      <input type="number" value={currentPage} onChange={(e) => changePage(e.target.value)} />
+      <input type="number" value={currentPage} onChange={(e) => changePage(e.target.value)} min={INITIAL_PAGE} max={numPages}/>
       <button onClick={() => changePage(currentPage + 1)} disabled={currentPage == numPages}>&gt;</button>
     </div>
   </>
@@ -60,7 +60,7 @@ function ReviewSection({movieid}) {
   const [currentPage, setCurrentPage] = useState(INITIAL_PAGE);
   const [reviewList, setReviewList] = useState([]);
   const [numPages, setNumPages] = useState(0);
-
+  console.log(movieid);
   useEffect(() => {
     let skip = (currentPage - INITIAL_PAGE) * REVIEWS_PER_PAGE;
     const fetchReviews = async () => {
@@ -79,7 +79,11 @@ function ReviewSection({movieid}) {
         const data2 = await res.json();
         const numReviews = data2.length;
         const numPages = Math.ceil(numReviews / REVIEWS_PER_PAGE);
-        setNumPages(numPages);
+        if (numPages === 0) {
+          setNumPages(1);
+        } else {
+          setNumPages(numPages);
+        }
 
 
       } catch (error) {

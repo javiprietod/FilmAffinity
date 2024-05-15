@@ -13,17 +13,11 @@ export default function Header() {
     const [ratingFilter, setRatingFilter] = useState(0);
 
     const handleLogout = () => {
-        // ask if the user is sure they want to log out
-        // if they click "yes", log them out
-        // if they click "no", do nothing
         if (confirm("Are you sure you want to log out?")) {
             logout(setIsLoggedIn, setUserName);
         }
     } 
-    // If the user is logged in, show the user's name and a logout button
-    // first, we need to get the user's name from the server
     useEffect(() => {
-        // Check if the user is logged in
         checkLoggedIn().then((data) => {
             if (data.isLoggedIn) {
 
@@ -71,7 +65,7 @@ export default function Header() {
             <nav>
                 <div id="logo-container">
                     <NavLink to="/">
-                        <img id="logo" src={logo} height="44" />
+                        <img id="logo" src={logo} height="44"/>
                     </NavLink>
                 </div>
                 <div id="search-bar-container">
@@ -86,15 +80,15 @@ export default function Header() {
                     <div id='advanced-search' className="modal" onClick={() => setAdvancedSearch(false)}>
                         <div className="modal-content" onClick={e => e.stopPropagation()}>
                             <form id="advanced-search-form" onSubmit={handleAdvancedSearchSubmit}>
-                                <label for="title" style={{'color': 'black'}}>Title:</label>
+                                <label htmlFor="title" style={{'color': 'black'}}>Title:</label>
                                 <input type="text" name="title" id="title" placeholder="Title" />
-                                <label for="director" style={{'color': 'black'}}>Director:</label>
+                                <label htmlFor="director" style={{'color': 'black'}}>Director:</label>
                                 <input type="text" name="director" id="director" placeholder="Director" />
-                                <label for="genre" style={{'color': 'black'}}>Genre:</label>
+                                <label htmlFor="genre" style={{'color': 'black'}}>Genre:</label>
                                 <input type="text" name="genre" id="genre" placeholder="Genre" />
-                                <label for="year" style={{'color': 'black'}}>Year:</label>
+                                <label htmlFor="year" style={{'color': 'black'}}>Year:</label>
                                 <input type="text" name="year" id="year" placeholder="Year" />
-                                <label for="rating" style={{'color': 'black'}}>Rating:</label>
+                                <label htmlFor="rating" style={{'color': 'black'}}>Rating:</label>
                                 <input type="hidden" name="rating" id="rating" placeholder="rating" value={ratingFilter} />
                                 <div className='movie-rating-stars'>
                                     <RatingStars reviewScore={ratingFilter} setReviewScore={setRatingFilter}>  </RatingStars>

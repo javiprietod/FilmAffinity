@@ -30,7 +30,7 @@ export default function Register() {
             val.current = '';
         }
         else {
-            val.current = '✖︎ The passwords do not match';
+            val.current = '❌︎ The passwords do not match';
         };
       }
 
@@ -38,15 +38,15 @@ export default function Register() {
     <h2>Register</h2>
     
         <form className="form-control" onSubmit={handleSubmit}>
-            <label for="nombre">Username:</label>
+            <label htmlFor="nombre">Username:</label>
             <input type="text" name="nombre" id="nombre" value={nombre} onChange={e => setNombre(e.target.value)} required />
-            <label for="tel">Phone Number:</label>
+            <label htmlFor="tel">Phone Number:</label>
             <input type="tel" placeholder="612345678, +34612345678, +34 612345678" name="tel" id="tel" value={tel} onChange={e => setTel(e.target.value)} required />
-            <label for="email">Email:</label>
+            <label htmlFor="email">Email:</label>
             <input type="email" placeholder="your_email@gmail.com" id="email" name="email" size="30" value={email} onChange={e => setEmail(e.target.value)} required />  
-            <label for="pass">Password:</label>
+            <label htmlFor="pass">Password:</label>
             <input type="password" placeholder="Your password" id="pass" name="password" minLength="8" value={pass} onChange={e => setPass(e.target.value)} required/>
-            <label for="pass">Repeat Password:</label>
+            <label htmlFor="pass">Repeat Password:</label>
             <input type="password" placeholder="Repeat password" id="passRep" onKeyUp={compruebaPass()}
                     name="password" minLength="8" value={passRep} onChange={e => setPassRep(e.target.value)} required/>
 

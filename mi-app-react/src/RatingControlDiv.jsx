@@ -7,7 +7,7 @@ import RatingTextInput from './RatingTextInput';
 import RatingButtons from './RatingButtons';
 import { postReview, patchReview, deleteReview, checkLoggedIn, getReviewFromMovieUser} from './api';
 
-function RatingControlDiv({movie}) {
+function RatingControlDiv({ movie }) {
   const [loggedIn, setLoggedIn] = useState(false);
   const [email, setEmail] = useState('');
   const [reviewId, setReviewId] = useState(-1);
@@ -35,6 +35,8 @@ function RatingControlDiv({movie}) {
       deleteReview(reviewId).then(() => {
         location.reload();
       });
+    } else {
+      location.reload();
     }
   };
 

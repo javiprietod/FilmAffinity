@@ -1,10 +1,14 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import { useLoaderData } from 'react-router-dom';
 import RatingControlDiv from './RatingControlDiv';
 import ReviewSection from './ReviewSection';
 
 export default function MovieDescription() {
-    let movie = useLoaderData();
+    const [movie, setMovie] = useState(useLoaderData());
+    let mov = useLoaderData();
+    useEffect(() => {
+        setMovie(mov);
+    }, []);
 
     useEffect(() => {
         window.scrollTo(0, 0); // Esto hará que la página se desplace hacia arriba cuando se renderice

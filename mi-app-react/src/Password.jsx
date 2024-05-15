@@ -13,7 +13,7 @@ export default function Register() {
         const formData = {
             password: pass,
         };
-        changeProfileInformation(formData);
+        changeProfileInformation(formData, 'password');
     };
 
     const compruebaPass = () => {
@@ -21,7 +21,7 @@ export default function Register() {
       
         if (pass === passRep) correcto = true;
       
-        val.current = correcto ? '' : '✖︎ The passwords do not match';
+        val.current = correcto ? '' : '❌︎ The passwords do not match';
       }
 
     return (<div className="container">
@@ -29,10 +29,10 @@ export default function Register() {
     
         <form className="form-control" onSubmit={handleSubmit}>
             <label htmlFor="pass">Password:</label>
-            <input type="password" id="pass" name="password" pattern="^(?=.*[0-9])(?=.*[A-Z])(?=.*[a-z]).*$" minLength="8" value={pass} onChange={e => setPass(e.target.value)} />
+            <input type="password" id="pass" name="password" minLength="8" value={pass} onChange={e => setPass(e.target.value)} />
             <label htmlFor="pass">Repeat Password:</label>
             <input type="password" id="passRep" onKeyUp={compruebaPass()} value={passRep} onChange={e => setPassRep(e.target.value)}
-                    name="password" pattern="^(?=.*[0-9])(?=.*[A-Z])(?=.*[a-z]).*$" minLength="8" />
+                    name="password" minLength="8" />
             {val.current ? <p id="aviso" className="error">{val.current}</p> : <p id="aviso"></p>}
             <hr />
             <input type="submit" value="Update password" />

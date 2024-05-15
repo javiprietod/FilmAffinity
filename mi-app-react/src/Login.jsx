@@ -22,10 +22,10 @@ export default function Login() {
     <h2>Login</h2>
     
         <form className="form-control" onSubmit={handleSubmit}> 
-            <label for="email">Email:</label>
+            <label htmlFor="email">Email:</label>
             <input type="email" id="email" name="email" size="30" value={email} onChange={e => setEmail(e.target.value)} required /> 
             
-            <label for="pass">Password:</label>
+            <label htmlFor="pass">Password:</label>
             <input type="password" id="pass" name="password" pattern="^(?=.*[0-9])(?=.*[A-Z])(?=.*[a-z]).*$" value={password} onChange={e => setPassword(e.target.value)} minlength="8" required/>
     
             
