@@ -369,7 +369,7 @@ class ReviewDetail(generics.RetrieveUpdateDestroyAPIView):
         )
         if serializer.is_valid():
             serializer.save()
-            movie_id = request.data.get("movie")
+            movie_id = self.get_object().movie.id
             calculate_rating(movie_id)
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
