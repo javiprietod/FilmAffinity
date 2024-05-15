@@ -1,5 +1,5 @@
 export function login (formData) {
-    fetch('http://localhost:8000/api/users/login/', {
+    fetch('https://filmaff.onrender.com/api/users/login/', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -21,7 +21,7 @@ export function login (formData) {
 }
 
 export async function checkLoggedIn() {
-    const response = await fetch('http://localhost:8000/api/users/me/', {
+    const response = await fetch('https://filmaff.onrender.com/api/users/me/', {
         method: 'GET',
         headers: {
             'Accept': 'application/json',
@@ -37,7 +37,7 @@ export async function checkLoggedIn() {
 }
 
 export function changeProfileInformation (formData, page) {
-    fetch('http://localhost:8000/api/users/me/', {
+    fetch('https://filmaff.onrender.com/api/users/me/', {
         method: 'PATCH',
         headers: {
             'Content-Type': 'application/json',
@@ -64,7 +64,7 @@ export function changeProfileInformation (formData, page) {
 
 export function deleteAccount () {
     if (confirm('Are you sure you want to delete your account?')) {
-        fetch('http://localhost:8000/api/users/me/', {
+        fetch('https://filmaff.onrender.com/api/users/me/', {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
@@ -81,7 +81,7 @@ export function deleteAccount () {
 }
 
 export function logout (setIsLoggedIn, setUserName) {
-    fetch('http://localhost:8000/api/users/logout', {
+    fetch('https://filmaff.onrender.com/api/users/logout', {
         method: 'DELETE',
         headers: {
             'Content-Type': 'application/json',
@@ -101,7 +101,7 @@ export function logout (setIsLoggedIn, setUserName) {
 }
 
 export function register (formData) {
-    fetch('http://localhost:8000/api/users/', {
+    fetch('https://filmaff.onrender.com/api/users/', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -129,7 +129,7 @@ export function register (formData) {
 }
 
 export async function postReview(movieId, userId, reviewScore, reviewBody) {
-    const res = await fetch('http://localhost:8000/api/reviews/', {
+    const res = await fetch('https://filmaff.onrender.com/api/reviews/', {
       method: 'POST',
       headers: {
           'Content-Type': 'application/json',
@@ -164,7 +164,7 @@ export async function patchReview(reviewId, movieId, reviewScore, reviewBody) {
         });
     }
   
-    const res = await fetch(`http://localhost:8000/api/reviews/${reviewId}/`, {
+    const res = await fetch(`https://filmaff.onrender.com/api/reviews/${reviewId}/`, {
         method: 'PATCH',
         headers: {
             'Content-Type': 'application/json',
@@ -178,7 +178,7 @@ export async function patchReview(reviewId, movieId, reviewScore, reviewBody) {
   }
 
 export async function deleteReview(reviewId) {
-    const res = await fetch(`http://localhost:8000/api/reviews/${reviewId}/`, {
+    const res = await fetch(`https://filmaff.onrender.com/api/reviews/${reviewId}/`, {
         method: 'DELETE',
         headers: {
             'Content-Type': 'application/json',
@@ -191,7 +191,7 @@ export async function deleteReview(reviewId) {
 }
 
 export async function getReviewFromMovieUser(movieId, user) {
-    const res = await fetch(`http://localhost:8000/api/reviews/?movieid=${movieId}&username=${user}`, {
+    const res = await fetch(`https://filmaff.onrender.com/api/reviews/?movieid=${movieId}&username=${user}`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
@@ -208,7 +208,7 @@ export async function getReviewFromMovieUser(movieId, user) {
 
 export async function getUserFromEmail(email) {
     console.log(email);
-    const res = await fetch(`http://localhost:8000/api/users/?email=${email}`, {
+    const res = await fetch(`https://filmaff.onrender.com/api/users/?email=${email}`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
