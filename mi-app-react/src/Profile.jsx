@@ -48,9 +48,9 @@ export default function profile() {
             <p id="alert"></p>
             <input type="submit" value="Update profile information" />
         </form> 
-        <button>
-            <NavLink to="/password">Change password</NavLink>
-        </button>
+            <NavLink to="/password">
+                <button>Change password</button>
+            </NavLink>
         <hr />
         <button onClick={handleDeletion}>Delete account</button>
   </div>

@@ -1,7 +1,7 @@
 import React from 'react';
 import RatingStars from './RatingStars';
 import { useState, useEffect } from 'react';
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import FixedRating from './FixedRating';
 import RatingTextInput from './RatingTextInput';
 import RatingButtons from './RatingButtons';
@@ -13,17 +13,18 @@ function RatingControlDiv({ movie }) {
   const [reviewId, setReviewId] = useState(-1);
   const [reviewScore, setReviewScore] = useState(0);
   const [reviewBody, setReviewBody] = useState('');
+  const navigate = useNavigate();
   
   const handleSubmit = async () => {
     if (reviewId === -1) {
       if (reviewScore !== 0) {
         postReview(movie.id, email, reviewScore, reviewBody).then(() => {
-          window.location.reload();
+          navigate(0)
         });
       } 
     } else {
       patchReview(reviewId, movie.id, reviewScore, reviewBody).then(() => {
-        window.location.reload();
+        navigate(0)
       });
     }
   };
@@ -31,10 +32,10 @@ function RatingControlDiv({ movie }) {
   const handleDelete = () => {
     if (reviewId !== -1){
       deleteReview(reviewId).then(() => {
-        window.location.reload();
+        navigate(0)
       });
     } else {
-      window.location.reload();
+      navigate(0)
     }
   };
 
