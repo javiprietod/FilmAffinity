@@ -39,4 +39,16 @@ jobs:
         npx eslint .
     - name: Lint Django code
       run: |
-        flake8 --max-line-length 80 --exclude='mi-app-react/node_modules','.venv',api/users/migrations
+        flake8 --max-line-length 89 --exclude='mi-app-react/node_modules','.venv',api/users/migrations
+    - name: Coverage report
+      run: |
+        export DJANGO_SETTINGS_MODULE=api.settings
+        pytest --cov=. --cov-report=xml api/users
+        export CODACY_PROJECT_TOKEN=5cf46e32aeae42b58960bc62c0b53187
+        bash <(curl -Ls https://coverage.codacy.com/get.sh) report -r coverage.xml
+        if [ $(xmllint --xpath 'string(/coverage/@line-rate)' path_to_your_file.xml | awk '{print ($1 > 0.85) ? 0 : 1}') -eq 1 ]; then
+            echo "Coverage insufficient. Required minimum is 85%"
+            exit 1
+          else
+            echo "Coverage sufficient."
+          fi

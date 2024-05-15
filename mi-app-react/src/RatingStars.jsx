@@ -1,19 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import './index.css';
 
-const RatingStars = ({movie,user,reviewScore,reviewId}) => {
+const RatingStars = ({reviewScore, setReviewScore}) => {
   const [rating, setRating] = useState(0);
-  const [confirmedRating, setConfirmedRating] = useState(0);
-  const [hasReviewed, setHasReviewed] = useState(false);
-  {/* setConfirmedRating(llamada_para_ver_si_este_usuario_ha_votado_esta_peli) */}
+
   useEffect(() => {
-    if (reviewScore === 0) {
-      setHasReviewed(false);
-    } else {
-      setHasReviewed(true);
-      setConfirmedRating(reviewScore);
-      setRating(reviewScore);
-    }
+    setRating(reviewScore);
   }, [reviewScore]);
   
   const handleMouseOver = (index) => {
@@ -21,19 +13,11 @@ const RatingStars = ({movie,user,reviewScore,reviewId}) => {
   };
 
   const handleMouseLeave = () => {
-    setRating(confirmedRating);
+    setRating(reviewScore);
   };
 
-  const handleClick = (index) => {
-    setRating(index + 1);
-    setConfirmedRating(rating);
-    if (hasReviewed) {
-      patchReview(reviewId, rating, movie);
-    }
-    else{
-      postReview(movie, user, rating);
-    }
-    /* Añadir la llamada a la patch de posible review anterior y llamada a la creación de una nueva (solo si es desigual?) */
+  const handleClick = async () => {
+    await setReviewScore(rating);
   };
 
   return (
@@ -44,7 +28,7 @@ const RatingStars = ({movie,user,reviewScore,reviewId}) => {
           className={index < rating ? "star green" : "star"}
           onMouseOver={() => handleMouseOver(index)}
           onMouseLeave={handleMouseLeave}
-          onClick={() => handleClick(index)}
+          onClick={() => handleClick()}
         >
           &#9733;
         </span>
@@ -53,55 +37,3 @@ const RatingStars = ({movie,user,reviewScore,reviewId}) => {
   );
 };
 export default RatingStars;
-
-function postReview(movieId, userId, ratingScore) {
-  fetch('http://localhost:8000/api/reviews/', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      rating: ratingScore,
-      body: "",
-      movie: movieId,
-      user: userId,
-    }),
-    credentials: 'include',
-  })
-  .then((res) => {
-    if (res.ok) {
-      return res.json();
-    } else {
-      throw new Error('Failed to post review');
-    }
-  })
-  .then((data) => {
-    console.log('Review posted successfully:', data);
-  })
-  .catch((error) => {
-    console.error('Error posting review:', error);
-  });
-}
-
-function patchReview(reviewId, ratingScore, movieId) {
-  fetch(`http://localhost:8000/api/reviews/${reviewId}/`, {
-    method: 'PATCH',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      movie: movieId,
-      rating: ratingScore
-    }),
-    credentials: 'include',
-  })
-    .then((res) => {
-      if (res.ok) {
-      } else {
-        throw new Error('Failed to update review');
-      }
-    })
-    .catch((error) => {
-      console.error('Error updating review:', error);
-    });
-}
