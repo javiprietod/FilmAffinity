@@ -327,7 +327,7 @@ class ReviewList(generics.ListCreateAPIView):
             calculate_rating(movie_id)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
+
     def list(self, request, **kwargs):
         queryset = self.get_queryset()
         queryset = queryset.order_by("-rating")
