@@ -100,7 +100,7 @@ export function logout (setIsLoggedIn, setUserName) {
     });
 }
 
-export function register (formData) {
+export function register (formData, navigate) {
     fetch('https://filmaff.onrender.com/api/users/', {
         method: 'POST',
         headers: {
@@ -109,7 +109,7 @@ export function register (formData) {
         body: JSON.stringify(formData),
     }).then((res) => {
         if (res.ok) {
-            location.href = '/login';
+            navigate('/login');
         }
         else if (res.status === 409) {
             document.getElementById('alert').innerHTML = '❌︎ This email is already registered';

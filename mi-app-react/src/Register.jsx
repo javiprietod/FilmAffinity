@@ -1,5 +1,6 @@
 import { useState, useRef } from 'react';
 import { register } from './api';
+import { useNavigate } from 'react-router-dom';
 
 export default function Register() {
 
@@ -9,6 +10,7 @@ export default function Register() {
     const [pass, setPass] = useState('');
     const [passRep, setPassRep] = useState('');
     const val = useRef('');
+    const navigate = useNavigate();
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -18,7 +20,7 @@ export default function Register() {
             email: email,
             password: pass
         };
-        register(formData);
+        register(formData, navigate);
     };
 
     const checkPass = () => {
