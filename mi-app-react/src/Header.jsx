@@ -56,14 +56,11 @@ export default function Header() {
     const handleAdvancedSearchSubmit = (event) => {
         event.preventDefault();
         const form = event.target;
+        console.log(form);
         const queryParams = new URLSearchParams(new FormData(form)).toString();
         console.log(queryParams);
         navigate(`/?${queryParams}`); // Navigate to the main page with query parameters
     };
-
-    useEffect(() => {
-        
-    }, [window.location])
 
     return (
         <header>
