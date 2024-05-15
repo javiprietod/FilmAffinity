@@ -13,30 +13,27 @@ function RatingControlDiv({ movie }) {
   const [reviewId, setReviewId] = useState(-1);
   const [reviewScore, setReviewScore] = useState(0);
   const [reviewBody, setReviewBody] = useState('');
+  const [triggerRender, setTriggerRender] = useState(false);
   const navigate = useNavigate();
   
   const handleSubmit = async () => {
     if (reviewId === -1) {
       if (reviewScore !== 0) {
-        postReview(movie.id, email, reviewScore, reviewBody).then(() => {
-          navigate(0)
-        });
+        await postReview(movie.id, email, reviewScore, reviewBody)
       } 
     } else {
-      patchReview(reviewId, movie.id, reviewScore, reviewBody).then(() => {
-        navigate(0)
-      });
+      await patchReview(reviewId, movie.id, reviewScore, reviewBody)
     }
+    setTriggerRender(!triggerRender);
   };
   
   const handleDelete = () => {
     if (reviewId !== -1){
-      deleteReview(reviewId).then(() => {
-        navigate(0)
-      });
-    } else {
-      navigate(0)
+      deleteReview(reviewId)
     }
+    setReviewScore(0);
+    setReviewBody('');
+    setReviewId(-1);
   };
 
   useEffect(() => {
