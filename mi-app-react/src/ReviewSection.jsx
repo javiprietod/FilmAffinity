@@ -6,9 +6,14 @@ const REVIEWS_PER_PAGE = 2;
 
 function ListPage({ reviewList, currentPage, setCurrentPage, numPages }) {
   return <div className="individual-review-container">
-    <h2>Reviews</h2>
-    <PageFilter currentPage={currentPage} setCurrentPage={setCurrentPage} numPages={numPages} />
-    <ReviewList reviewList={reviewList} />
+    { reviewList.length === 0 ? 
+      <h2>No reviews found</h2> :
+      <>
+      <h2>Reviews</h2>
+      <PageFilter currentPage={currentPage} setCurrentPage={setCurrentPage} numPages={numPages} />
+      <ReviewList reviewList={reviewList} />
+      </>
+    }
   </div>
 }
 
@@ -60,7 +65,6 @@ function ReviewSection({movieid}) {
   const [currentPage, setCurrentPage] = useState(INITIAL_PAGE);
   const [reviewList, setReviewList] = useState([]);
   const [numPages, setNumPages] = useState(0);
-  console.log(movieid);
   useEffect(() => {
     let skip = (currentPage - INITIAL_PAGE) * REVIEWS_PER_PAGE;
     const fetchReviews = async () => {

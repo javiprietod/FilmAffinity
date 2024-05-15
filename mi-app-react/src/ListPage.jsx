@@ -123,7 +123,6 @@ export default function App() {
           throw new Error('No se pudo obtener la lista de peliculas');
         }
         const data1 = await res.json();
-        console.log(data1.length / MOVIES_PER_PAGE);
         if (Math.ceil(data1.length / MOVIES_PER_PAGE) !== 0) {
           setNumPages(Math.ceil(data1.length / MOVIES_PER_PAGE));
         } else {
