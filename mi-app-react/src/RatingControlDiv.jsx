@@ -13,39 +13,9 @@ function RatingControlDiv({ movie }) {
   const [reviewId, setReviewId] = useState(-1);
   const [reviewScore, setReviewScore] = useState(0);
   const [reviewBody, setReviewBody] = useState('');
+  const [triggerRender, setTriggerRender] = useState(false);
+  const navigate = useNavigate();
   
-  const handleSubmit = () => {
-    getReviewFromMovieUser(movie.id, email).then((data) => {
-      if (data !== null && data.length > 0) {
-        data = data[0];
-        setReviewId(data.id);
-        if (reviewId >= 0) {
-          patchReview(reviewId, movie.id, reviewScore, reviewBody)
-        }
-        console.log('data', data);
-        console.log('setReviewId', reviewId);
-      } else {
-        setReviewId(-2);
-        console.log('setReviewId', reviewId);
-      }
-    });
-  };
-  
-  useEffect(() => {
-    if (reviewId < 0) {
-      postReview(movie.id, email, reviewScore, reviewBody)
-    } 
-  }, [reviewId]);
-
-  const handleDelete = () => {
-    if (reviewId !== -1){
-      deleteReview(reviewId)
-    }
-    setReviewScore(0);
-    setReviewBody('');
-    setReviewId(0);
-  };
-
   useEffect(() => {
     checkLoggedIn().then((data) => {
       if (data.isLoggedIn){
@@ -65,6 +35,33 @@ function RatingControlDiv({ movie }) {
       }
     });
   }, [email]);
+
+  const handleSubmit = () => {
+    getReviewFromMovieUser(movie.id, data.user.email).then((data) => {
+      if (data !== null && data.length > 0) {
+        data = data[0];
+        setReviewId(data.id);
+      }
+      setTriggerRender(!triggerRender);
+    });
+  };
+  
+  useEffect(() => {
+    if (reviewId === -1) {
+      postReview(movie.id, email, reviewScore, reviewBody)
+    } else {
+      patchReview(reviewId, movie.id, reviewScore, reviewBody)
+    }
+  }, [triggerRender]);
+  
+  const handleDelete = () => {
+    if (reviewId !== -1){
+      deleteReview(reviewId)
+    }
+    setReviewScore(0);
+    setReviewBody('');
+    setReviewId(-1);
+  };
 
   return (
     <div>
@@ -95,7 +92,7 @@ function RatingControlDiv({ movie }) {
         {loggedIn ? (
           <div>
             <RatingTextInput reviewScore={reviewScore} reviewBody={reviewBody} setReviewBody={setReviewBody}>  </RatingTextInput>
-            <RatingButtons submittedHandler={handleSubmit} deleteHandler={handleDelete}> </RatingButtons>
+            <RatingButtons submitHandler={handleSubmit} deleteHandler={handleDelete} movieId={movie.id}> </RatingButtons>
           </div>
         ) : null}
       </div>
