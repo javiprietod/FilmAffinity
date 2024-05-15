@@ -18,12 +18,12 @@ function RatingControlDiv({ movie }) {
     if (reviewId === -1) {
       if (reviewScore !== 0) {
         postReview(movie.id, email, reviewScore, reviewBody).then(() => {
-          location.reload();
+          window.location.reload();
         });
       } 
     } else {
       patchReview(reviewId, movie.id, reviewScore, reviewBody).then(() => {
-        location.reload();
+        window.location.reload();
       });
     }
   };

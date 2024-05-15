@@ -108,9 +108,13 @@ export default function Header() {
                                 {isOpen ?  (
                                     <div className="modal" onClick={() => setIsOpen(false)}>
                                         <div className="modal-content" onClick={e => e.stopPropagation()}>
-                                            <p><a href="/profile">Profile</a></p>
+                                            <p>
+                                                <NavLink to="/profile">
+                                                    Profile
+                                                </NavLink>
+                                            </p>
                                             <hr />
-                                            <p onClick={handleLogout}><a>Logout</a></p>
+                                            <p onClick={handleLogout}>Logout</p>
                                         </div>
                                     </div>
                                 ) : null
