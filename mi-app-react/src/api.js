@@ -35,8 +35,7 @@ export async function checkLoggedIn() {
         const data = await response.json();
         return { isLoggedIn: true, user: data };
     } 
-    return { isLoggedIn: false, user: null };
-    
+    return { isLoggedIn: false, user: null }; 
 }
 
 export function changeProfileInformation (formData) {
@@ -130,7 +129,7 @@ export function register (formData) {
 }
 
 export async function postReview(movieId, userId, reviewScore, reviewBody) {
-    fetch('http://localhost:8000/api/reviews/', {
+    const res = await fetch('http://localhost:8000/api/reviews/', {
       method: 'POST',
       headers: {
           'Content-Type': 'application/json',
@@ -142,18 +141,15 @@ export async function postReview(movieId, userId, reviewScore, reviewBody) {
         user: userId,
       }),
       credentials: 'include',
-    }).then((res) => {
-        if (res.ok) {
+    })
+    if (res.ok) {
             return res.json();
-        } else {
-            throw new Error('Failed to post review');
-        }
-    }).catch((error) => {
-        console.error('Error posting review:', error);
-    });
-  }
-  
-export function patchReview(reviewId, movieId, reviewScore, reviewBody) {
+    } 
+    throw new Error('Failed to post review');
+    
+}
+
+export async function patchReview(reviewId, movieId, reviewScore, reviewBody) {
     let body;
     if (reviewBody !== '') {
         body = JSON.stringify({
@@ -168,48 +164,44 @@ export function patchReview(reviewId, movieId, reviewScore, reviewBody) {
         });
     }
   
-    fetch(`http://localhost:8000/api/reviews/${reviewId}/`, {
+    const res = await fetch(`http://localhost:8000/api/reviews/${reviewId}/`, {
         method: 'PATCH',
         headers: {
             'Content-Type': 'application/json',
         },
         body: body,
-    }).then((res) => {
-        if (!res.ok) {
-            throw new Error('Failed to update review');
-        }
-    }).catch((error) => {
-          console.error('Error updating review:', error);
-    });
+    })
+    if (res.ok) {
+        return res.json();
+    }
+    throw new Error('Failed to patch review');
   }
 
-export function deleteReview(reviewId) {
-    fetch(`http://localhost:8000/api/reviews/${reviewId}/`, {
+export async function deleteReview(reviewId) {
+    const res = await fetch(`http://localhost:8000/api/reviews/${reviewId}/`, {
         method: 'DELETE',
         headers: {
             'Content-Type': 'application/json',
         },
-    }).then((res) => {
-        if (!res.ok) {
-            throw new Error('Failed to delete review');
-        }
-    }).catch((error) => {
-          console.error('Error deleting review:', error);
-    });
-  }
+    })
+    if (res.ok) {
+        return true;
+    }
+    throw new Error('Failed to delete review');
+}
 
-  export async function getReviewFromMovieUser(movieId, user) {
-      const response = await fetch(`http://localhost:8000/api/reviews/?movieid=${movieId}&username=${user}`, {
-          method: 'GET',
-          headers: {
-              'Content-Type': 'application/json',
-          },
-      });
-      
-      if (response.ok) {
-          const data = await response.json();
-          return data;
-      } else {
-          throw new Error('Failed to get review');
-      }
-  }
+export async function getReviewFromMovieUser(movieId, user) {
+    const res = await fetch(`http://localhost:8000/api/reviews/?movieid=${movieId}&username=${user}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    });
+    
+    if (res.ok) {
+        const data = await res.json();
+        return data;
+    } else {
+        throw new Error('Failed to get review');
+    }
+}

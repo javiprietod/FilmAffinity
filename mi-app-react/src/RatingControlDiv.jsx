@@ -18,21 +18,23 @@ function RatingControlDiv({movie}) {
     // Call the API to patch the review with the new body text
     if (reviewId === -1) {
       if (reviewScore !== 0) {
-        postReview(movie.id, email, reviewScore, reviewBody);
-        setTimeout(async() => {window.location.reload();}, 1000);
+        postReview(movie.id, email, reviewScore, reviewBody).then(() => {
+          location.reload();
+        });
       } 
     } else {
-      patchReview(reviewId, movie.id, reviewScore, reviewBody);
+      patchReview(reviewId, movie.id, reviewScore, reviewBody).then(() => {
+        location.reload();
+      });
     }
   };
   
   const handleDelete = () => {
     // Call API to delete the review
     if (reviewId !== -1){
-      deleteReview(reviewId);
-      setReviewScore(0);
-      setReviewBody('');
-      setReviewId(-1);
+      deleteReview(reviewId).then(() => {
+        location.reload();
+      });
     }
   };
 

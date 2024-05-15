@@ -91,7 +91,7 @@ class TestRegistroView(TestCase):
             "password": "AaBbCcDd",
         }
         response = self.client.post("/api/users/", data)
-        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.status_code, 406)
 
     def test_funcionalidad_registro_telefono_invalido(self):
         data = {

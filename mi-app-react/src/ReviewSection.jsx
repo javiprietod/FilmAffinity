@@ -5,7 +5,7 @@ const INITIAL_PAGE = 1;
 const REVIEWS_PER_PAGE = 2;
 
 function ListPage({ reviewList, currentPage, setCurrentPage, numPages }) {
-  return <div className="container">
+  return <div className="individual-review-container">
     <h2>Reviews</h2>
     <PageFilter currentPage={currentPage} setCurrentPage={setCurrentPage} numPages={numPages} />
     <ReviewList reviewList={reviewList} />

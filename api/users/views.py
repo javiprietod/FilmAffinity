@@ -330,6 +330,7 @@ class ReviewList(generics.ListCreateAPIView):
     
     def list(self, request, **kwargs):
         queryset = self.get_queryset()
+        queryset = queryset.order_by("-rating")
         limit = request.query_params.get("limit", 10e10)
         skip = request.query_params.get("skip", 0)
         try:
@@ -367,7 +368,6 @@ class ReviewDetail(generics.RetrieveUpdateDestroyAPIView):
         if serializer.is_valid():
             serializer.save()
             movie_id = request.data.get("movie")
-            print(movie_id)
             calculate_rating(movie_id)
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
