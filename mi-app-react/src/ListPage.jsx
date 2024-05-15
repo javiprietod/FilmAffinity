@@ -101,26 +101,26 @@ export default function App() {
         try {
           const response = await fetch(url + `limit=4000000`); // 
           if (!response.ok) {
-            throw new Error('No se pudo obtener la lista de peliculas');
+            throw new Error('Could not obtain list of movies.');
           }
           const data = await response.json();
           setNumFilms(data.length);
         } catch (error) {
-          console.error('Error al obtener los peliculas:', error);
+          console.error('Error when trying to retrieve the movies:', error);
         }
       }
       try {
         const response = await fetch(url + `limit=${MOVIES_PER_PAGE}&skip=${skip}`, {method: 'GET',credentials: 'include'}); // 
         
         if (!response.ok) {
-          throw new Error('No se pudo obtener la lista de peliculas');
+          throw new Error('Could not obtain list of movies.');
         }
         const data = await response.json();
         setMovieList(data);
 
         const res = await fetch(url + `limit=4000000`); // 
         if (!res.ok) {
-          throw new Error('No se pudo obtener la lista de peliculas');
+          throw new Error('NCould not obtain list of movies.');
         }
         const data1 = await res.json();
         if (Math.ceil(data1.length / MOVIES_PER_PAGE) !== 0) {
@@ -129,7 +129,7 @@ export default function App() {
           setNumPages(1);
         }
       } catch (error) {
-        console.error('Error al obtener los peliculas:', error);
+        console.error('Error when trying to retrieve the movies:', error);
       }
     };
 

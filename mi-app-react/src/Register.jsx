@@ -21,7 +21,7 @@ export default function Register() {
         register(formData);
     };
 
-    const compruebaPass = () => {
+    const checkPass = () => {
         let correcto = false;  
       
         if (pass === passRep) correcto = true;
@@ -47,10 +47,10 @@ export default function Register() {
             <label htmlFor="pass">Password:</label>
             <input type="password" placeholder="Your password" id="pass" name="password" minLength="8" value={pass} onChange={e => setPass(e.target.value)} required/>
             <label htmlFor="pass">Repeat Password:</label>
-            <input type="password" placeholder="Repeat password" id="passRep" onKeyUp={compruebaPass()}
+            <input type="password" placeholder="Repeat password" id="passRep" onKeyUp={checkPass()}
                     name="password" minLength="8" value={passRep} onChange={e => setPassRep(e.target.value)} required/>
 
-            {val.current ? <p id="aviso" className='error'>{val.current}</p> : <p id="aviso"></p>}
+            {val.current ? <p id="alert" className='error'>{val.current}</p> : <p id="alert"></p>}
             <hr />
             <input type="submit" value="Registrarse" />
         </form> 

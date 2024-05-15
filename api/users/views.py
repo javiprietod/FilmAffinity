@@ -35,6 +35,9 @@ class RegistroView(generics.ListCreateAPIView):
 
     def get_queryset(self):
         users = models.Usuario.objects.all()
+        email = self.request.GET.get("email")
+        if email is not None:
+            users = users.filter(email=email)
         return users
 
     def handle_exception(self, exc):
@@ -76,7 +79,9 @@ class LoginView(generics.CreateAPIView):
             )
             return response
         else:
-            return Response(serializer.errors, status=status.HTTP_401_UNAUTHORIZED)
+            return Response(
+                serializer.errors, status=status.HTTP_401_UNAUTHORIZED
+            )
 
 
 class UsuarioView(generics.RetrieveUpdateDestroyAPIView):
@@ -200,7 +205,9 @@ class MovieList(generics.ListCreateAPIView):
                 user = Token.objects.get(key=token_key).user
             except Token.DoesNotExist:
                 raise Http404("No user found with the provided session token")
-            user_reviews = models.Review.objects.filter(user__username=user.username)
+            user_reviews = models.Review.objects.filter(
+                user__username=user.username
+            )
             # If the user has no reviews, return the top rated movies
             if len(user_reviews) == 0:
                 queryset = queryset.order_by("-rating")
@@ -212,7 +219,9 @@ class MovieList(generics.ListCreateAPIView):
                     if review.rating > max_rating:
                         max_rating = review.rating
                         genres = (
-                            review.movie.genre.split(",") if review.rating >= 3 else []
+                            review.movie.genre.split(",")
+                            if review.rating >= 3
+                            else []
                         )
                         user_genres = [
                             genre.strip()
@@ -221,7 +230,9 @@ class MovieList(generics.ListCreateAPIView):
                         ]
 
                 # Find movies with similar genres that the user likes
-                q_objects = [Q(genre__icontains=genre.strip()) for genre in user_genres]
+                q_objects = [
+                    Q(genre__icontains=genre.strip()) for genre in user_genres
+                ]
                 q = q_objects.pop()
                 for obj in q_objects:
                     q |= obj
@@ -241,7 +252,9 @@ class MovieList(generics.ListCreateAPIView):
                     )
                 )
 
-                queryset = recommended_movies.order_by("-similarity_score", "-rating")
+                queryset = recommended_movies.order_by(
+                    "-similarity_score", "-rating"
+                )
 
         limit = request.query_params.get("limit", 9)
         skip = request.query_params.get("skip", 0)
@@ -288,7 +301,9 @@ class MovieDetail(generics.RetrieveUpdateDestroyAPIView):
 
     def handle_exception(self, exc):
         if isinstance(exc, Http404):
-            return Response(status=status.HTTP_404_NOT_FOUND, data={"error": str(exc)})
+            return Response(
+                status=status.HTTP_404_NOT_FOUND, data={"error": str(exc)}
+            )
         return super().handle_exception(exc)
 
 
@@ -383,5 +398,7 @@ class ReviewDetail(generics.RetrieveUpdateDestroyAPIView):
 
     def handle_exception(self, exc):
         if isinstance(exc, Http404):
-            return Response(status=status.HTTP_404_NOT_FOUND, data={"error": str(exc)})
+            return Response(
+                status=status.HTTP_404_NOT_FOUND, data={"error": str(exc)}
+            )
         return super().handle_exception(exc)

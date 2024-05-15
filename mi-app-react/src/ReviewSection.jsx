@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import FixedStars from './FixedStars';
+import { getUserFromEmail } from './api.js';
 
 const INITIAL_PAGE = 1;
 const REVIEWS_PER_PAGE = 2;
@@ -44,11 +45,25 @@ function ReviewList({ reviewList }) {
 }
 
 function Review({ review }) {
+  const [name, setName] = useState('Anonimous')
+  
+  useEffect(() => {
+    getUserFromEmail(review.user)
+    .then((data) => {
+      data = data[0];
+      if (data.nombre !== null) {
+        setName(data.nombre);
+      } else {
+        setName('Anonimous');
+      }
+    });
+  }, [])
+
   return (
     <div className="individual-review" id="reviewDetails">
       <div className='user-side-rating'>
         <div>
-          <h2>{review.nombre}</h2>
+          <h2>{name}</h2>
         </div>
         <div>
           <FixedStars rating={review.rating}></FixedStars>

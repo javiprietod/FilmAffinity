@@ -16,7 +16,7 @@ export default function Register() {
         changeProfileInformation(formData, 'password');
     };
 
-    const compruebaPass = () => {
+    const checkPass = () => {
         let correcto = false;  
       
         if (pass === passRep) correcto = true;
@@ -31,9 +31,9 @@ export default function Register() {
             <label htmlFor="pass">Password:</label>
             <input type="password" id="pass" name="password" minLength="8" value={pass} onChange={e => setPass(e.target.value)} />
             <label htmlFor="pass">Repeat Password:</label>
-            <input type="password" id="passRep" onKeyUp={compruebaPass()} value={passRep} onChange={e => setPassRep(e.target.value)}
+            <input type="password" id="passRep" onKeyUp={checkPass()} value={passRep} onChange={e => setPassRep(e.target.value)}
                     name="password" minLength="8" />
-            {val.current ? <p id="aviso" className="error">{val.current}</p> : <p id="aviso"></p>}
+            {val.current ? <p id="alert" className="error">{val.current}</p> : <p id="alert"></p>}
             <hr />
             <input type="submit" value="Update password" />
         </form> 

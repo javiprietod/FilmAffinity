@@ -43,7 +43,7 @@ export default function profile() {
             <label htmlFor="tel">Phone Number:</label>
             <input type="tel" name="tel" id="tel" value={tel} onChange={e => setTel(e.target.value)} required />
             <hr />
-            <p id="aviso"></p>
+            <p id="alert"></p>
             <input type="submit" value="Update profile information" />
         </form> 
         <button onClick={() => location.href = '/password'}>Change Password</button>

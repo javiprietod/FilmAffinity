@@ -29,7 +29,7 @@ export default function Login() {
             <input type="password" id="pass" name="password" pattern="^(?=.*[0-9])(?=.*[A-Z])(?=.*[a-z]).*$" value={password} onChange={e => setPassword(e.target.value)} minlength="8" required/>
     
             
-            <p id="aviso"></p>
+            <p id="alert"></p>
             <hr />
             <input type="submit" value="Enter" />
 

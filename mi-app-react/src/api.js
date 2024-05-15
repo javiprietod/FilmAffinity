@@ -12,8 +12,8 @@ export function login (formData) {
         if (res.ok) {
             location.href = '/';
         } else if (res.status === 401) {
-            document.getElementById('aviso').innerHTML = '❌︎ Email or password incorrect';
-            document.getElementById('aviso').className = 'error';
+            document.getElementById('alert').innerHTML = '❌︎ Email or password incorrect';
+            document.getElementById('alert').className = 'error';
         }
     })
     .catch((error) => {
@@ -49,16 +49,16 @@ export function changeProfileInformation (formData, page) {
         credentials: 'include',
     }).then((res) => {
         if (res.ok) {
-            document.getElementById('aviso').innerHTML = '✅ The information has been updated successfully';
-            document.getElementById('aviso').className = 'correct';
+            document.getElementById('alert').innerHTML = '✅ The information has been updated successfully';
+            document.getElementById('alert').className = 'correct';
         }
         else if (res.status === 400) {
-            document.getElementById('aviso').innerHTML = (
+            document.getElementById('alert').innerHTML = (
                 (page === 'profile') ?
                 '❌︎ The phone number introduced is not valid' : 
                 '❌︎ The password must have at least a lowercase letter, a capital letter and a number'
             );
-            document.getElementById('aviso').className = 'error';
+            document.getElementById('alert').className = 'error';
         }
     }).catch((error) => {
         console.error(error.message, 'error');
@@ -118,16 +118,16 @@ export function register (formData) {
             location.href = '/login';
         }
         else if (res.status === 409) {
-            document.getElementById('aviso').innerHTML = '❌︎ This email is already registered';
-            document.getElementById('aviso').className = 'error';
+            document.getElementById('alert').innerHTML = '❌︎ This email is already registered';
+            document.getElementById('alert').className = 'error';
         }
         else if (res.status === 406) {
-            document.getElementById('aviso').innerHTML = '❌︎ The password must have at least a lowercase letter, a capital letter and a number';
-            document.getElementById('aviso').className = 'error';
+            document.getElementById('alert').innerHTML = '❌︎ The password must have at least a lowercase letter, a capital letter and a number';
+            document.getElementById('alert').className = 'error';
         }
         else if (res.status === 400) {
-            document.getElementById('aviso').innerHTML = '❌︎ The phone number introduced is not valid';
-            document.getElementById('aviso').className = 'error';
+            document.getElementById('alert').innerHTML = '❌︎ The phone number introduced is not valid';
+            document.getElementById('alert').className = 'error';
         }
     }).catch((error) => {
         console.error(error.message, 'error');
@@ -209,5 +209,22 @@ export async function getReviewFromMovieUser(movieId, user) {
         return data;
     } else {
         throw new Error('Failed to get review');
+    }
+}
+
+export async function getUserFromEmail(email) {
+    console.log(email);
+    const res = await fetch(`http://localhost:8000/api/users/?email=${email}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    });
+    
+    if (res.ok) {
+        const data = await res.json();
+        return data;
+    } else {
+        throw new Error('Failed to get user');
     }
 }
