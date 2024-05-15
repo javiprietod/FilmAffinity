@@ -1,15 +1,17 @@
 import { useState, useEffect } from 'react';
 import { checkLoggedIn, changeProfileInformation, deleteAccount } from './api.js';
+import { NavLink, useNavigate } from 'react-router-dom';
 
 export default function profile() {
 
     const [name, setName] = useState('');
     const [tel, setTel] = useState('');
+    const navigate = useNavigate();
 
     useEffect(() => {
         checkLoggedIn().then((data) => {
             if (!data.isLoggedIn) {
-                location.href = '/login';
+                navigate('/login');
             } else {
                 setName(data.user.name);
                 setTel(data.user.tel);
@@ -46,7 +48,9 @@ export default function profile() {
             <p id="alert"></p>
             <input type="submit" value="Update profile information" />
         </form> 
-        <button onClick={() => location.href = '/password'}>Change Password</button>
+        <button>
+            <NavLink to="/password">Change password</NavLink>
+        </button>
         <hr />
         <button onClick={handleDeletion}>Delete account</button>
   </div>

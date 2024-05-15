@@ -31,10 +31,10 @@ function RatingControlDiv({ movie }) {
   const handleDelete = () => {
     if (reviewId !== -1){
       deleteReview(reviewId).then(() => {
-        location.reload();
+        window.location.reload();
       });
     } else {
-      location.reload();
+      window.location.reload();
     }
   };
 
