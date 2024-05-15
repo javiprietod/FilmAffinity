@@ -71,10 +71,9 @@ function RatingControlDiv({ movie }) {
 
   useEffect(() => {
     if (buttonClicked) {
-      location.href = '/movie/' + movie.id;
+      navigate('/movie/' + movie.id);
     } else {
       setButtonClicked(false);
-      // return;
     }
   }, [buttonClicked]);
 
