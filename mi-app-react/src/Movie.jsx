@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import { useLoaderData } from 'react-router-dom';
 import RatingControlDiv from './RatingControlDiv';
 import ReviewSection from './ReviewSection';
+import { NavLink } from 'react-router-dom';
 
 export default function MovieDescription() {
     const [movie, setMovie] = useState(useLoaderData());
@@ -17,7 +18,9 @@ export default function MovieDescription() {
     <div>
         <div className="container">
             <div className="back-button">
-                <a href="/" className="back"><strong>← Back</strong></a>
+                <NavLink to="/" className='back'>
+                    <strong>← Back</strong>
+                </NavLink>
             </div>
             <div className="movie-details full-info" id="movieDetails">
                 <img src={movie.thumbnail} alt="Thumbnail" id="thumbnail" className='thumbnail' />

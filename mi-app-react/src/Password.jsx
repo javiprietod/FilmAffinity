@@ -29,10 +29,10 @@ export default function Register() {
     
         <form className="form-control" onSubmit={handleSubmit}>
             <label htmlFor="pass">Password:</label>
-            <input type="password" id="pass" name="password" minLength="8" value={pass} onChange={e => setPass(e.target.value)} />
+            <input type="password" id="pass" name="password" minLength="8" value={pass} onChange={e => setPass(e.target.value)} required/>
             <label htmlFor="pass">Repeat Password:</label>
             <input type="password" id="passRep" onKeyUp={checkPass()} value={passRep} onChange={e => setPassRep(e.target.value)}
-                    name="password" minLength="8" />
+                    name="password" minLength="8" required/>
             {val.current ? <p id="alert" className="error">{val.current}</p> : <p id="alert"></p>}
             <hr />
             <input type="submit" value="Update password" />

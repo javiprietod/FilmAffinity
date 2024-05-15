@@ -24,7 +24,9 @@ function ListPage({ movieList, currentPage, setCurrentPage, numFilms=-1, numPage
             {
               numFilms !== -1 ?
               <div className="back-button">
-                <a href="/" className="back"><strong>← Back</strong></a>
+                <a href="/" className='back'>
+                    <strong>← Back</strong>
+                </a>
               </div> : null
             }
             <h2 id="main-text">
@@ -86,7 +88,7 @@ export default function App() {
   const [numFilms, setNumFilms] = useState(-1);
   const [numPages, setNumPages] = useState(-1);
   const params = new URLSearchParams(window.location.search);
-
+  console.log(params.get('title'));
   useEffect(() => {
     let skip = (currentPage - INITIAL_PAGE) * MOVIES_PER_PAGE;
     const fetchMovies = async () => {
@@ -138,7 +140,7 @@ export default function App() {
     };
 
     fetchMovies();
-  }, [currentPage]);
+  }, [currentPage, window.location.search]);
 
   return (
     <ListPage movieList={movieList} currentPage={currentPage} setCurrentPage={setCurrentPage} numFilms={numFilms} numPages={numPages}/>

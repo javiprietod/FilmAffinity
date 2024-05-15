@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import logo from './images/logo.png';
 import RatingStars from './RatingStars';
 import { useState, useEffect } from 'react';
@@ -11,6 +11,7 @@ export default function Header() {
     const [isOpen, setIsOpen] = useState(false);
     const [advancedSearch, setAdvancedSearch] = useState(false);
     const [ratingFilter, setRatingFilter] = useState(0);
+    const navigate = useNavigate();
 
     const handleLogout = () => {
         if (confirm("Are you sure you want to log out?")) {
@@ -52,13 +53,6 @@ export default function Header() {
         };
     }, [advancedSearch, isOpen]);
 
-    const handleAdvancedSearchSubmit = (event) => {
-        event.preventDefault();
-        const form = event.target;
-        const queryParams = new URLSearchParams(new FormData(form)).toString();
-        navigate(`/?${queryParams}`); // Navigate to the main page with query parameters
-      };
-
     return (
         <header>
             <nav>
@@ -68,7 +62,7 @@ export default function Header() {
                     </NavLink>
                 </div>
                 <div id="search-bar-container">
-                    <form id="search-bar" onSubmit={handleAdvancedSearchSubmit}>
+                    <form id="search-bar">
                         <input type="text" name="title" id="title" placeholder="Search..." />
                     </form>
                     <div id="advanced" onClick={() => setAdvancedSearch(!advancedSearch)}>
@@ -78,7 +72,7 @@ export default function Header() {
                 {advancedSearch ?
                     <div id='advanced-search' className="modal" onClick={() => setAdvancedSearch(false)}>
                         <div className="modal-content" onClick={e => e.stopPropagation()}>
-                            <form id="advanced-search-form" onSubmit={handleAdvancedSearchSubmit}>
+                            <form id="advanced-search-form">
                                 <label htmlFor="title" style={{'color': 'black'}}>Title:</label>
                                 <input type="text" name="title" id="title" placeholder="Title" />
                                 <label htmlFor="director" style={{'color': 'black'}}>Director:</label>

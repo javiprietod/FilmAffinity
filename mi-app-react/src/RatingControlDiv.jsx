@@ -14,50 +14,68 @@ function RatingControlDiv({ movie }) {
   const [reviewScore, setReviewScore] = useState(0);
   const [reviewBody, setReviewBody] = useState('');
   const [triggerRender, setTriggerRender] = useState(false);
+  const [buttonClicked, setButtonClicked] = useState(false);
   const navigate = useNavigate();
   
-  const handleSubmit = async () => {
-    getReviewFromMovieUser(movie.id, data.user.email).then((data) => {
-      if (data !== null && data.length > 0) {
-        data = data[0];
-        setReviewId(data.id);
-      }
-    });
-    if (reviewId === -1) {
-      if (reviewScore !== 0) {
-        await postReview(movie.id, email, reviewScore, reviewBody)
-      } 
-    } else {
-      await patchReview(reviewId, movie.id, reviewScore, reviewBody)
-    }
-    setTriggerRender(!triggerRender);
-  };
-  
-  const handleDelete = () => {
-    if (reviewId !== -1){
-      deleteReview(reviewId)
-    }
-    setReviewScore(0);
-    setReviewBody('');
-    setReviewId(-1);
-  };
-
   useEffect(() => {
     checkLoggedIn().then((data) => {
       if (data.isLoggedIn){
         setLoggedIn(true);
         setEmail(data.user.email);
-        getReviewFromMovieUser(movie.id, data.user.email).then((data) => {
-          if (data !== null && data.length > 0) {
-            data = data[0];
-            setReviewId(data.id);
-            setReviewScore(data.rating);
-            setReviewBody(data.body);
-          }
-        });
       }
     });
   }, []);
+
+  useEffect(() => {
+    getReviewFromMovieUser(movie.id, email).then((data) => {
+      if (data !== null && data.length > 0) {
+        data = data[0];
+        setReviewId(data.id);
+        setReviewScore(data.rating);
+        setReviewBody(data.body);
+      }
+    });
+  }, [email]);
+
+  const handleSubmit = () => {
+    getReviewFromMovieUser(movie.id, email).then((data) => {
+      if (data !== null && data.length > 0) {
+        data = data[0];
+        setReviewId(data.id);
+      }
+      setTriggerRender(!triggerRender);
+    });
+  };
+  
+  useEffect(() => {
+    if (reviewScore !== 0) {
+      if (reviewId === -1) {
+        postReview(movie.id, email, reviewScore, reviewBody)
+        .then(() => {setButtonClicked(true);});
+      } else {
+        patchReview(reviewId, movie.id, reviewScore, reviewBody)
+        .then(() => {setButtonClicked(true);});
+      }
+    }
+  }, [triggerRender]);
+  
+  const handleDelete = () => {
+    setReviewScore(0);
+    setReviewBody('');
+    setReviewId(-1);
+    if (reviewId !== -1){
+      deleteReview(reviewId)
+      .then(() => {setButtonClicked(true);});
+    }
+  };
+
+  useEffect(() => {
+    if (buttonClicked) {
+      navigate('/');
+    } else {
+      setButtonClicked(false);
+    }
+  }, [buttonClicked]);
 
   return (
     <div>
