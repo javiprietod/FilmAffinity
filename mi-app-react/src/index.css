@@ -1,0 +1,450 @@
+
+header {
+  background-color: #349a65;
+  color: #fff;
+  text-align: left; 
+  z-index: 1;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f0f0f0;
+  margin: 0;
+  padding: 0;
+}
+
+header, footer {
+  justify-content: center;
+  display: flex;
+  position: sticky;
+  width: 100%;
+}
+
+header nav, footer {
+  align-items: center;
+  background-color: #349a65;
+  color: white;
+  height: 100%;
+  width: 100%;
+}
+
+footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  height: 40px;
+  margin-bottom: 0;
+}
+
+.error {
+  color: darkred;
+  border: 2px solid darkred;
+  background-color: lightpink;
+  padding: 5px;
+}
+
+.correct {
+  color: darkgreen;
+  border: 2px solid darkgreen;
+  background-color: lightgreen;
+  padding: 5px;
+}
+
+#logo-container {
+  width: 35%;
+  height: 100%;
+}
+
+#logo {
+  float: left;
+  margin: 0 0 0 230px;
+  padding-left: -30px;
+  height: 44px;
+  z-index: 1;
+}
+
+#search-bar-container {
+  width: 30%;
+  padding-top: 25px;
+}
+
+#search-bar {
+  margin: auto;
+  margin-top: -12px;
+  height: 40px;
+  border-radius: 5px;
+}
+
+#search-bar #title {
+  width: 100%;
+  height: 80%;
+  border-radius: 6px;
+  border: 0;
+  padding-left: 10px;
+}
+
+img {
+  width: 200px;
+  height: auto;
+  margin-right: 20px;
+  border-radius: 5px;
+}
+
+header nav div {
+  padding: 10px;
+}
+
+nav > * {
+  float: left;
+}
+
+#user-login-container {
+  vertical-align: top;
+  float: right;
+  position: relative;
+  width: 250px;
+  z-index: 0;
+  margin-top: -5px;
+  color: #fff;
+  cursor: pointer;
+}
+
+#advanced {
+  height: 0;
+  float: right;
+  margin-top: -12px;
+  margin-right: -20px;
+  color: #f9c700;
+  font-weight: bolder;
+  z-index: 1;
+}
+
+#advanced:hover {
+  cursor: pointer;
+}
+
+#user-login-container #login-register .sign-in, #user-login-container #login-register .register{
+  color: #fff;
+}
+
+#user-actions {
+  height: 100%;
+  font-size: 25px;
+  float: right;
+  text-align: right;
+}
+
+
+.container {
+  max-width: 800px;
+  margin: 20px auto;
+  margin-bottom: 0;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgb(0 0 0 / 10%);
+}
+
+h1 {
+  text-align: center;
+}
+
+.container-movies {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+.movie-list {
+  align-items: flex-start; 
+  text-decoration: none;
+  color: "black";
+  text-align: center;
+  flex: 0 1 calc(5px - 33.333% - 5px); 
+  margin: 5px; 
+}
+
+.thumbnail {
+  height: 300px;
+  width: 210px;
+  border-radius: 5px;
+}
+
+.movie-details {
+  margin-top: 20px;
+  width: 90%;
+  color:#333;
+}
+
+.voting-control {
+  padding: 70px;
+}
+
+
+.full-info {
+  display: flex;
+  justify-content: space-between;
+}
+
+h2 {
+  margin-top: 10px;
+}
+
+p {
+  margin: 5px 0;
+}
+
+.form-control {
+  margin-bottom: 15px;
+}
+
+.form-control label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.form-control input[type="text"],
+.form-control input[type="tel"],
+.form-control input[type="password"],
+.form-control input[type="email"] {
+  width: calc(100% - 16px);
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
+
+.form-control textarea {
+  width: calc(100% - 16px);
+  height: 100px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
+.form-control label {
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+button[type="submit"] {
+  background-color: #333;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+button[type="submit"]:hover {
+  background-color: #777;
+}
+
+.buttons {
+  display: flex;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.buttons input[type="number"] {
+  width: 35px 
+}
+
+.voting-control {
+  border: 1px solid #0000;
+}
+
+.modal {
+  display: block;
+  z-index: 100;
+  position: absolute;
+  top: 3px;
+  right: 98px;
+  width: 250px;
+  overflow: auto;
+}
+
+.modal-content {
+  background-color: #fefefe;
+  margin: 15% auto;
+  border: 1px solid #888;
+  border-radius: 5px;
+  width: 80%;
+}
+
+#advanced-search {
+  width: 40%;
+  left: 33%;
+  top: -5px;
+  margin: 0%;
+  padding: 0%;
+  position: absolute;
+  z-index: 2;
+}
+
+#advanced-search-form > * {
+  width: 98%;
+  margin-bottom: 2px;
+}
+
+#advanced-search-form #search-button{
+  width: 20%;
+  margin-left: 40%;
+  margin-top: 2px;
+}
+
+
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+
+.modal-content p, .modal-content a {
+  color : #447CAD;
+  text-decoration: none;
+}
+
+.movie-rating-container{
+  padding: 10px;
+  justify-content: space-between;
+  display: flex;
+  flex-direction: row;
+  width: 90%;
+}
+
+.global-rating, .personal-rating-stars { 
+  flex: 1; 
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.movie-rating-loginlink{
+  color: blue;
+}
+
+.star-rating {
+  font-size: 30px;
+  padding: 0;
+  padding-left: 5%;
+}
+
+.star-fixed {
+  font-size: 30px;
+  color:#349a65;
+}
+
+.personal-rating-text {
+  position: relative;
+  left: 50%;
+  transform: translate(-50%, 0);
+  font-size: 16px;
+  padding: 10px;
+  width: 600px;
+  height: 150px;
+  font: 16px Arial, sans-serif;
+}
+
+.personal-rating-buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.personal-rating-button{
+  margin: 0 10px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  cursor: pointer;
+  background-color: #349a65;
+}
+
+.personal-rating-button:hover{
+  background-color: #54db68;
+}
+
+.rating-overlay {
+  position: absolute;
+  background-color: rgb(0 0 0 / 80%); 
+  color: white;
+  width: 7%;
+  height: 7%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.review-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 40px;
+  border-right:30px;
+}
+
+.individual-review-container {
+  width: 795px;
+  margin: 10px;
+  margin-bottom:10px;
+  margin-left:-10px;
+  padding: 2cap;
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgb(0 0 0 / 0.1);
+}
+
+.individual-review {
+  width: 97%;
+  border: 3px solid #ccc;
+  border-radius: 5px;
+  padding: 10px;
+  margin: 5px 0;
+}
+
+.review-info {
+  word-wrap: break-word;
+}
+
+.user-side-rating {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.back {
+  color: #349a65;
+  text-decoration: none;
+}
+
+.movie-rating-stars {
+  height: 10%;
+  padding: 0;
+}
+
+.star {
+  color: gray;
+  cursor: pointer;
+}
+
+.star.green {
+  color:#349a65;
+}
+
+.container {
+  margin-bottom: 50px;
+}

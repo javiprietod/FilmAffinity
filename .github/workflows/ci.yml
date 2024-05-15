@@ -1,0 +1,54 @@
+name: CI Workflow
+
+on:
+  push:
+    branches: [ develop, main ]
+  pull_request:
+    branches: [ develop, main ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.11'
+    - name: Install Django dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+    - name: Set up Node
+      uses: actions/setup-node@v2
+      with:
+        node-version: '20'
+    - name: Install React dependencies
+      run: |
+        cd mi-app-react
+        npm install
+    - name: Run Django migrations
+      run: |
+        python manage.py migrate
+    - name: Run Django tests
+      run: |
+        python manage.py test
+    - name: Lint React code
+      run: |
+        cd mi-app-react
+        npx eslint .
+    - name: Lint Django code
+      run: |
+        flake8 --max-line-length 89 --exclude='mi-app-react/node_modules','.venv',api/users/migrations
+    - name: Coverage report
+      run: |
+        export DJANGO_SETTINGS_MODULE=api.settings
+        pytest --cov=. --cov-report=xml api/users
+        export CODACY_PROJECT_TOKEN=5cf46e32aeae42b58960bc62c0b53187
+        bash <(curl -Ls https://coverage.codacy.com/get.sh) report -r coverage.xml
+        if [ $(xmllint --xpath 'string(/coverage/@line-rate)' path_to_your_file.xml | awk '{print ($1 > 0.85) ? 0 : 1}') -eq 1 ]; then
+            echo "Coverage insufficient. Required minimum is 85%"
+            exit 1
+          else
+            echo "Coverage sufficient."
+          fi
