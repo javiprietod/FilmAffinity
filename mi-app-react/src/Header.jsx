@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import logo from './images/logo.png';
 import RatingStars from './RatingStars';
 import { useState, useEffect } from 'react';
@@ -11,6 +11,7 @@ export default function Header() {
     const [isOpen, setIsOpen] = useState(false);
     const [advancedSearch, setAdvancedSearch] = useState(false);
     const [ratingFilter, setRatingFilter] = useState(0);
+    const navigate = useNavigate();
 
     const handleLogout = () => {
         if (confirm("Are you sure you want to log out?")) {
