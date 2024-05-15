@@ -109,17 +109,22 @@ export default function App() {
         }
       }
       try {
-        const response = await fetch(url + `limit=${MOVIES_PER_PAGE}&skip=${skip}`, {method: 'GET',credentials: 'include'});
+        const response = await fetch(url + `limit=${MOVIES_PER_PAGE}&skip=${skip}`, {method: 'GET', credentials: 'include'});
         
         if (!response.ok) {
-          throw new Error('Could not obtain list of movies.');
+          const responseWithoutCredentials = await fetch(url + `limit=${MOVIES_PER_PAGE}&skip=${skip}`);
+          if (!responseWithoutCredentials.ok) {
+            throw new Error('Could not obtain list of movies.');
+          }
+          const data = await responseWithoutCredentials.json();
+          setMovieList(data);
+        } else {
+          const data = await response.json();
+          setMovieList(data);
         }
-        const data = await response.json();
-        setMovieList(data);
-
         const res = await fetch(url + `limit=4000000`);
         if (!res.ok) {
-          throw new Error('NCould not obtain list of movies.');
+          throw new Error('Could not obtain list of movies.');
         }
         const data1 = await res.json();
         if (Math.ceil(data1.length / MOVIES_PER_PAGE) !== 0) {

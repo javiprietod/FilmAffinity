@@ -183,20 +183,8 @@ class MovieList(generics.ListCreateAPIView):
         rating = self.request.GET.get("rating")
         if rating is not None:
             queryset = queryset.filter(rating__gte=rating)
-        return queryset
 
-    def post(self, request):
-        serializer = self.get_serializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-    def list(self, request, **kwargs):
-        queryset = self.get_queryset()
-
-        token_key = request.COOKIES.get("session")
-
+        token_key = self.request.COOKIES.get("session")
         if token_key:
             try:
                 user = Token.objects.get(key=token_key).user
@@ -250,6 +238,19 @@ class MovieList(generics.ListCreateAPIView):
                     "-similarity_score", "-rating"
                 )
 
+        return queryset
+
+    def post(self, request):
+        serializer = self.get_serializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def list(self, request, **kwargs):
+        queryset = self.get_queryset()
+
+        
         limit = request.query_params.get("limit", 9)
         skip = request.query_params.get("skip", 0)
         try:
