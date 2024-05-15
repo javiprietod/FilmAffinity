@@ -11,6 +11,7 @@ export default function Header() {
     const [isOpen, setIsOpen] = useState(false);
     const [advancedSearch, setAdvancedSearch] = useState(false);
     const [ratingFilter, setRatingFilter] = useState(0);
+    const [queryParams, setQueryParams] = useState(false);
     const navigate = useNavigate();
 
     const handleLogout = () => {
@@ -56,8 +57,9 @@ export default function Header() {
     const handleAdvancedSearchSubmit = (event) => {
         event.preventDefault();
         const form = event.target;
-        const queryParams = new URLSearchParams(new FormData(form)).toString();
-        location.href = `/?${queryParams}`; // Navigate to the main page with query parameters
+        const params = new URLSearchParams(new FormData(form)).toString();
+        setQueryParams(params);
+        // location.href = `/?${queryParams}`; // Navigate to the main page with query parameters
       };
 
     return (
@@ -94,7 +96,7 @@ export default function Header() {
                                     <RatingStars reviewScore={ratingFilter} setReviewScore={setRatingFilter}>  </RatingStars>
                                 </div>
                                 <hr />
-                                <input type="submit" id='search-button' value="Search" />
+                                <a href={`/?${queryParams}`}><input type="submit" id='search-button' value="Search" /></a>
                             </form>
                         </div>
                     </div> : null
