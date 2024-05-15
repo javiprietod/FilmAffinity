@@ -3,7 +3,7 @@ import { checkLoggedIn, changeProfileInformation, deleteAccount } from './api.js
 
 export default function profile() {
 
-    const [nombre, setNombre] = useState('');
+    const [name, setName] = useState('');
     const [tel, setTel] = useState('');
 
     useEffect(() => {
@@ -11,7 +11,7 @@ export default function profile() {
             if (!data.isLoggedIn) {
                 location.href = '/login';
             } else {
-                setNombre(data.user.nombre);
+                setName(data.user.name);
                 setTel(data.user.tel);
             }
         });
@@ -19,9 +19,9 @@ export default function profile() {
 
 
     const handleSubmit = (event) => {
-        event.preventDefault(); // Prevent the default form submission behavior
+        event.preventDefault();
         const formData = {
-            nombre: nombre,
+            name: name,
             tel: tel,
         };
         changeProfileInformation(formData, 'profile');
@@ -29,7 +29,7 @@ export default function profile() {
 
 
     const handleDeletion = (event) => {
-        event.preventDefault(); // Prevent the default form submission behavior
+        event.preventDefault();
         deleteAccount();
     };
 
@@ -38,8 +38,8 @@ export default function profile() {
     <h2>Update profile</h2>
     
         <form className="form-control" onSubmit={handleSubmit}>
-            <label htmlFor="nombre">Name:</label>
-            <input type="text" name="nombre" id="nombre" value={nombre} onChange={e => setNombre(e.target.value)} required />
+            <label htmlFor="name">Name:</label>
+            <input type="text" name="name" id="name" value={name} onChange={e => setName(e.target.value)} required />
             <label htmlFor="tel">Phone Number:</label>
             <input type="tel" name="tel" id="tel" value={tel} onChange={e => setTel(e.target.value)} required />
             <hr />

@@ -30,11 +30,11 @@ def calculate_rating(movie_id):
     movie.save()
 
 
-class RegistroView(generics.ListCreateAPIView):
-    serializer_class = serializers.UsuarioSerializer
+class RecordView(generics.ListCreateAPIView):
+    serializer_class = serializers.UserSerializer
 
     def get_queryset(self):
-        users = models.Usuario.objects.all()
+        users = models.User.objects.all()
         email = self.request.GET.get("email")
         if email is not None:
             users = users.filter(email=email)
@@ -84,16 +84,14 @@ class LoginView(generics.CreateAPIView):
             )
 
 
-class UsuarioView(generics.RetrieveUpdateDestroyAPIView):
-    serializer_class = serializers.UsuarioSerializer
+class UserView(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = serializers.UserSerializer
 
     def get_object(self):
-        # Retrieve session cookie
         token_key = self.request.COOKIES.get("session")
         if not token_key:
             raise Http404("No session cookie found")
 
-        # Try to retrieve the token
         try:
             user = Token.objects.get(key=token_key).user
         except Token.DoesNotExist:
@@ -123,7 +121,6 @@ class UsuarioView(generics.RetrieveUpdateDestroyAPIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request):
-        # Check if the user is authenticated
         token_key = request.COOKIES.get("session")
         if not token_key:
             return Response(
@@ -208,11 +205,9 @@ class MovieList(generics.ListCreateAPIView):
             user_reviews = models.Review.objects.filter(
                 user__username=user.username
             )
-            # If the user has no reviews, return the top rated movies
             if len(user_reviews) == 0:
                 queryset = queryset.order_by("-rating")
             else:
-                # Extract genres from user's reviews
                 user_genres = []
                 max_rating = 0
                 for review in user_reviews:
@@ -229,7 +224,6 @@ class MovieList(generics.ListCreateAPIView):
                             if genre.strip() not in user_genres
                         ]
 
-                # Find movies with similar genres that the user likes
                 q_objects = [
                     Q(genre__icontains=genre.strip()) for genre in user_genres
                 ]
@@ -267,8 +261,9 @@ class MovieList(generics.ListCreateAPIView):
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
-        paginator = Paginator(queryset, limit)
-        page = paginator.get_page(skip // limit + 1)
+        paginator = Paginator(queryset, per_page=limit)
+        page_number = skip // limit + 1
+        page = paginator.get_page(page_number)
         serializer = self.get_serializer(page, many=True)
         return Response(serializer.data)
 

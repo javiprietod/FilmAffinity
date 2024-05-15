@@ -15,7 +15,6 @@ function RatingControlDiv({ movie }) {
   const [reviewBody, setReviewBody] = useState('');
   
   const handleSubmit = async () => {
-    // Call the API to patch the review with the new body text
     if (reviewId === -1) {
       if (reviewScore !== 0) {
         postReview(movie.id, email, reviewScore, reviewBody).then(() => {
@@ -30,7 +29,6 @@ function RatingControlDiv({ movie }) {
   };
   
   const handleDelete = () => {
-    // Call API to delete the review
     if (reviewId !== -1){
       deleteReview(reviewId).then(() => {
         location.reload();

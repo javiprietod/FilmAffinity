@@ -4,10 +4,10 @@ from django.contrib.auth import authenticate
 from api.users import models
 
 
-class UsuarioSerializer(serializers.ModelSerializer):
+class UserSerializer(serializers.ModelSerializer):
     class Meta:
-        model = models.Usuario
-        fields = ["nombre", "tel", "email", "password"]
+        model = models.User
+        fields = ["name", "tel", "email", "password"]
         extra_kwargs = {"password": {"write_only": True}}
 
     def validate_password(self, value):
@@ -40,7 +40,7 @@ class UsuarioSerializer(serializers.ModelSerializer):
             raise exceptions.ValidationError("Invalid phone number")
 
     def create(self, validated_data):
-        return models.Usuario.objects.create_user(
+        return models.User.objects.create_user(
             username=validated_data["email"], **validated_data
         )
 
@@ -55,7 +55,6 @@ class LoginSerializer(serializers.Serializer):
     password = serializers.CharField()
 
     def validate(self, data):
-        # user = authenticate(**data)
         username = data.get("email")
         password = data.get("password")
         user = authenticate(username=username, password=password)
@@ -68,7 +67,6 @@ class LoginSerializer(serializers.Serializer):
 
 
 class MovieSerializer(serializers.ModelSerializer):
-    # TODO 12
     class Meta:
         model = models.Movie
         fields = "__all__"

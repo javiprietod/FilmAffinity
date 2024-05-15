@@ -51,8 +51,8 @@ function Review({ review }) {
     getUserFromEmail(review.user)
     .then((data) => {
       data = data[0];
-      if (data.nombre !== null) {
-        setName(data.nombre);
+      if (data.name !== null) {
+        setName(data.name);
       } else {
         setName('Anonimous');
       }
@@ -93,7 +93,6 @@ function ReviewSection({movieid}) {
         const sortedReviews = data.sort((a, b) => b.rating - a.rating);
         setReviewList(sortedReviews);
         
-        // For page filter
         const res = await fetch(`https://filmaff.onrender.com/api/reviews/?movieid=${movieid}`);
         const data2 = await res.json();
         const numReviews = data2.length;

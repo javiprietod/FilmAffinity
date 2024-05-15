@@ -2,8 +2,8 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 
 
-class Usuario(AbstractUser):
-    nombre = models.CharField(max_length=256)
+class User(AbstractUser):
+    name = models.CharField(max_length=256)
     tel = models.CharField(max_length=32)
     email = models.EmailField(max_length=128, primary_key=True)
     password = models.CharField(max_length=128)
@@ -15,7 +15,7 @@ class Usuario(AbstractUser):
 
     def __str__(self):
         return f"""
-        nombre: {self.nombre}
+        name: {self.name}
         tel: {self.tel}
         email: {self.email}
         password: {self.password}
@@ -26,7 +26,7 @@ class Movie(models.Model):
     id = models.AutoField(primary_key=True)
     title = models.CharField(max_length=100)
     year = models.IntegerField()
-    duration = models.IntegerField()
+    running_time = models.IntegerField()
     rating = models.FloatField(default=0.0, null=True, blank=True)
     genre = models.CharField(max_length=256)
     summary = models.TextField()
@@ -37,7 +37,7 @@ class Movie(models.Model):
         return f"""
         title: {self.title}
         year: {self.year}
-        duration: {self.duration}
+        running_time: {self.running_time}
         rating: {self.rating}
         genre: {self.genre}
         summary: {self.summary}
@@ -48,21 +48,17 @@ class Movie(models.Model):
 class Review(models.Model):
     id = models.AutoField(primary_key=True)
     movie = models.ForeignKey(Movie, on_delete=models.CASCADE)
-    user = models.ForeignKey(Usuario, on_delete=models.CASCADE)
-    nombre = models.CharField(max_length=256, null=True, blank=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     rating = models.FloatField()
     body = models.TextField(null=True, blank=True)
 
     def save(self, *args, **kwargs):
-        if not self.nombre:
-            self.nombre = self.user.nombre
         super().save(*args, **kwargs)
 
     def __str__(self):
         return f"""
         movie: {self.movie}
         user: {self.user}
-        nombre: {self.nombre}
         rating: {self.rating}
         body: {self.body}
         """

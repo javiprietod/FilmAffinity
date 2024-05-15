@@ -9,7 +9,7 @@ export default function Register() {
     const val = useRef('');
 
     const handleSubmit = (event) => {
-        event.preventDefault(); // Prevent the default form submission behavior
+        event.preventDefault();
         const formData = {
             password: pass,
         };

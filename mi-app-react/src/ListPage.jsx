@@ -14,7 +14,7 @@ function ListPage({ movieList, currentPage, setCurrentPage, numFilms=-1, numPage
     checkLoggedIn().then((data) => {
       if (data.isLoggedIn){
         setLoggedIn(true);
-        setName(data.user.nombre);
+        setName(data.user.name);
       } else {
         setLoggedIn(false);
       }
@@ -85,7 +85,6 @@ export default function App() {
   const [movieList, setMovieList] = useState([]);
   const [numFilms, setNumFilms] = useState(-1);
   const [numPages, setNumPages] = useState(-1);
-  // Get current url parameters
   const params = new URLSearchParams(window.location.search);
 
   useEffect(() => {
@@ -99,7 +98,7 @@ export default function App() {
       }
       if (url !== 'https://filmaff.onrender.com/api/movies?') {
         try {
-          const response = await fetch(url + `limit=4000000`); // 
+          const response = await fetch(url + `limit=4000000`);
           if (!response.ok) {
             throw new Error('Could not obtain list of movies.');
           }
@@ -110,7 +109,7 @@ export default function App() {
         }
       }
       try {
-        const response = await fetch(url + `limit=${MOVIES_PER_PAGE}&skip=${skip}`, {method: 'GET',credentials: 'include'}); // 
+        const response = await fetch(url + `limit=${MOVIES_PER_PAGE}&skip=${skip}`, {method: 'GET',credentials: 'include'});
         
         if (!response.ok) {
           throw new Error('Could not obtain list of movies.');
@@ -118,7 +117,7 @@ export default function App() {
         const data = await response.json();
         setMovieList(data);
 
-        const res = await fetch(url + `limit=4000000`); // 
+        const res = await fetch(url + `limit=4000000`);
         if (!res.ok) {
           throw new Error('NCould not obtain list of movies.');
         }
