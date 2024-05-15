@@ -327,6 +327,24 @@ class ReviewList(generics.ListCreateAPIView):
             calculate_rating(movie_id)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    def list(self, request, **kwargs):
+        queryset = self.get_queryset()
+        limit = request.query_params.get("limit", 10e10)
+        skip = request.query_params.get("skip", 0)
+        try:
+            limit = int(limit)
+            skip = int(skip)
+        except ValueError:
+            return Response(
+                {"error": "Limit and skip parameters must be integers."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        paginator = Paginator(queryset, limit)
+        page = paginator.get_page(skip // limit + 1)
+        serializer = self.get_serializer(page, many=True)
+        return Response(serializer.data)
 
 
 class ReviewDetail(generics.RetrieveUpdateDestroyAPIView):

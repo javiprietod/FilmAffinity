@@ -4,15 +4,15 @@ import FixedStars from './FixedStars';
 const INITIAL_PAGE = 1;
 const REVIEWS_PER_PAGE = 2;
 
-function ListPage({ reviewList, currentPage, setCurrentPage }) {
+function ListPage({ reviewList, currentPage, setCurrentPage, numPages }) {
   return <div className="container">
     <h2>Reviews</h2>
-    <PageFilter currentPage={currentPage} setCurrentPage={setCurrentPage} />
+    <PageFilter currentPage={currentPage} setCurrentPage={setCurrentPage} numPages={numPages} />
     <ReviewList reviewList={reviewList} />
   </div>
 }
 
-function PageFilter({ currentPage, setCurrentPage }) {
+function PageFilter({ currentPage, setCurrentPage, numPages }) {
 
   function changePage(page) {
     page = Math.max(1, page);
@@ -23,7 +23,7 @@ function PageFilter({ currentPage, setCurrentPage }) {
     <div className="buttons">
       <button onClick={() => changePage(currentPage - 1)} disabled={currentPage == INITIAL_PAGE}>&lt;</button>
       <input type="number" value={currentPage} onChange={(e) => changePage(e.target.value)} />
-      <button onClick={() => changePage(currentPage + 1)}>&gt;</button>
+      <button onClick={() => changePage(currentPage + 1)} disabled={currentPage == numPages}>&gt;</button>
     </div>
   </>
 }
@@ -59,11 +59,13 @@ function Review({ review }) {
 function ReviewSection({movieid}) {
   const [currentPage, setCurrentPage] = useState(INITIAL_PAGE);
   const [reviewList, setReviewList] = useState([]);
+  const [numPages, setNumPages] = useState(0);
+
   useEffect(() => {
     let skip = (currentPage - INITIAL_PAGE) * REVIEWS_PER_PAGE;
     const fetchReviews = async () => {
       try {
-        const response = await fetch(`http://localhost:8000/api/reviews/?movieid=${movieid}`); // 
+        const response = await fetch(`http://localhost:8000/api/reviews/?movieid=${movieid}&limit=${REVIEWS_PER_PAGE}&skip=${skip}`);
 
         if (!response.ok) {
           throw new Error('Unable to retrieve the reviews');
@@ -71,6 +73,15 @@ function ReviewSection({movieid}) {
         const data = await response.json();
         const sortedReviews = data.sort((a, b) => b.rating - a.rating);
         setReviewList(sortedReviews);
+        
+        // For page filter
+        const res = await fetch(`http://localhost:8000/api/reviews/?movieid=${movieid}`);
+        const data2 = await res.json();
+        const numReviews = data2.length;
+        const numPages = Math.ceil(numReviews / REVIEWS_PER_PAGE);
+        setNumPages(numPages);
+
+
       } catch (error) {
         console.error('Error found trying to obtain the reviews:', error);
       }
@@ -80,7 +91,7 @@ function ReviewSection({movieid}) {
   }, [currentPage]);
 
   return (
-    <ListPage reviewList={reviewList} currentPage={currentPage} setCurrentPage={setCurrentPage} />
+    <ListPage reviewList={reviewList} currentPage={currentPage} setCurrentPage={setCurrentPage} numPages={numPages} />
   )
 }
 
