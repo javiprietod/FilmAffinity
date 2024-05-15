@@ -27,7 +27,7 @@ export default function profile() {
             tel: tel,
         };
         changeProfileInformation(formData, 'profile');
-        navigate('/');
+        location.href = '/profile';
     };
 
 
