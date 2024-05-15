@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { NavLink } from 'react-router-dom';
 
 const RatingButtons = ({submitHandler, deleteHandler}) => {
   const handleSubmit = () => {
@@ -11,8 +12,12 @@ const RatingButtons = ({submitHandler, deleteHandler}) => {
 
   return (
     <div className='personal-rating-buttons'>
-        <button className='personal-rating-button' onClick={handleSubmit}>Submit Review</button>
-        <button className='personal-rating-button' onClick={handleDelete}>Delete Review</button>
+        <NavLink>
+          <button className='personal-rating-button' onClick={handleSubmit}>Submit Review</button>
+        </NavLink>
+        <NavLink>
+          <button className='personal-rating-button' onClick={handleDelete}>Delete Review</button>
+        </NavLink>
     </div>
   );
 };

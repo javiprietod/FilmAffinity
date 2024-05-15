@@ -17,6 +17,12 @@ function RatingControlDiv({ movie }) {
   const navigate = useNavigate();
   
   const handleSubmit = async () => {
+    getReviewFromMovieUser(movie.id, data.user.email).then((data) => {
+      if (data !== null && data.length > 0) {
+        data = data[0];
+        setReviewId(data.id);
+      }
+    });
     if (reviewId === -1) {
       if (reviewScore !== 0) {
         await postReview(movie.id, email, reviewScore, reviewBody)
