@@ -71,7 +71,7 @@ function RatingControlDiv({ movie }) {
 
   useEffect(() => {
     if (buttonClicked) {
-      navigate('/movie/' + movie.id);
+      navigate('/');
     } else {
       setButtonClicked(false);
     }
