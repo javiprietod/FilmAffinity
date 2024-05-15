@@ -8,7 +8,7 @@ export default function Login() {
     const [password, setPassword] = useState('');
 
     const handleSubmit = (event) => {
-        event.preventDefault(); // Prevent the default form submission behavior
+        event.preventDefault();
         const formData = {
             email: email,
             password: password
@@ -16,7 +16,6 @@ export default function Login() {
         login(formData)
 
     };
-    // {entrar(form2json(event))}
 
     return (<div className="container">
     <h2>Login</h2>

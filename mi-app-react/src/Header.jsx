@@ -61,7 +61,6 @@ export default function Header() {
 
     return (
         <header>
-            {/* Navigation Bar */}
             <nav>
                 <div id="logo-container">
                     <NavLink to="/">

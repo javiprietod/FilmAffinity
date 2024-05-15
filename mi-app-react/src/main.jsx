@@ -22,7 +22,6 @@ const router = createBrowserRouter([{
         element: <MovieDescription />,
         errorElement: <ErrorComponent />,
         loader: async ({ params }) => {
-            // return await fetch('https://filmaff.onrender.com/api/movies/' + params.id)
             return await fetch('http://localhost:8000/api/movies/' + params.id)
         }
     }, {

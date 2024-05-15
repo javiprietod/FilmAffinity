@@ -19,7 +19,7 @@ export default function profile() {
 
 
     const handleSubmit = (event) => {
-        event.preventDefault(); // Prevent the default form submission behavior
+        event.preventDefault();
         const formData = {
             name: name,
             tel: tel,
@@ -29,7 +29,7 @@ export default function profile() {
 
 
     const handleDeletion = (event) => {
-        event.preventDefault(); // Prevent the default form submission behavior
+        event.preventDefault();
         deleteAccount();
     };
 

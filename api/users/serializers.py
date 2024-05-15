@@ -55,7 +55,6 @@ class LoginSerializer(serializers.Serializer):
     password = serializers.CharField()
 
     def validate(self, data):
-        # user = authenticate(**data)
         username = data.get("email")
         password = data.get("password")
         user = authenticate(username=username, password=password)
@@ -68,7 +67,6 @@ class LoginSerializer(serializers.Serializer):
 
 
 class MovieSerializer(serializers.ModelSerializer):
-    # TODO 12
     class Meta:
         model = models.Movie
         fields = "__all__"

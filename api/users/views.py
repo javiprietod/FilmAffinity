@@ -88,12 +88,10 @@ class UserView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = serializers.UserSerializer
 
     def get_object(self):
-        # Retrieve session cookie
         token_key = self.request.COOKIES.get("session")
         if not token_key:
             raise Http404("No session cookie found")
 
-        # Try to retrieve the token
         try:
             user = Token.objects.get(key=token_key).user
         except Token.DoesNotExist:
@@ -123,7 +121,6 @@ class UserView(generics.RetrieveUpdateDestroyAPIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request):
-        # Check if the user is authenticated
         token_key = request.COOKIES.get("session")
         if not token_key:
             return Response(
@@ -208,11 +205,9 @@ class MovieList(generics.ListCreateAPIView):
             user_reviews = models.Review.objects.filter(
                 user__username=user.username
             )
-            # If the user has no reviews, return the top rated movies
             if len(user_reviews) == 0:
                 queryset = queryset.order_by("-rating")
             else:
-                # Extract genres from user's reviews
                 user_genres = []
                 max_rating = 0
                 for review in user_reviews:
@@ -229,7 +224,6 @@ class MovieList(generics.ListCreateAPIView):
                             if genre.strip() not in user_genres
                         ]
 
-                # Find movies with similar genres that the user likes
                 q_objects = [
                     Q(genre__icontains=genre.strip()) for genre in user_genres
                 ]
@@ -268,7 +262,6 @@ class MovieList(generics.ListCreateAPIView):
             )
 
         paginator = Paginator(queryset, per_page=limit)
-        # page = paginator.get_page(skip // limit + 1)
         page_number = skip // limit + 1
         page = paginator.get_page(page_number)
         serializer = self.get_serializer(page, many=True)

@@ -11,7 +11,7 @@ export default function MovieDescription() {
     }, []);
 
     useEffect(() => {
-        window.scrollTo(0, 0); // Esto hará que la página se desplace hacia arriba cuando se renderice
+        window.scrollTo(0, 0);
     }, []);
     return (
     <div>

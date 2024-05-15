@@ -93,7 +93,6 @@ function ReviewSection({movieid}) {
         const sortedReviews = data.sort((a, b) => b.rating - a.rating);
         setReviewList(sortedReviews);
         
-        // For page filter
         const res = await fetch(`http://localhost:8000/api/reviews/?movieid=${movieid}`);
         const data2 = await res.json();
         const numReviews = data2.length;
