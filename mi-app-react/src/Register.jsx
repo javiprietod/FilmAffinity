@@ -3,7 +3,7 @@ import { register } from './api';
 
 export default function Register() {
 
-    const [nombre, setNombre] = useState('');
+    const [name, setName] = useState('');
     const [tel, setTel] = useState('');
     const [email, setEmail] = useState('');
     const [pass, setPass] = useState('');
@@ -13,7 +13,7 @@ export default function Register() {
     const handleSubmit = (event) => {
         event.preventDefault(); // Prevent the default form submission behavior
         const formData = {
-            nombre: nombre,
+            name: name,
             tel: tel,
             email: email,
             password: pass
@@ -38,8 +38,8 @@ export default function Register() {
     <h2>Register</h2>
     
         <form className="form-control" onSubmit={handleSubmit}>
-            <label htmlFor="nombre">Username:</label>
-            <input type="text" name="nombre" id="nombre" value={nombre} onChange={e => setNombre(e.target.value)} required />
+            <label htmlFor="name">Username:</label>
+            <input type="text" name="name" id="name" value={name} onChange={e => setName(e.target.value)} required />
             <label htmlFor="tel">Phone Number:</label>
             <input type="tel" placeholder="612345678, +34612345678, +34 612345678" name="tel" id="tel" value={tel} onChange={e => setTel(e.target.value)} required />
             <label htmlFor="email">Email:</label>

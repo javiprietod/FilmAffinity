@@ -4,10 +4,10 @@ from django.contrib.auth import authenticate
 from api.users import models
 
 
-class UsuarioSerializer(serializers.ModelSerializer):
+class UserSerializer(serializers.ModelSerializer):
     class Meta:
-        model = models.Usuario
-        fields = ["nombre", "tel", "email", "password"]
+        model = models.User
+        fields = ["name", "tel", "email", "password"]
         extra_kwargs = {"password": {"write_only": True}}
 
     def validate_password(self, value):
@@ -40,7 +40,7 @@ class UsuarioSerializer(serializers.ModelSerializer):
             raise exceptions.ValidationError("Invalid phone number")
 
     def create(self, validated_data):
-        return models.Usuario.objects.create_user(
+        return models.User.objects.create_user(
             username=validated_data["email"], **validated_data
         )
 

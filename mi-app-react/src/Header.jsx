@@ -22,7 +22,7 @@ export default function Header() {
             if (data.isLoggedIn) {
 
                 setIsLoggedIn(true);
-                setUserName(data.user.nombre);
+                setUserName(data.user.name);
             } else {
                 setIsLoggedIn(false);
                 setUserName('');

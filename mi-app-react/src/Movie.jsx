@@ -36,7 +36,7 @@ export default function MovieDescription() {
                     </p>
                     <br />
                     <p>
-                        <strong>Duration:</strong> <span>{movie.duration} minutes</span>
+                        <strong>Running time:</strong> <span>{movie.running_time} minutes</span>
                     </p>
                     <br />
                     <p>

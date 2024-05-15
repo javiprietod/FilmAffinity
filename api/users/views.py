@@ -30,11 +30,11 @@ def calculate_rating(movie_id):
     movie.save()
 
 
-class RegistroView(generics.ListCreateAPIView):
-    serializer_class = serializers.UsuarioSerializer
+class RecordView(generics.ListCreateAPIView):
+    serializer_class = serializers.UserSerializer
 
     def get_queryset(self):
-        users = models.Usuario.objects.all()
+        users = models.User.objects.all()
         email = self.request.GET.get("email")
         if email is not None:
             users = users.filter(email=email)
@@ -84,8 +84,8 @@ class LoginView(generics.CreateAPIView):
             )
 
 
-class UsuarioView(generics.RetrieveUpdateDestroyAPIView):
-    serializer_class = serializers.UsuarioSerializer
+class UserView(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = serializers.UserSerializer
 
     def get_object(self):
         # Retrieve session cookie
@@ -267,8 +267,10 @@ class MovieList(generics.ListCreateAPIView):
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
-        paginator = Paginator(queryset, limit)
-        page = paginator.get_page(skip // limit + 1)
+        paginator = Paginator(queryset, per_page=limit)
+        # page = paginator.get_page(skip // limit + 1)
+        page_number = skip // limit + 1
+        page = paginator.get_page(page_number)
         serializer = self.get_serializer(page, many=True)
         return Response(serializer.data)
 

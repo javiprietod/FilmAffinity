@@ -14,7 +14,7 @@ function ListPage({ movieList, currentPage, setCurrentPage, numFilms=-1, numPage
     checkLoggedIn().then((data) => {
       if (data.isLoggedIn){
         setLoggedIn(true);
-        setName(data.user.nombre);
+        setName(data.user.name);
       } else {
         setLoggedIn(false);
       }

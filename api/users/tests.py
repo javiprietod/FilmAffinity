@@ -4,56 +4,56 @@ from api.users import serializers
 from api.users import models
 
 
-class TestUsuarioSerializer(SimpleTestCase):
-    def test_funcionalidad_validar_password(self):
-        # Caso 1: Contraseña válida
+class TestUserSerializer(SimpleTestCase):
+    def test_feature_validate_password(self):
+        # Case 1: Invalid password
         password = "Aa123456"
         self.assertEqual(
-            serializers.UsuarioSerializer().validate_password(password),
+            serializers.UserSerializer().validate_password(password),
             password,
         )
-        # Caso 2: Contraseña sin número
-        password_erronea = "AaBbCcDd"
+        # Case 2: Password without number
+        incorrect_pass = "AaBbCcDd"
         self.assertRaises(
             ValidationError,
-            serializers.UsuarioSerializer().validate_password,
-            password_erronea,
+            serializers.UserSerializer().validate_password,
+            incorrect_pass,
         )
 
-    def test_funcionalidad_validar_telefono(self):
-        # Caso 1: Teléfono válido 1
+    def test_feature_validate_telephone(self):
+        # Case 1: Valid phone number 1
         tel = "623456789"
         self.assertEqual(
-            serializers.UsuarioSerializer().validate_tel(tel),
+            serializers.UserSerializer().validate_tel(tel),
             tel,
         )
-        # Caso 2: Teléfono válido 2
+        # Case 2: Valid phone number 2
         tel = "+34623456789"
         self.assertEqual(
-            serializers.UsuarioSerializer().validate_tel(tel),
+            serializers.UserSerializer().validate_tel(tel),
             tel,
         )
-        # Caso 3: Teléfono válido 3
+        # Case 3: Valid phone number 3
         tel = "+34 623456789"
         self.assertEqual(
-            serializers.UsuarioSerializer().validate_tel(tel),
+            serializers.UserSerializer().validate_tel(tel),
             tel,
         )
-        # Caso 4: Teléfono erróneo
-        tel_erroneo = "123456789"
+        # Case 4: Wrong phone number
+        incorrect_tel = "123456789"
         self.assertRaises(
             ValidationError,
-            serializers.UsuarioSerializer().validate_tel,
-            tel_erroneo,
+            serializers.UserSerializer().validate_tel,
+            incorrect_tel,
         )
 
 
-class TestRegistroView(TestCase):
-    def test_funcionalidad_registro(self):
+class TestRecordView(TestCase):
+    def test_feature_record(self):
         data = {
-            "nombre": "Juan",
+            "name": "Juan",
             "tel": "623456789",
-            "email": "hola@gmail.com",
+            "email": "example@gmail.com",
             "password": "Aa123456",
         }
         response = self.client.post("/api/users/", data)
@@ -63,17 +63,16 @@ class TestRegistroView(TestCase):
             "password", response.data, "Password should not be in response"
         )
 
-        # Verificar que el usuario se haya creado
-        usuario = models.Usuario.objects.get(email=data["email"])
-        self.assertEqual(usuario.nombre, data["nombre"])
-        self.assertEqual(usuario.tel, data["tel"])
-        self.assertEqual(usuario.email, data["email"])
+        user = models.User.objects.get(email=data["email"])
+        self.assertEqual(user.name, data["name"])
+        self.assertEqual(user.tel, data["tel"])
+        self.assertEqual(user.email, data["email"])
 
-    def test_funcionalidad_registro_usuario_existente(self):
+    def test_feature_record_existing_user(self):
         data = {
-            "nombre": "Juan",
+            "name": "Juan",
             "tel": "623456789",
-            "email": "hola@gmail.com",
+            "email": "example@gmail.com",
             "password": "Aa123456",
         }
 
@@ -83,21 +82,21 @@ class TestRegistroView(TestCase):
         response = self.client.post("/api/users/", data)
         self.assertEqual(response.status_code, 409)
 
-    def test_funcionalidad_registro_contrasena_invalida(self):
+    def test_feature_record_invalid_password(self):
         data = {
-            "nombre": "Juan",
+            "name": "Juan",
             "tel": "623456789",
-            "email": "hola@gmail.com",
+            "email": "example@gmail.com",
             "password": "AaBbCcDd",
         }
         response = self.client.post("/api/users/", data)
         self.assertEqual(response.status_code, 406)
 
-    def test_funcionalidad_registro_telefono_invalido(self):
+    def test_feature_record_invalid_telephone(self):
         data = {
-            "nombre": "Juan",
+            "name": "Juan",
             "tel": "123456789",
-            "email": "hola@gmail.com",
+            "email": "example@gmail.com",
             "password": "Aa123456",
         }
         response = self.client.post("/api/users/", data)
@@ -107,9 +106,9 @@ class TestRegistroView(TestCase):
 class TestLoginView(TestCase):
     def setUp(self):
         data = {
-            "nombre": "Juan",
+            "name": "Juan",
             "tel": "623456789",
-            "email": "hola@gmail.com",
+            "email": "example@gmail.com",
             "password": "Aa123456",
         }
         response = self.client.post("/api/users/", data)
@@ -119,9 +118,9 @@ class TestLoginView(TestCase):
             "password", response.data, "Password should not be in response"
         )
 
-    def test_funcionalidad_login(self):
+    def test_feature_login(self):
         data = {
-            "email": "hola@gmail.com",
+            "email": "example@gmail.com",
             "password": "Aa123456",
         }
         response = self.client.post("/api/users/login/", data)
@@ -130,9 +129,9 @@ class TestLoginView(TestCase):
             "session", response.cookies, "Session cookie not found in response"
         )
 
-    def test_funcionalidad_login_usuario_inexistente(self):
+    def test_feature_login_inexistent_user(self):
         data = {
-            "email": "hola1@gmail.com",
+            "email": "example1@gmail.com",
             "password": "Aa123456",
         }
         response = self.client.post("/api/users/login/", data)
@@ -143,9 +142,9 @@ class TestLoginView(TestCase):
             "Session cookie should not be in response",
         )
 
-    def test_funcionalidad_login_password_incorrecto(self):
+    def test_feature_login_incorrect_password(self):
         data = {
-            "email": "hola@gmail.com",
+            "email": "example@gmail.com",
             "password": "Aa1234567",
         }
         response = self.client.post("/api/users/login/", data)
@@ -157,12 +156,12 @@ class TestLoginView(TestCase):
         )
 
 
-class TestUsuarioView(TestCase):
+class TestUserView(TestCase):
     def setUp(self):
         self.data = {
-            "nombre": "Juan",
+            "name": "Juan",
             "tel": "623456789",
-            "email": "hola@gmail.com",
+            "email": "example@gmail.com",
             "password": "Aa123456",
         }
         response = self.client.post("/api/users/", self.data)
@@ -172,10 +171,9 @@ class TestUsuarioView(TestCase):
             "password", response.data, "Password should not be in response"
         )
 
-    def test_funcionalidad_usuario(self):
-        # Iniciar sesión y comprobar que el usuario se ha logueado
+    def test_feature_user(self):
         data = {
-            "email": "hola@gmail.com",
+            "email": "example@gmail.com",
             "password": "Aa123456",
         }
         response = self.client.post("/api/users/login/", data)
@@ -183,25 +181,24 @@ class TestUsuarioView(TestCase):
 
         response = self.client.get("/api/users/me/")
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.data["nombre"], self.data["nombre"])
+        self.assertEqual(response.data["name"], self.data["name"])
         self.assertEqual(response.data["tel"], self.data["tel"])
         self.assertEqual(response.data["email"], self.data["email"])
 
-    def test_funcionalidad_usuario_sin_sesion(self):
+    def test_feature_user_without_session(self):
         response = self.client.get("/api/users/me/")
         self.assertEqual(response.status_code, 404)
 
-    def test_funcionalidad_actualizar_usuario(self):
-        # Iniciar sesión
+    def test_feature_update_user(self):
         data = {
-            "email": "hola@gmail.com",
+            "email": "example@gmail.com",
             "password": "Aa123456",
         }
         response = self.client.post("/api/users/login/", data)
         self.assertEqual(response.status_code, 201)
 
         data = {
-            "nombre": "Juanito",
+            "name": "Juanito",
             "tel": "623456789",
         }
         response = self.client.patch(
@@ -211,12 +208,12 @@ class TestUsuarioView(TestCase):
 
         response = self.client.get("/api/users/me/")
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.data["nombre"], data["nombre"])
+        self.assertEqual(response.data["name"], data["name"])
         self.assertEqual(response.data["tel"], data["tel"])
 
-    def test_funcionalidad_actualizar_usuario_sin_sesion(self):
+    def test_feature_update_user_without_session(self):
         data = {
-            "nombre": "Juanito",
+            "name": "Juanito",
             "tel": "623456789",
         }
         response = self.client.patch(
@@ -224,17 +221,16 @@ class TestUsuarioView(TestCase):
         )
         self.assertEqual(response.status_code, 404)
 
-    def test_funcionalidad_actualizar_usuario_contrasena(self):
-        # Iniciar sesión
+    def test_feature_update_user_password(self):
         data = {
-            "email": "hola@gmail.com",
+            "email": "example@gmail.com",
             "password": "Aa123456",
         }
         response = self.client.post("/api/users/login/", data)
         self.assertEqual(response.status_code, 201)
 
         data = {
-            "nombre": "Juanito",
+            "name": "Juanito",
             "tel": "623456789",
             "password": "Aa1234567",
         }
@@ -243,18 +239,16 @@ class TestUsuarioView(TestCase):
         )
         self.assertEqual(response.status_code, 200)
 
-        # Verificar que la contraseña se ha actualizado
         data = {
-            "email": "hola@gmail.com",
+            "email": "example@gmail.com",
             "password": "Aa1234567",
         }
         response = self.client.post("/api/users/login/", data)
         self.assertEqual(response.status_code, 201)
 
-    def test_funcionalidad_borrar_usuario(self):
-        # Iniciar sesión
+    def test_feature_delete_user(self):
         data = {
-            "email": "hola@gmail.com",
+            "email": "example@gmail.com",
             "password": "Aa123456",
         }
         response = self.client.post("/api/users/login/", data)
@@ -271,7 +265,7 @@ class TestUsuarioView(TestCase):
             "Session cookie should not be in response",
         )
 
-    def test_funcionalidad_borrar_usuario_sin_sesion(self):
+    def test_feature_delete_user_without_session(self):
         response = self.client.delete("/api/users/me/")
         self.assertEqual(response.status_code, 404)
 
@@ -279,9 +273,9 @@ class TestUsuarioView(TestCase):
 class TestLogoutView(TestCase):
     def setUp(self):
         self.data = {
-            "nombre": "Juan",
+            "name": "Juan",
             "tel": "623456789",
-            "email": "hola@gmail.com",
+            "email": "example@gmail.com",
             "password": "Aa123456",
         }
         response = self.client.post("/api/users/", self.data)
@@ -291,10 +285,9 @@ class TestLogoutView(TestCase):
             "password", response.data, "Password should not be in response"
         )
 
-    def test_funcionalidad_logout(self):
-        # Iniciar sesión
+    def test_feature_logout(self):
         data = {
-            "email": "hola@gmail.com",
+            "email": "example@gmail.com",
             "password": "Aa123456",
         }
         response = self.client.post("/api/users/login/", data)
@@ -306,24 +299,24 @@ class TestLogoutView(TestCase):
         response = self.client.get("/api/users/me/")
         self.assertEqual(response.status_code, 404)
 
-    def test_funcionalidad_logout_sin_sesion(self):
+    def test_feature_logout_without_session(self):
         response = self.client.delete("/api/users/logout/")
         self.assertEqual(response.status_code, 405)
 
 
 class TestMovieList(TestCase):
-    def test_funcionalidad_lista_peliculas(self):
+    def test_feature_movie_list(self):
         response = self.client.get("/api/movies/")
         self.assertEqual(response.status_code, 200)
 
-    def test_funcionalidad_crear_pelicula(self):
+    def test_feature_create_movie(self):
         data = {
-            "title": "Pelicula 1",
-            "summary": "Descripcion 1",
+            "title": "Movie 1",
+            "summary": "Description 1",
             "year": 2022,
-            "duration": "130",
+            "running_time": "130",
             "director": "Director 1",
-            "genre": "Genero 1",
+            "genre": "Genre 1",
         }
 
         response = self.client.post("/api/movies/", data)
@@ -333,7 +326,6 @@ class TestMovieList(TestCase):
         self.assertEqual(response.data["summary"], data["summary"])
         self.assertEqual(response.data["year"], data["year"])
 
-        # Verificar que la película se haya creado
         movie = models.Movie.objects.get(title=data["title"])
         self.assertEqual(movie.title, data["title"])
         self.assertEqual(movie.summary, data["summary"])
@@ -341,14 +333,14 @@ class TestMovieList(TestCase):
 
 
 class TestMovieDetail(TestCase):
-    def test_funcionalidad_detalle_pelicula(self):
+    def test_feature_movie_detail(self):
         data = {
-            "title": "Pelicula 1",
-            "summary": "Descripcion 1",
+            "title": "Movie 1",
+            "summary": "Description 1",
             "year": 2022,
-            "duration": 130,
+            "running_time": 130,
             "director": "Director 1",
-            "genre": "Genero 1",
+            "genre": "Genre 1",
         }
 
         response = self.client.post("/api/movies/", data)
@@ -363,14 +355,14 @@ class TestMovieDetail(TestCase):
         self.assertEqual(response.data["summary"], data["summary"])
         self.assertEqual(response.data["year"], data["year"])
 
-    def test_funcionalidad_actualizar_pelicula(self):
+    def test_feature_update_movie(self):
         data = {
-            "title": "Pelicula 1",
-            "summary": "Descripcion 1",
+            "title": "Movie 1",
+            "summary": "Description 1",
             "year": 2022,
-            "duration": 130,
+            "running_time": 130,
             "director": "Director 1",
-            "genre": "Genero 1",
+            "genre": "Genre 1",
         }
 
         response = self.client.post("/api/movies/", data)
@@ -379,12 +371,12 @@ class TestMovieDetail(TestCase):
         movie = models.Movie.objects.get(title=data["title"])
 
         data = {
-            "title": "Pelicula 2",
-            "summary": "Descripcion 2",
+            "title": "Movie 2",
+            "summary": "Description 2",
             "year": 2023,
-            "duration": 140,
+            "running_time": 140,
             "director": "Director 2",
-            "genre": "Genero 2",
+            "genre": "Genre 2",
         }
 
         response = self.client.patch(
@@ -398,7 +390,7 @@ class TestMovieDetail(TestCase):
         self.assertEqual(movie.year, data["year"])
 
         data = {
-            "year": "hola",
+            "year": "hello",
         }
 
         response = self.client.patch(
@@ -406,14 +398,14 @@ class TestMovieDetail(TestCase):
         )
         self.assertEqual(response.status_code, 400)
 
-    def test_funcionalidad_eliminar_pelicula(self):
+    def test_feature_delete_movie(self):
         data = {
-            "title": "Pelicula 1",
-            "summary": "Descripcion 1",
+            "title": "Movie 1",
+            "summary": "Description 1",
             "year": 2022,
-            "duration": 130,
+            "running_time": 130,
             "director": "Director 1",
-            "genre": "Genero 1",
+            "genre": "Genre 1",
         }
 
         response = self.client.post("/api/movies/", data)
@@ -427,29 +419,29 @@ class TestMovieDetail(TestCase):
         with self.assertRaises(models.Movie.DoesNotExist):
             models.Movie.objects.get(title=data["title"])
 
-    def test_funcionalidad_eliminar_pelicula_inexistente(self):
+    def test_feature_delete_inexistent_movie(self):
         response = self.client.delete("/api/movies/1/")
         self.assertEqual(response.status_code, 404)
 
 
 class TestBulkMovie(TestCase):
-    def test_funcionalidad_bulk_create(self):
+    def test_feature_bulk_create(self):
         data = [
             {
-                "title": "Pelicula 1",
-                "summary": "Descripcion 1",
+                "title": "Movie 1",
+                "summary": "Description 1",
                 "year": 2022,
-                "duration": 130,
+                "running_time": 130,
                 "director": "Director 1",
-                "genre": "Genero 1",
+                "genre": "Genre 1",
             },
             {
-                "title": "Pelicula 2",
-                "summary": "Descripcion 2",
+                "title": "Movie 2",
+                "summary": "Description 2",
                 "year": 2023,
-                "duration": 140,
+                "running_time": 140,
                 "director": "Director 2",
-                "genre": "Genero 2",
+                "genre": "Genre 2",
             },
         ]
 
@@ -466,7 +458,6 @@ class TestBulkMovie(TestCase):
         self.assertEqual(response.data[1]["summary"], data[1]["summary"])
         self.assertEqual(response.data[1]["year"], data[1]["year"])
 
-        # Verificar que las películas se hayan creado
         movie1 = models.Movie.objects.get(title=data[0]["title"])
         self.assertEqual(movie1.title, data[0]["title"])
         self.assertEqual(movie1.summary, data[0]["summary"])
@@ -477,14 +468,14 @@ class TestBulkMovie(TestCase):
         self.assertEqual(movie2.summary, data[1]["summary"])
         self.assertEqual(movie2.year, data[1]["year"])
 
-    def test_funcionalidad_bulk_create_con_error(self):
+    def test_feature_bulk_create_with_error(self):
         data = {
-            "title": "Pelicula 1",
-            "summary": "Descripcion 1",
+            "title": "Movie 1",
+            "summary": "Description 1",
             "year": 2022,
-            "duration": 130,
+            "running_time": 130,
             "director": "Director 1",
-            "genre": "Genero 1",
+            "genre": "Genre 1",
         }
 
         response = self.client.post(
@@ -492,12 +483,12 @@ class TestBulkMovie(TestCase):
         )
         self.assertEqual(response.status_code, 400)
         data = {
-            "title": "Pelicula 1",
-            "summary": "Descripcion 1",
+            "title": "Movie 1",
+            "summary": "Description 1",
             "year": "error",
-            "duration": 130,
+            "running_time": 130,
             "director": "Director 1",
-            "genre": "Genero 1",
+            "genre": "Genre 1",
         }
 
         response = self.client.post(
@@ -509,9 +500,9 @@ class TestBulkMovie(TestCase):
 class TestSortMovies(TestCase):
     def setUp(self):
         self.data = {
-            "nombre": "Juan",
+            "name": "Juan",
             "tel": "623456789",
-            "email": "hola@gmail.com",
+            "email": "example@gmail.com",
             "password": "Aa123456",
         }
         response = self.client.post("/api/users/", self.data)
@@ -522,7 +513,7 @@ class TestSortMovies(TestCase):
         )
 
         login_data = {
-            "email": "hola@gmail.com",
+            "email": "example@gmail.com",
             "password": "Aa123456",
         }
 
@@ -531,30 +522,30 @@ class TestSortMovies(TestCase):
 
         self.data = [
             {
-                "title": "Pelicula 1",
-                "summary": "Descripcion 1",
+                "title": "Movie 1",
+                "summary": "Description 1",
                 "year": 2022,
-                "duration": 130,
+                "running_time": 130,
                 "director": "Director 1",
-                "genre": "Genero 1",
+                "genre": "Genre 1",
                 "rating": 5,
             },
             {
-                "title": "Pelicula 2",
-                "summary": "Descripcion 2",
+                "title": "Movie 2",
+                "summary": "Description 2",
                 "year": 2023,
-                "duration": 140,
+                "running_time": 140,
                 "director": "Director 2",
-                "genre": "Genero 2",
+                "genre": "Genre 2",
                 "rating": 2,
             },
             {
-                "title": "Pelicula 3",
-                "summary": "Descripcion 3",
+                "title": "Movie 3",
+                "summary": "Description 3",
                 "year": 2024,
-                "duration": 150,
+                "running_time": 150,
                 "director": "Director 3",
-                "genre": "Genero 3",
+                "genre": "Genre 3",
                 "rating": 3,
             },
         ]
@@ -568,14 +559,14 @@ class TestSortMovies(TestCase):
         data = {
             "movie": movie.id,
             "rating": 4,
-            "body": "Comentario",
-            "user": "hola@gmail.com",
+            "body": "Comment",
+            "user": "example@gmail.com",
         }
 
         response = self.client.post("/api/reviews/", data)
         self.assertEqual(response.status_code, 201)
 
-    def test_funcionalidad_sort_movies(self):
+    def test_feature_sort_movies(self):
         response = self.client.get("/api/movies/")
         self.assertEqual(response.status_code, 200)
 
@@ -587,22 +578,22 @@ class TestSortMovies(TestCase):
 class TestReview(TestCase):
     def setUp(self):
         data = {
-            "nombre": "Juan",
+            "name": "Juan",
             "tel": "623456789",
-            "email": "prueba@prueba.com",
-            "password": "PRUEBAprueba1",
+            "email": "example@example.com",
+            "password": "Example123",
         }
         response = self.client.post("/api/users/", data)
         self.assertEqual(response.status_code, 201)
 
-    def test_funcionalidad_crear_review(self):
+    def test_feature_create_review(self):
         data = {
-            "title": "Pelicula 1",
-            "summary": "Descripcion 1",
+            "title": "Movie 1",
+            "summary": "Description 1",
             "year": 2022,
-            "duration": 130,
+            "running_time": 130,
             "director": "Director 1",
-            "genre": "Genero 1",
+            "genre": "Genre 1",
         }
 
         response = self.client.post("/api/movies/", data)
@@ -613,8 +604,8 @@ class TestReview(TestCase):
         data = {
             "movie": movie.id,
             "rating": 5,
-            "body": "Comentario",
-            "user": "prueba@prueba.com",
+            "body": "Comment",
+            "user": "example@example.com",
         }
 
         response = self.client.post("/api/reviews/", data)
@@ -624,19 +615,18 @@ class TestReview(TestCase):
         self.assertEqual(response.data["body"], data["body"])
         self.assertEqual(response.data["user"], data["user"])
 
-        # Verificar que la review se haya creado
         review = models.Review.objects.get(movie=movie)
         self.assertEqual(review.rating, data["rating"])
         self.assertEqual(review.body, data["body"])
 
-    def test_funcionalidad_actualizar_review(self):
+    def test_feature_update_review(self):
         data = {
-            "title": "Pelicula 1",
-            "summary": "Descripcion 1",
+            "title": "Movie 1",
+            "summary": "Description 1",
             "year": 2022,
-            "duration": 130,
+            "running_time": 130,
             "director": "Director 1",
-            "genre": "Genero 1",
+            "genre": "Genre 1",
         }
 
         response = self.client.post("/api/movies/", data)
@@ -647,8 +637,8 @@ class TestReview(TestCase):
         data = {
             "movie": movie.id,
             "rating": 5,
-            "body": "Comentario",
-            "user": "prueba@prueba.com",
+            "body": "Comment",
+            "user": "example@example.com",
         }
 
         response = self.client.post("/api/reviews/", data)
@@ -658,7 +648,7 @@ class TestReview(TestCase):
 
         data = {
             "rating": 4,
-            "body": "Comentario 2",
+            "body": "Comment 2",
         }
 
         response = self.client.patch(
@@ -670,14 +660,14 @@ class TestReview(TestCase):
         self.assertEqual(review.rating, data["rating"])
         self.assertEqual(review.body, data["body"])
 
-    def test_funcionalidad_eliminar_review(self):
+    def test_feature_delete_review(self):
         data = {
-            "title": "Pelicula 1",
-            "summary": "Descripcion 1",
+            "title": "Movie 1",
+            "summary": "Description 1",
             "year": 2022,
-            "duration": 130,
+            "running_time": 130,
             "director": "Director 1",
-            "genre": "Genero 1",
+            "genre": "Genre 1",
         }
 
         response = self.client.post("/api/movies/", data)
@@ -688,8 +678,8 @@ class TestReview(TestCase):
         data = {
             "movie": movie.id,
             "rating": 5,
-            "body": "Comentario",
-            "user": "prueba@prueba.com",
+            "body": "Comment",
+            "user": "example@example.com",
         }
 
         response = self.client.post("/api/reviews/", data)

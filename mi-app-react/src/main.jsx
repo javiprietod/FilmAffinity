@@ -7,7 +7,7 @@ import Register from './Register.jsx'
 import Profile from './Profile.jsx'
 import Password from './Password.jsx'
 import MovieDescription from './Movie.jsx'
-import ComponenteError from './ComponenteError.jsx'
+import ErrorComponent from './ErrorComponent.jsx'
 import './index.css'
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
@@ -20,7 +20,7 @@ const router = createBrowserRouter([{
     }, {
         path: "movie/:id",
         element: <MovieDescription />,
-        errorElement: <ComponenteError />,
+        errorElement: <ErrorComponent />,
         loader: async ({ params }) => {
             // return await fetch('https://filmaff.onrender.com/api/movies/' + params.id)
             return await fetch('http://localhost:8000/api/movies/' + params.id)
@@ -39,7 +39,7 @@ const router = createBrowserRouter([{
         element: <Password />,
     }, {
         path: "*",
-        element: <ComponenteError />,
+        element: <ErrorComponent />,
     }
 ],
 }]);
