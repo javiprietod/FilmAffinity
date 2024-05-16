@@ -136,7 +136,6 @@ nav > * {
   text-align: right;
 }
 
-
 .container {
   max-width: 800px;
   margin: 20px auto;
@@ -182,7 +181,6 @@ h1 {
   padding: 70px;
 }
 
-
 .full-info {
   display: flex;
   justify-content: space-between;
@@ -223,6 +221,7 @@ p {
   border: 1px solid #ccc;
   border-radius: 3px;
 }
+
 .form-control label {
   margin-top: 10px;
   font-weight: bold;
@@ -435,7 +434,7 @@ button[type="submit"]:hover {
 .profile-button {
   background-color: #349a65;
   color: #fff;
-  padding: 8px 8px;
+  padding: 8px;
   font-size: medium;
   border: none;
   border-radius: 3px;
@@ -445,7 +444,6 @@ button[type="submit"]:hover {
   display: block;
   text-decoration: none;
   cursor: pointer;
-  /* margin-bottom: 10px; */
 }
 
 .form-button {
